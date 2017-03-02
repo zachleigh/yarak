@@ -1,0 +1,25 @@
+language: php
+
+php:
+    - 5.6
+    - 7.0
+
+services:
+    - mysql
+
+env:
+    - DB_HOST=127.0.0.1 DB_DATABASE=yarak DB_USERNAME=root DB_PASSWORD=password
+
+before_install:
+    - mysql -e "create database IF NOT EXISTS yarak;" -uroot
+    - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+    - chmod +x install-phalcon.sh
+    - composer install --prefer-source --no-interaction
+    - ./install-phalcon.sh 3.0.x
+
+script:
+    - vendor/bin/phpunit
+
+cache:
+    directories:
+        - vendor

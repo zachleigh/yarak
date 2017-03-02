@@ -1,8 +1,8 @@
 <?php
 
-namespace Yarak\Tests\Unit;
+namespace Yarak\tests\Unit;
 
-use Yarak\Tests\TestCase;
+use Yarak\tests\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 class MigrationCreatorTest extends TestCase

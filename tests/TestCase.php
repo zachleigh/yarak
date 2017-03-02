@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Tests;
+namespace Yarak\tests;
 
 use Dotenv\Dotenv;
 use Yarak\Config\Config;
@@ -8,7 +8,7 @@ use Yarak\Helpers\Paths;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Migrations\MigrationCreator;
-use Yarak\Tests\Concerns\DatabaseConcerns;
+use Yarak\tests\Concerns\DatabaseConcerns;
 use Yarak\Migrations\CreateMigrationsTable;
 use Symfony\Component\Filesystem\Filesystem;
 use Yarak\Migrations\DatabaseMigrationRepository;
@@ -49,9 +49,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $dotenv = new Dotenv(__DIR__.'/../');
-        $dotenv->load();
-
         $connection = $this->getConnection();
 
         foreach ($this->tables as $table) {
@@ -79,10 +76,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
             'database' => [
                 'adapter' => 'Mysql',
-                'host' => getenv('DB_HOST'),
-                'username' => getenv('DB_USERNAME'),
-                'password' => getenv('DB_PASSWORD'),
-                'dbname' => getenv('DB_NAME'),
+                'host' => '127.0.0.1',
+                'username' => 'root',
+                'password' => 'password',
+                'dbname' => 'yarak',
                 'charset' => 'utf8',
             ],
 
