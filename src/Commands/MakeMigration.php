@@ -49,6 +49,6 @@ class MakeMigration extends YarakCommand
 
         $creator->create($name, $create);
 
-        $this->output->writeln("<info>Successfully created migration {$name}.</info>");
+        $output->writeln("<info>Successfully created migration {$name}.</info>");
     }
 }
