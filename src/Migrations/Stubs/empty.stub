@@ -1,0 +1,29 @@
+<?php
+
+use Phalcon\Db\Index;
+use Phalcon\Db\Column;
+use Phalcon\Db\Adapter\Pdo;
+use Yarak\Migrations\Migration;
+
+class CLASSNAME implements Migration
+{
+    /**
+     * Run the migration.
+     *
+     * @param Pdo $connection
+     */
+    public function up(Pdo $connection)
+    {
+        //
+    }
+
+    /**
+     * Reverse the migration.
+     *
+     * @param Pdo $connection
+     */
+    public function down(Pdo $connection)
+    {
+        //
+    }
+}
