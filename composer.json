@@ -13,7 +13,6 @@
     "homepage": "https://github.com/zachlegih/yarak",
     "minimum-stability": "stable",
     "require": {
-        "ext-phalcon": ">=3.0",
         "phpunit/phpunit": "^5.0",
         "symfony/console": "^3.2",
         "vlucas/phpdotenv": "^2.4",
