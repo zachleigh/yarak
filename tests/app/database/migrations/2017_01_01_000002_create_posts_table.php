@@ -25,32 +25,32 @@ class CreatePostsTable implements Migration
                         'size'          => 10,
                         'unsigned'      => true,
                         'notNull'       => true,
-                        'autoIncrement' => true
+                        'autoIncrement' => true,
                     ]),
                     new Column('title', [
                         'type'    => Column::TYPE_VARCHAR,
                         'size'    => 200,
-                        'notNull' => true
+                        'notNull' => true,
                     ]),
                     new Column('body', [
                         'type'    => Column::TYPE_TEXT,
-                        'notNull' => true
+                        'notNull' => true,
                     ]),
                     new Column('user_id', [
                         'type'     => Column::TYPE_INTEGER,
                         'size'     => 10,
                         'unsigned' => true,
-                        'notNull'  => true
+                        'notNull'  => true,
                     ]),
                     new Column('created_at', [
                         'type'    => Column::TYPE_TIMESTAMP,
                         'notNull' => true,
-                        'default' => 'CURRENT_TIMESTAMP'
+                        'default' => 'CURRENT_TIMESTAMP',
                     ]),
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
-                    new Index('user_id', ['user_id'])
+                    new Index('user_id', ['user_id']),
                 ],
                 'references' => [
                     new Reference(
