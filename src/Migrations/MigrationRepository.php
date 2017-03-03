@@ -4,7 +4,7 @@ namespace Yarak\Migrations;
 
 interface MigrationRepository
 {
-    /**
+   /**
      * Set the repository connection on the object.
      *
      * @param Pdo $connection
@@ -26,18 +26,22 @@ interface MigrationRepository
     /**
      * Return the migrations that have already been ran.
      *
+     * @param array $ran
+     * @param int   $steps
+     *
      * @return array
      */
-    public function getRan();
+    public function getRan($ran = null, $steps = null);
 
     /**
      * Get array of all migrations that have been run.
      *
      * @param array $ran
+     * @param int   $steps
      *
      * @return array
      */
-    public function getRanMigrations($ran = null);
+    public function getRanMigrations($ran = null, $steps = null);
 
     /**
      * Get array of all migration batch nubmers that have run.
@@ -59,6 +63,8 @@ interface MigrationRepository
 
     /**
      * Get the next available batch number.
+     *
+     * @param array $ran
      *
      * @return int
      */
