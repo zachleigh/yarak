@@ -322,26 +322,6 @@ class Migrator
     }
 
     /**
-     * Get the migration class.
-     *
-     * @param \DirectoryIterator $file
-     *
-     * @return Migration
-     */
-    protected function getMigration(\DirectoryIterator $file)
-    {
-        require_once $file->getRealPath();
-
-        $filename = $file->getBaseName('.php');
-
-        $filename = preg_replace('/[0-9]+/', '', $filename);
-
-        $filename = Str::studly(trim($filename, '_'));
-
-        return new $filename();
-    }
-
-    /**
      * Log a message.
      *
      * @param string $message

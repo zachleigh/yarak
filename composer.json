@@ -1,5 +1,6 @@
 {
     "name": "zachleigh/yarak",
+    "description": "Devtools for Phalcon",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -8,6 +9,8 @@
             "email": "zachleigh@fastmail.jp"
         }
     ],
+    "keywords": ["phalcon", "devtools", "migrations", "yarak"],
+    "homepage": "https://github.com/zachlegih/yarak",
     "minimum-stability": "stable",
     "require": {
         "phpunit/phpunit": "^5.0",
