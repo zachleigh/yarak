@@ -22,8 +22,15 @@ class Migrate extends YarakCommand
          ->addOption(
             'rollback',
             null,
-            InputOption::VALUE_OPTIONAL,
+            InputOption::VALUE_NONE,
             'Rollback migrations by given number of steps.'
+        )
+         ->addOption(
+            'steps',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Number of steps to rollback.',
+            1
         )
         ->addOption(
             'reset',
@@ -47,12 +54,10 @@ class Migrate extends YarakCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $rollbackSteps = $this->getSteps($input);
-
         $migrator = $this->getMigrator();
 
-        if ($rollbackSteps !== null) {
-            $migrator->rollback($rollbackSteps);
+        if ($input->getOption('rollback')) {
+            $migrator->rollback($input->getOption('steps'));
         } elseif ($input->getOption('reset')) {
             $migrator->reset();
         } elseif ($input->getOption('refresh')) {
@@ -64,24 +69,6 @@ class Migrate extends YarakCommand
         foreach ($migrator->getLog() as $message) {
             $output->writeln($message);
         }
-    }
-
-    /**
-     * Get number of steps to rollback.
-     *
-     * @param InputInterface $input
-     *
-     * @return int|null
-     */
-    protected function getSteps(InputInterface $input)
-    {
-        $rollbackSteps = $input->getOption('rollback');
-
-        if ($rollbackSteps === true) {
-            return 1;
-        }
-
-        return $rollbackSteps;
     }
 
     /**

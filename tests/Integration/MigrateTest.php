@@ -85,7 +85,8 @@ class MigrateTest extends TestCase
 
         Yarak::call([
             'command'    => 'migrate',
-            '--rollback' => 2,
+            '--rollback' => true,
+            '--steps'    => 2
         ], $this->getConfig()->getAll());
 
         $this->seeTableDoesntExist('users');
