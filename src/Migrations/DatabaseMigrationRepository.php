@@ -9,7 +9,7 @@ class DatabaseMigrationRepository implements MigrationRepository
     /**
      * The active database connection.
      *
-     * @var Phalcon\Db\Adapter\Pdo
+     * @var Pdo
      */
     protected $connection = null;
 
