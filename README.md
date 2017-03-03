@@ -17,6 +17,109 @@
   - [Contributing](#contributing)
 
 ### Install
+###### Install via composer
+```
+composer require zachleigh/yarak
+```
+###### Register the service
+```php
+$di->setShared('yarak',function () {
+    $config = $this->getConfig();
+
+    return new \Yarak\Kernel(
+        [
+            'application' => [
+                'databaseDir' => __DIR__.'/app/database/',
+            ],
+
+            'database' => [
+                'adapter'  => '',
+                'host'     => '',
+                'username' => '',
+                'password' => '',
+                'dbname'   => '',
+                'charset'  => '',
+            ],
+
+            'yarak' => [
+                'migrationRepository' => 'database',
+            ],
+        ]);
+    }
+);
+```
+###### Create a yarak file
+In the project root, create a file called `yarak`. This file needs to do the following:
+  - Load all project files
+  - Load the project services
+  - Resolve the Yarak kernel from the service container and call the `handle` method on it
+
+Example:
+```php
+#!/usr/bin/env php
+<?php
+
+use Phalcon\Di\FactoryDefault;
+
+error_reporting(E_ALL);
+
+define('BASE_PATH', __DIR__);
+define('APP_PATH', BASE_PATH . '/app');
+
+/*
+|--------------------------------------------------------------------------
+| Autoload The Application
+|--------------------------------------------------------------------------
+|
+| In order to work properly, Yarak will need both your project files and the
+| vendor folder to be autoloaded.
+|
+*/
+include APP_PATH . '/config/loader.php';
+
+/*
+|--------------------------------------------------------------------------
+| Register The App Services
+|--------------------------------------------------------------------------
+|
+| We need to register the app services in order to spin up Yarak. Be sure you
+| have registered Yarak in the services file.
+|
+*/
+$di = new FactoryDefault();
+
+include APP_PATH . '/config/services.php';
+
+/*
+|--------------------------------------------------------------------------
+| Handle The Incoming Commands
+|--------------------------------------------------------------------------
+|
+| We'll get the Yarak kernel from the dependency injector and defer to it for 
+| command handling.
+|
+*/
+$kernel = $di->getYarak();
+
+$kernel->handle();
+```
+Once this file is created, make it executable:
+```
+chomd +x yarak
+```
+###### Add the database directory to the composer autoloader
+Because migrations do not follow psr-4 naming conventions, load them with a classmap.
+```
+"autoload": {
+    "classmap": [
+        "app/database"
+    ]
+}
+```
+Test to make sure that it is working in the console:
+```
+php yarak
+```
 
 ### Migrations
 
