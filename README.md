@@ -112,7 +112,12 @@ $kernel = $di->getYarak();
 
 $kernel->handle();
 ```
-Once this file is created, make it executable:
+The above example is included in the project at yarak/src/yarak_example. Copy it into your project with the following command, done from the project root:
+```
+cp vendor/zachleigh/yarak/src/yarak_example yarak
+```
+
+Once the yarak file exists, make it executable:
 ```
 chomd +x yarak
 ```
