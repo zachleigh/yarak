@@ -1,4 +1,6 @@
 # Yarak   
+*(Falconry) a state of prime fitness in a falcon*    
+
 [![Latest Stable Version](https://img.shields.io/packagist/v/zachleigh/yarak.svg)](//packagist.org/packages/zachleigh/yarak)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/yarak)
 [![Build Status](https://img.shields.io/travis/zachleigh/yarak/master.svg)](https://travis-ci.org/zachleigh/yarak)
