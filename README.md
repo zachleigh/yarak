@@ -23,7 +23,7 @@
     - [Rolling Back Migrations](#rolling-back-migrations)
     - [Resetting The Database](#resetting-the-database)
     - [Refreshing The Database](#refreshing-the-database)
-- [Contributing](#contributing)
+  - [Contributing](#contributing)
 
 ### Install
 ##### Install via composer
