@@ -15,7 +15,7 @@ class YarakCommand extends Command
 
     /**
      * Construct.
-     * 
+     *
      * @param array $configArray
      */
     public function __construct(array $configArray)

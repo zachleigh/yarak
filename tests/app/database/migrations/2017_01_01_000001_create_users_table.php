@@ -24,37 +24,37 @@ class CreateUsersTable implements Migration
                         'size'          => 10,
                         'unsigned'      => true,
                         'notNull'       => true,
-                        'autoIncrement' => true
+                        'autoIncrement' => true,
                     ]),
                     new Column('username', [
                         'type'    => Column::TYPE_VARCHAR,
                         'size'    => 32,
-                        'notNull' => true
+                        'notNull' => true,
                     ]),
                     new Column('password', [
                         'type'    => Column::TYPE_CHAR,
                         'size'    => 40,
-                        'notNull' => true
+                        'notNull' => true,
                     ]),
                     new Column('email', [
                         'type'    => Column::TYPE_VARCHAR,
                         'size'    => 70,
-                        'notNull' => true
+                        'notNull' => true,
                     ]),
                     new Column('created_at', [
                         'type'    => Column::TYPE_TIMESTAMP,
                         'notNull' => true,
-                        'default' => 'CURRENT_TIMESTAMP'
+                        'default' => 'CURRENT_TIMESTAMP',
                     ]),
                     new Column('active', [
                         'type'    => Column::TYPE_CHAR,
                         'size'    => 1,
-                        'notNull' => true
+                        'notNull' => true,
                     ]),
                 ],
                 'indexes' => [
-                    new Index('PRIMARY', ['id'], 'PRIMARY')
-                ]
+                    new Index('PRIMARY', ['id'], 'PRIMARY'),
+                ],
             ]
         );
     }

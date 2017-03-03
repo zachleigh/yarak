@@ -33,7 +33,7 @@ class Str
             return $studlyCache[$key];
         }
 
-        $value = ucwords(str_replace(array('-', '_'), ' ', $value));
+        $value = ucwords(str_replace(['-', '_'], ' ', $value));
 
         return $studlyCache[$key] = str_replace(' ', '', $value);
     }
