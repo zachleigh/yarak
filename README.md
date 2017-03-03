@@ -1,12 +1,12 @@
 # Yarak   
-*yarak - (Falconry) a state of prime fitness in a falcon*    
-
 [![Latest Stable Version](https://img.shields.io/packagist/v/zachleigh/yarak.svg)](//packagist.org/packages/zachleigh/yarak)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/yarak)
 [![Build Status](https://img.shields.io/travis/zachleigh/yarak/master.svg)](https://travis-ci.org/zachleigh/yarak)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/408a37c2-96fb-4622-95d1-9c53a0211269.svg)](https://insight.sensiolabs.com/projects/408a37c2-96fb-4622-95d1-9c53a0211269)
 [![Quality Score](https://img.shields.io/scrutinizer/g/zachleigh/yarak.svg)](https://scrutinizer-ci.com/g/zachleigh/yarak/)
-[![StyleCI](https://styleci.io/repos/83725289/shield?style=flat)](https://styleci.io/repos/83725289)
+[![StyleCI](https://styleci.io/repos/83725289/shield?style=flat)](https://styleci.io/repos/83725289)     
+
+*yarak - (Falconry) a state of prime fitness in a falcon*    
   
 ##### Laravel inspired Phalcon devtools. 
   - Database migrations
@@ -14,10 +14,15 @@
 ### Contents
   - [Install](#install)
   - [Migrations](#migrations)
+    - [Generating Migrations](#generating-migrations)
+    - [Running Migrations](#running-migrations)
+    - [Rolling Back Migrations](#rolling-back-migrations)
+    - [Resetting The Database](#resetting-the-database)
+    - [Refreshing The Database](#refreshing-the-database)
   - [Contributing](#contributing)
 
 ### Install
-###### Install via composer
+##### Install via composer
 ```
 composer require zachleigh/yarak
 ```
@@ -29,16 +34,16 @@ $di->setShared('yarak',function () {
     return new \Yarak\Kernel(
         [
             'application' => [
-                'databaseDir' => __DIR__.'/app/database/',
+                'databaseDir' => 'path/to/database/directory/',
             ],
 
             'database' => [
-                'adapter'  => '',
-                'host'     => '',
-                'username' => '',
-                'password' => '',
-                'dbname'   => '',
-                'charset'  => '',
+                'adapter'  => $config->database->adapter,
+                'host'     => $config->database->host,
+                'username' => $config->database->username,
+                'password' => $config->database->password,
+                'dbname'   => $config->database->dbname,
+                'charset'  => $config->database->charset,
             ],
 
             'yarak' => [
@@ -50,7 +55,7 @@ $di->setShared('yarak',function () {
 ```
 ##### Create a yarak file
 In the project root, create a file called `yarak`. This file needs to do the following:
-  - Load all project files
+  - Autoload all project files and vendor directory files
   - Load the project services
   - Resolve the Yarak kernel from the service container and call the `handle` method on it
 
@@ -112,7 +117,7 @@ Because migrations do not follow psr-4 naming conventions, load them with a clas
 ```
 "autoload": {
     "classmap": [
-        "app/database"
+        "relative/path/to/database/directory"
     ]
 }
 ```
@@ -122,6 +127,16 @@ php yarak
 ```
 
 ### Migrations
+
+#### Generating Migrations
+
+#### Running Migrations
+
+#### Rolling Back Migrations
+
+#### Resetting The Database
+
+#### Refreshing The Database
 
 ### Contributing
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/yarak/issues).
