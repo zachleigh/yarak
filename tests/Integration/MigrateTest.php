@@ -21,7 +21,7 @@ class MigrateTest extends TestCase
         $this->seeTableDoesntExist('posts');
 
         Yarak::call([
-            'command' => 'migrate'
+            'command' => 'migrate',
         ], $this->getConfig()->getAll());
 
         $this->seeTableExists('users');
@@ -30,12 +30,12 @@ class MigrateTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
     }
 
@@ -53,8 +53,8 @@ class MigrateTest extends TestCase
         $this->seeTableExists('posts');
 
         Yarak::call([
-            'command' => 'migrate',
-            '--rollback' => true
+            'command'    => 'migrate',
+            '--rollback' => true,
         ], $this->getConfig()->getAll());
 
         $this->seeTableDoesntExist('users');
@@ -62,11 +62,11 @@ class MigrateTest extends TestCase
         $this->seeTableDoesntExist('posts');
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000001_create_users_table'
+            'migration' => '2017_01_01_000001_create_users_table',
         ]);
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000002_create_posts_table'
+            'migration' => '2017_01_01_000002_create_posts_table',
         ]);
     }
 
@@ -84,8 +84,8 @@ class MigrateTest extends TestCase
         $this->seeTableExists('posts');
 
         Yarak::call([
-            'command' => 'migrate',
-            '--rollback' => 2
+            'command'    => 'migrate',
+            '--rollback' => 2,
         ], $this->getConfig()->getAll());
 
         $this->seeTableDoesntExist('users');
@@ -93,11 +93,11 @@ class MigrateTest extends TestCase
         $this->seeTableDoesntExist('posts');
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000001_create_users_table'
+            'migration' => '2017_01_01_000001_create_users_table',
         ]);
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000002_create_posts_table'
+            'migration' => '2017_01_01_000002_create_posts_table',
         ]);
     }
 
@@ -116,7 +116,7 @@ class MigrateTest extends TestCase
 
         Yarak::call([
             'command' => 'migrate',
-            '--reset' => true
+            '--reset' => true,
         ], $this->getConfig()->getAll());
 
         $this->seeTableDoesntExist('users');
@@ -124,11 +124,11 @@ class MigrateTest extends TestCase
         $this->seeTableDoesntExist('posts');
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000001_create_users_table'
+            'migration' => '2017_01_01_000001_create_users_table',
         ]);
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000002_create_posts_table'
+            'migration' => '2017_01_01_000002_create_posts_table',
         ]);
     }
 
@@ -147,17 +147,17 @@ class MigrateTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
-            'batch'     => 2
+            'batch'     => 2,
         ]);
 
         Yarak::call([
-            'command' => 'migrate',
-            '--refresh' => true
+            'command'   => 'migrate',
+            '--refresh' => true,
         ], $this->getConfig()->getAll());
 
         $this->seeTableExists('users');
@@ -166,12 +166,12 @@ class MigrateTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
     }
 }

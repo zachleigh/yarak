@@ -2,7 +2,6 @@
 
 namespace Yarak\tests;
 
-use Dotenv\Dotenv;
 use Yarak\Config\Config;
 use Yarak\Helpers\Paths;
 use Yarak\Migrations\Migrator;
@@ -75,17 +74,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
             ],
 
             'database' => [
-                'adapter' => 'Mysql',
-                'host' => '127.0.0.1',
+                'adapter'  => 'Mysql',
+                'host'     => '127.0.0.1',
                 'username' => 'root',
                 'password' => 'password',
-                'dbname' => 'yarak',
-                'charset' => 'utf8',
+                'dbname'   => 'yarak',
+                'charset'  => 'utf8',
             ],
 
             'yarak' => [
-                'migrationRepository' => 'database'
-            ]
+                'migrationRepository' => 'database',
+            ],
         ];
 
         return Config::getInstance($configArray);
@@ -178,8 +177,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Get a file name from a path.
      *
-     * @param  string $path
-     * @param  string $extension
+     * @param string $path
+     * @param string $extension
      *
      * @return string
      */
@@ -189,11 +188,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         return str_replace($extension, '', array_pop($pathArray));
     }
-    
+
     /**
      * Create multiple migrations in a single step.
      *
-     * @param  Yarak\Migrations\Migrator $migrator
+     * @param Yarak\Migrations\Migrator $migrator
      */
     protected function createSingleStep($migrator)
     {
@@ -207,7 +206,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Create multiple migrations in two steps.
      *
-     * @param  Yarak\Migrations\Migrator $migrator
+     * @param Yarak\Migrations\Migrator $migrator
      */
     protected function createTwoSteps($migrator)
     {

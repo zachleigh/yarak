@@ -4,7 +4,7 @@ namespace Yarak\Migrations;
 
 interface MigrationRepository
 {
-   /**
+    /**
      * Set the repository connection on the object.
      *
      * @param Pdo $connection

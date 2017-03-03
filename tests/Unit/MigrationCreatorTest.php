@@ -3,7 +3,6 @@
 namespace Yarak\tests\Unit;
 
 use Yarak\tests\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
 
 class MigrationCreatorTest extends TestCase
 {

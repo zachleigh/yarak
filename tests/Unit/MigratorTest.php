@@ -3,10 +3,6 @@
 namespace Yarak\tests\Unit;
 
 use Yarak\tests\TestCase;
-use Yarak\Migrations\Migrator;
-use Yarak\Migrations\CreateMigrationsTable;
-use Yarak\Migrations\DatabaseMigrationRepository;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 class MigratorTest extends TestCase
 {
@@ -70,7 +66,7 @@ class MigratorTest extends TestCase
         $migrator->run();
 
         $this->seeInDatabase('migrations', [
-            'migration' => $fileName
+            'migration' => $fileName,
         ]);
     }
 
@@ -89,7 +85,7 @@ class MigratorTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => $fileName,
-            'batch'     => 1
+            'batch'     => 1,
         ]);
     }
 
@@ -185,12 +181,12 @@ class MigratorTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
     }
 
@@ -205,12 +201,12 @@ class MigratorTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
-            'batch'     => 2
+            'batch'     => 2,
         ]);
     }
 
@@ -327,13 +323,13 @@ class MigratorTest extends TestCase
         $migrator->run();
 
         $this->seeInDatabase('migrations', [
-            'migration' => $fileName
+            'migration' => $fileName,
         ]);
 
         $migrator->rollback();
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => $fileName
+            'migration' => $fileName,
         ]);
     }
 
@@ -479,12 +475,12 @@ class MigratorTest extends TestCase
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
 
         $this->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
-            'batch'     => 1
+            'batch'     => 1,
         ]);
     }
 }

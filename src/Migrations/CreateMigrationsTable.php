@@ -20,13 +20,13 @@ class CreateMigrationsTable implements Migration
             [
                 'columns' => [
                     new Column('migration', [
-                        'type' => Column::TYPE_VARCHAR,
-                        'size' => 250,
+                        'type'    => Column::TYPE_VARCHAR,
+                        'size'    => 250,
                         'notNull' => true,
                     ]),
                     new Column('batch', [
-                        'type' => Column::TYPE_INTEGER,
-                        'size' => 10,
+                        'type'    => Column::TYPE_INTEGER,
+                        'size'    => 10,
                         'notNull' => true,
                     ]),
                 ],

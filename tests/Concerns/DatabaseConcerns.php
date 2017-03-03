@@ -9,7 +9,7 @@ trait DatabaseConcerns
      *
      * @return Phalcon\Db\Adapter\Pdo
      */
-    abstract function getConnection();
+    abstract public function getConnection();
 
     /**
      * Assert that a given where condition exists in the database.

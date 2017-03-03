@@ -17,7 +17,7 @@ class Kernel
 
     /**
      * Construct.
-     * 
+     *
      * @param array $config
      */
     public function __construct(array $config)
@@ -36,7 +36,7 @@ class Kernel
 
         if ($input && $output) {
             $application->setAutoExit(false);
-            
+
             return $application->run($input, $output);
         }
 
