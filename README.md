@@ -9,7 +9,7 @@
 *yarak - (Falconry) a state of prime fitness in a falcon*    
   
 ##### Laravel inspired Phalcon devtools 
-    - Database migrations that rollback step-by-step, reset the database, and refresh the database.
+  - Database migrations that rollback step-by-step, reset the database, and refresh the database.
 
 ### Contents
   - [Install](#install)
@@ -143,7 +143,7 @@ Yarak migrations provide a simple, clean way to manage your database.
   - [Refreshing The Database](#refreshing-the-database)
 
 #### Generating Migrations
-All migrations are stored in databaseDir/migrations. The databaseDir path may be set when [registering the Yarak service](register_the_service).     
+All migrations are stored in databaseDir/migrations. The databaseDir path may be set when [registering the Yarak service](#register_the_service).     
 
 To generate migrations, use the `make:migration` command:
 ```
@@ -242,7 +242,7 @@ public function up(Pdo $connection)
         new Column(
             'email',
             [
-                'type'    => Column::TYPE_VARCHAR,
+                'type' => Column::TYPE_VARCHAR,
                 'size' => 70,
             ]
         )
@@ -255,7 +255,11 @@ To add additional columns to a table, use the `addColumn` method:
 ```php
 public addColumn (mixed $tableName, mixed $schemaName, Phalcon\Db\ColumnInterface $column)
 ```
-So if we want to add an `active` column to our users table, our migration up method could look like this:
+So if we want to add an `active` column to our users table, we create a new migration:
+```
+php yarak make:migration add_active_column_to_users_table
+```
+And our migration up method could look like this:
 ```php
 public function up(Pdo $connection)
 {
@@ -294,7 +298,7 @@ public function down(Pdo $connection)
         new Column(
             'email',
             [
-                'type'    => Column::TYPE_VARCHAR,
+                'type' => Column::TYPE_VARCHAR,
                 'size' => 20,
             ]
         )
@@ -306,11 +310,7 @@ When adding the `active` column, use the `dropColumn` method:
 ```php
 public function down(Pdo $connection)
 {
-    $connection->dropColumn(
-        'users',
-        null,
-        'active'
-    );
+    $connection->dropColumn('users', null, 'active');
 }
 ```
 
@@ -323,7 +323,7 @@ php yarak migrate
 This will run all migrations that have not yet been run. Migrations that are run at the same time will be in the same 'batch' and will be rolled back together.
 
 #### Rolling Back Migrations
-*Before rolling back, be aware that all data in the tables you rollback will be lost.*   
+:exclamation:**Before rolling back, be aware that all data in the tables you rollback will be lost.**   
 
 To rollback the last batch of migrations, call `migrate` with the `--rollback` flag:
 ```
@@ -337,13 +337,17 @@ php yarak migrate --rollback --steps=2
 This will rollback the last two batches of migrations.
 
 #### Resetting The Database
-Using the `--reset` flag will rollback all migrations. *Resetting the database will remove all data from your database.* Be sure any data you wish to keep is backed up before proceeding.
+Using the `--reset` flag will rollback all migrations.   
+
+:exclamation:**Resetting the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
 ```
 php yarak migrate --reset
 ```
 
 #### Refreshing The Database
-Refreshing the database will rollback all migrations and then re-run them all in a single batch. *Refreshing the database will remove all data from your database.* Be sure any data you wish to keep is backed up before proceeding.
+Refreshing the database will rollback all migrations and then re-run them all in a single batch.   
+
+:exclamation:**Refreshing the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
 ```
 php yarak migrate --refresh
 ```
