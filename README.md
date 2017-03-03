@@ -1,5 +1,5 @@
 # Yarak   
-*(Falconry) a state of prime fitness in a falcon*    
+*yarak - (Falconry) a state of prime fitness in a falcon*    
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/zachleigh/yarak.svg)](//packagist.org/packages/zachleigh/yarak)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/yarak)
@@ -21,7 +21,7 @@
 ```
 composer require zachleigh/yarak
 ```
-###### Register the service
+##### Register the service
 ```php
 $di->setShared('yarak',function () {
     $config = $this->getConfig();
@@ -48,7 +48,7 @@ $di->setShared('yarak',function () {
     }
 );
 ```
-###### Create a yarak file
+##### Create a yarak file
 In the project root, create a file called `yarak`. This file needs to do the following:
   - Load all project files
   - Load the project services
@@ -107,7 +107,7 @@ Once this file is created, make it executable:
 ```
 chomd +x yarak
 ```
-###### Add the database directory to the composer autoloader
+##### Add the database directory to the composer autoloader
 Because migrations do not follow psr-4 naming conventions, load them with a classmap.
 ```
 "autoload": {
