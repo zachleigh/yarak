@@ -17,33 +17,33 @@ class Migrate extends YarakCommand
     protected function configure()
     {
         $this->setName('migrate')
-         ->setDescription('Run the database migrations.')
-         ->setHelp('This command allows you to run migrations.')
-         ->addOption(
-            'rollback',
-            null,
-            InputOption::VALUE_NONE,
-            'Rollback migrations by given number of steps.'
-        )
-         ->addOption(
-            'steps',
-            null,
-            InputOption::VALUE_OPTIONAL,
-            'Number of steps to rollback.',
-            1
-        )
-        ->addOption(
-            'reset',
-            null,
-            InputOption::VALUE_NONE,
-            'Rollback all migrations.'
-        )
-        ->addOption(
-            'refresh',
-            null,
-            InputOption::VALUE_NONE,
-            'Rollback and re-run all migrations.'
-        );
+            ->setDescription('Run the database migrations.')
+            ->setHelp('This command allows you to run migrations.')
+            ->addOption(
+                'rollback',
+                null,
+                InputOption::VALUE_NONE,
+                'Rollback migrations by given number of steps.'
+            )
+            ->addOption(
+                'steps',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Number of steps to rollback.',
+                1
+            )
+            ->addOption(
+                'reset',
+                null,
+                InputOption::VALUE_NONE,
+                'Rollback all migrations.'
+            )
+            ->addOption(
+                'refresh',
+                null,
+                InputOption::VALUE_NONE,
+                'Rollback and re-run all migrations.'
+            );
     }
 
     /**
