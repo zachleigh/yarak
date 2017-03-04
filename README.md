@@ -224,7 +224,7 @@ public function up(Pdo $connection)
 }
 ```
 
-The definition array must have a `columns` key, and can also include `indexes`, `references`, and `options` keys. To define columns use Phalcon's [DB Column class](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Column.html) class, for indexes use the [DB Index class](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Index.html), and for foreign keys use the [DB Reference class](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Reference.html).  
+The definition array must contain a `columns` array, and can also include `indexes`, `references`, and `options` arrays. To define columns use Phalcon's [DB Column class](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Column.html) class, for indexes use the [DB Index class](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Index.html), and for foreign keys use the [DB Reference class](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Reference.html).  
 
 For more information, see the [official documentation](https://docs.phalconphp.com/en/3.0.0/reference/db.html#creating-tables).
 
@@ -254,7 +254,7 @@ public function up(Pdo $connection)
     );
 }
 ```
-Keep in mind that when using the Column class, the `type` array key is required.    
+Keep in mind that when using the Column class, `type` is required.    
 
 To add additional columns to a table, use the `addColumn` method:
 ```php
