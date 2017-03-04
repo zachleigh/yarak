@@ -148,7 +148,7 @@ Yarak migrations provide a simple, clean way to manage your database.
   - [Refreshing The Database](#refreshing-the-database)
 
 #### Generating Migrations
-All migrations are stored in databaseDir/migrations. The databaseDir path may be set when [registering the Yarak service](#register_the_service).     
+All migrations are stored in databaseDir/migrations. The databaseDir path may be set when [registering the Yarak service](#register-the-service).     
 
 To generate migrations, use the `make:migration` command:
 ```
