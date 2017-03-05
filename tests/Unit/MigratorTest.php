@@ -441,6 +441,28 @@ class MigratorTest extends TestCase
     /**
      * @test
      */
+    public function it_refreshes_the_database_when_nothing_to_rollback()
+    {
+        $migrator = $this->getMigrator();
+
+        $this->createSingleStep($migrator);
+
+        $migrator->rollback();
+
+        $this->seeTableDoesntExist('users');
+
+        $this->seeTableDoesntExist('posts');
+
+        $migrator->refresh();
+
+        $this->seeTableExists('users');
+
+        $this->seeTableExists('posts');
+    }
+
+    /**
+     * @test
+     */
     public function it_refreshes_the_database()
     {
         $migrator = $this->getMigrator();

@@ -16,12 +16,10 @@ class Yarak
      */
     public static function call(array $arguments, array $config = [])
     {
-        $di = new FactoryDefault();
-
-        try {
-            $kernel = $di->get('yarak');
-        } catch (\Exception $e) {
-            $kernel = new Kernel($config);
+        if (!empty($config)) {
+            $kernel = self::getKernelWithConfig($config);
+        } else {
+            $kernel = self::getKernel();
         }
 
         $input = new ArrayInput($arguments);
@@ -29,5 +27,45 @@ class Yarak
         $output = new NullOutput();
 
         $kernel->handle($input, $output);
+    }
+
+    /**
+     * Get an instance of Yarak kernel built with the given config.
+     *
+     * @param  array  $config
+     *
+     * @return Kernel
+     */
+    protected static function getKernelWithConfig(array $config)
+    {
+        return new Kernel($config);
+    }
+
+    /**
+     * Resolve Yarak kernel from di.
+     *
+     * @throws   
+     *
+     * @return Kernel
+     */
+    protected static function getKernel()
+    {
+        $di = new FactoryDefault();
+
+        $configPath = __DIR__.'/../../../../app/config/';
+
+        try {
+            include $configPath.'services.php';
+            
+            $di->getConfig();
+
+            return $di->get('yarak');
+        } catch (\Exception $e) {
+            // custom exception
+            throw new \Exception(
+                'Unable to resolve yarak. '.
+                'Try passing yarak config array as third argument'
+            );
+        }
     }
 }
