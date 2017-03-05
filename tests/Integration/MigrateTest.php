@@ -20,9 +20,7 @@ class MigrateTest extends TestCase
 
         $this->seeTableDoesntExist('posts');
 
-        Yarak::call([
-            'command' => 'migrate',
-        ], $this->getConfig()->getAll());
+        Yarak::call('migrate', [], $this->getConfig()->getAll());
 
         $this->seeTableExists('users');
 
@@ -52,8 +50,7 @@ class MigrateTest extends TestCase
 
         $this->seeTableExists('posts');
 
-        Yarak::call([
-            'command'    => 'migrate',
+        Yarak::call('migrate', [
             '--rollback' => true,
         ], $this->getConfig()->getAll());
 
@@ -83,8 +80,7 @@ class MigrateTest extends TestCase
 
         $this->seeTableExists('posts');
 
-        Yarak::call([
-            'command'    => 'migrate',
+        Yarak::call('migrate', [
             '--rollback' => true,
             '--steps'    => 2,
         ], $this->getConfig()->getAll());
@@ -115,8 +111,7 @@ class MigrateTest extends TestCase
 
         $this->seeTableExists('posts');
 
-        Yarak::call([
-            'command' => 'migrate',
+        Yarak::call('migrate', [
             '--reset' => true,
         ], $this->getConfig()->getAll());
 
@@ -156,8 +151,7 @@ class MigrateTest extends TestCase
             'batch'     => 2,
         ]);
 
-        Yarak::call([
-            'command'   => 'migrate',
+        Yarak::call('migrate', [
             '--refresh' => true,
         ], $this->getConfig()->getAll());
 

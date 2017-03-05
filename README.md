@@ -23,6 +23,7 @@
     - [Rolling Back Migrations](#rolling-back-migrations)
     - [Resetting The Database](#resetting-the-database)
     - [Refreshing The Database](#refreshing-the-database)
+  - [Calling Yarak In Code](#calling-yarak-in-code)
   - [Contributing](#contributing)
 
 ### Install
@@ -355,6 +356,31 @@ Refreshing the database will rollback all migrations and then re-run them all in
 :exclamation:**Refreshing the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
 ```
 php yarak migrate --refresh
+```
+
+### Calling Yarak In Code
+To call a Yarak command from your codebase, use the Yarak::call static method.
+```php
+public static function call($command, array $arguments = [], array $config = [])
+```
+For example, to call `migrate --rollback --steps=2`:
+```php
+use Yarak\Yarak;
+
+Yarak::call('migrate', [
+    '--rollback' => true,
+    '--steps'    => 2,
+]);
+```
+
+Yarak will attempt to resolve its config from /app/config/service.php. If your services file is in a different location, you will need to pass the config array manually.
+```php
+use Yarak\Yarak;
+
+Yarak::call('migrate', [
+    '--rollback' => true,
+    '--steps'    => 2,
+], $configArray);
 ```
 
 ### Contributing

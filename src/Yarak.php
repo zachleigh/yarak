@@ -12,16 +12,19 @@ class Yarak
     /**
      * Call a Yarak console command.
      *
-     * @param array $arguments Argument array.
-     * @param array $config    Config values, for testing purposes.
+     * @param string $command
+     * @param array  $arguments Argument array.
+     * @param array  $config    Config values, for testing purposes.
      */
-    public static function call(array $arguments, array $config = [])
+    public static function call($command, array $arguments = [], array $config = [])
     {
         if (!empty($config)) {
             $kernel = self::getKernelWithConfig($config);
         } else {
             $kernel = self::getKernel();
         }
+
+        $arguments = ['command' => $command] + $arguments;
 
         $input = new ArrayInput($arguments);
 
@@ -33,7 +36,7 @@ class Yarak
     /**
      * Get an instance of Yarak kernel built with the given config.
      *
-     * @param  array  $config
+     * @param array $config
      *
      * @return Kernel
      */

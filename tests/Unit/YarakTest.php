@@ -15,8 +15,7 @@ class YarakTest extends TestCase
      */
     public function it_throws_exception_when_kernel_cant_be_resolved()
     {
-        Yarak::call([
-            'command' => 'make:migration',
+        Yarak::call('make:migration', [
             'name'    => 'create_new_table',
         ]);
     }

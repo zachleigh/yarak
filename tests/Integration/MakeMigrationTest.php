@@ -14,8 +14,7 @@ class MakeMigrationTest extends TestCase
     {
         $config = $this->getConfig();
 
-        Yarak::call([
-            'command' => 'make:migration',
+        Yarak::call('make:migration', [
             'name'    => 'create_new_table',
         ], $config->getAll());
 
@@ -37,8 +36,7 @@ class MakeMigrationTest extends TestCase
     {
         $config = $this->getConfig();
 
-        Yarak::call([
-            'command'  => 'make:migration',
+        Yarak::call('make:migration', [
             'name'     => 'create_new_table',
             '--create' => 'new',
         ], $config->getAll());
