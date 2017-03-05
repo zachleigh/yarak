@@ -3,6 +3,7 @@
 namespace Yarak;
 
 use Phalcon\Di\FactoryDefault;
+use Yarak\Exceptions\FileNotFound;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -52,20 +53,19 @@ class Yarak
     {
         $di = new FactoryDefault();
 
-        $configPath = __DIR__.'/../../../../app/config/';
+        $servicesPath = __DIR__.'/../../../../app/config/services.php';
 
         try {
-            include $configPath.'services.php';
-            
-            $di->getConfig();
-
-            return $di->get('yarak');
+            include $servicesPath;
         } catch (\Exception $e) {
-            // custom exception
-            throw new \Exception(
-                'Unable to resolve yarak. '.
-                'Try passing yarak config array as third argument'
+            throw FileNotFound::servicesFileNotFound(
+                'Try passing the Yarak config array as the third argument '.
+                'to Yarak::call.'
             );
         }
+
+        $di->getConfig();
+
+        return $di->get('yarak');
     }
 }
