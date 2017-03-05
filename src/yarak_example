@@ -10,17 +10,6 @@ define('APP_PATH', BASE_PATH . '/app');
 
 /*
 |--------------------------------------------------------------------------
-| Autoload The Application
-|--------------------------------------------------------------------------
-|
-| In order to work properly, Yarak will need both your project files and the
-| vendor folder to be autoloaded.
-|
-*/
-include APP_PATH . '/config/loader.php';
-
-/*
-|--------------------------------------------------------------------------
 | Register The App Services
 |--------------------------------------------------------------------------
 |
@@ -31,6 +20,19 @@ include APP_PATH . '/config/loader.php';
 $di = new FactoryDefault();
 
 include APP_PATH . '/config/services.php';
+
+$config = $di->getConfig();
+
+/*
+|--------------------------------------------------------------------------
+| Autoload The Application
+|--------------------------------------------------------------------------
+|
+| In order to work properly, Yarak will need both your project files and the
+| vendor folder to be autoloaded.
+|
+*/
+include APP_PATH . '/config/loader.php';
 
 /*
 |--------------------------------------------------------------------------
