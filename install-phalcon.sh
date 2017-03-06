@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# This script take from here:
+# This script was taken from this project:
 # https://github.com/techpivot/phalcon-ci-installer
 
 set -e
