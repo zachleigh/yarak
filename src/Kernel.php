@@ -6,6 +6,7 @@ use Yarak\Commands\Migrate;
 use Yarak\Commands\MakeMigration;
 use Yarak\Exceptions\InvalidInput;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
 
 class Kernel
 {
@@ -57,7 +58,15 @@ class Kernel
         $application->add(new Migrate($this->config));
     }
 
-    protected function validateCommand($application, $input)
+    /**
+     * Validate the given command.
+     *
+     * @param Application    $application
+     * @param InputInterface $input
+     *
+     * @throws InvalidInput
+     */
+    protected function validateCommand(Application $application, InputInterface $input)
     {
         $command = $input->getFirstArgument();
 

@@ -48,7 +48,7 @@ class Yarak
     /**
      * Resolve Yarak kernel from di.
      *
-     * @throws   
+     * @throws FileNotFound
      *
      * @return Kernel
      */
