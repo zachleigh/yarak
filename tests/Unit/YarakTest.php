@@ -16,7 +16,18 @@ class YarakTest extends TestCase
     public function it_throws_exception_when_kernel_cant_be_resolved()
     {
         Yarak::call('make:migration', [
-            'name'    => 'create_new_table',
+            'name' => 'create_new_table',
         ]);
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException Yarak\Exceptions\InvalidInput
+     * @expectedExceptionMessage The command wrong does not exist.
+     */
+    public function it_throws_exception_when_command_does_not_exist()
+    {
+        Yarak::call('wrong', [], $this->getConfig()->getAll());
     }
 }
