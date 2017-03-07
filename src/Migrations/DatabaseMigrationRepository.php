@@ -150,6 +150,10 @@ class DatabaseMigrationRepository implements MigrationRepository
      */
     public function deleteRecord($fileName)
     {
-        $this->connection->execute('DELETE FROM migrations WHERE (?)', [$fileName]);
+        $this->connection->delete(
+            'migrations',
+            'migration = ?',
+            [$fileName]
+        );
     }
 }

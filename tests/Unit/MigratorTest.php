@@ -417,6 +417,30 @@ class MigratorTest extends TestCase
     /**
      * @test
      */
+    public function it_only_removes_rolled_back_migrations_from_migrations_table()
+    {
+        $migrator = $this->getMigrator();
+
+        $this->createTwoSteps($migrator);
+
+        $migrator->rollback();
+
+        $this->seeTableExists('users');
+
+        $this->seeTableDoesntExist('posts');
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000001_create_users_table'
+        ]);
+
+        $this->dontSeeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table'
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_resets_the_database()
     {
         $migrator = $this->getMigrator();
