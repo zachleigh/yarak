@@ -32,7 +32,7 @@ class Kernel
      */
     public function handle($input = null, $output = null)
     {
-        $application = new Application();
+        $application = new Application('Yarak - Phalcon devtools');
 
         $this->registerCommands($application);
 
