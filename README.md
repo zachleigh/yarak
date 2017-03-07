@@ -167,7 +167,7 @@ php yarak make:migration create_users_table --create=users
 ```
 
 #### Writing Migrations
-Yarak uses Phalcon's [Database Abstraction Layer](https://docs.phalconphp.com/en/3.0.0/reference/db.html) to interact with the database. This guide will only cover the most common operations. For more detailed information about what is possible, please see the [API Documentation](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Adapter.html).   
+Yarak uses Phalcon's [Database Abstraction Layer](https://docs.phalconphp.com/en/3.0.0/reference/db.html) to interact with the database. This guide will only cover the most common operations. For more detailed information about what is possible, please see the [API Documentation](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Adapter.html). Because the official Phalcon migrations also use the database abstraction layer, the [Phalcon migration documentation](https://docs.phalconphp.com/en/3.0.1/reference/migrations.html#migration-class-anatomy) may also be useful.   
 
 ##### Creating Tables
 To create a table, use the `$connection` variable's `createTable` method.
@@ -218,7 +218,9 @@ public function up(Pdo $connection)
                 ])
             ],
             'indexes' => [
-                new Index('PRIMARY', ['id'], 'PRIMARY')
+                new Index('PRIMARY', ['id'], 'PRIMARY'),
+                new Index('users_username_unique', ['username'], 'UNIQUE'),
+                new Index('users_email_unique', ['email'], 'UNIQUE')
             ]
         ]
     );
