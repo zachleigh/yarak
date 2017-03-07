@@ -112,7 +112,7 @@ class MigrateTest extends TestCase
         $this->seeTableExists('posts');
 
         Yarak::call('migrate', [
-            '--rollback' => true
+            '--rollback' => true,
         ], $this->getConfig()->getAll());
 
         $this->seeTableExists('users');

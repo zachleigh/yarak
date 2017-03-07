@@ -430,11 +430,11 @@ class MigratorTest extends TestCase
         $this->seeTableDoesntExist('posts');
 
         $this->seeInDatabase('migrations', [
-            'migration' => '2017_01_01_000001_create_users_table'
+            'migration' => '2017_01_01_000001_create_users_table',
         ]);
 
         $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000002_create_posts_table'
+            'migration' => '2017_01_01_000002_create_posts_table',
         ]);
     }
 
