@@ -5,11 +5,12 @@ namespace Yarak\Migrations;
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
 use Yarak\Helpers\Paths;
+use Yarak\Helpers\Loggable;
 use Yarak\DB\ConnectionResolver;
 
 class Migrator
 {
-    use Paths;
+    use Loggable, Paths;
 
     /**
      * Yarak config.
@@ -38,13 +39,6 @@ class Migrator
      * @var Phalcon\Db\Adapter\Pdo
      */
     protected $connection = null;
-
-    /**
-     * Log of info/error messages.
-     *
-     * @var array
-     */
-    protected $log = [];
 
     /**
      * Construct.
@@ -319,25 +313,5 @@ class Migrator
         }
 
         return $this;
-    }
-
-    /**
-     * Log a message.
-     *
-     * @param string $message
-     */
-    protected function log($message)
-    {
-        $this->log[] = $message;
-    }
-
-    /**
-     * Return the object log.
-     *
-     * @return array
-     */
-    public function getLog()
-    {
-        return $this->log;
     }
 }

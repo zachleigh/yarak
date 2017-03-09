@@ -4,10 +4,11 @@ namespace Yarak\DB;
 
 use Yarak\Config\Config;
 use Yarak\Helpers\Paths;
+use Yarak\Helpers\Loggable;
 
 class DirectoryCreator
 {
-    use Paths;
+    use Loggable, Paths;
 
     /**
      * Yarak config.
@@ -15,13 +16,6 @@ class DirectoryCreator
      * @var Config
      */
     protected $config;
-
-    /**
-     * Log of info/error messages.
-     *
-     * @var array
-     */
-    protected $log = [];
 
     /**
      * Construct.
@@ -93,25 +87,5 @@ class DirectoryCreator
         }
 
         $this->log("<info>Created DatabaseSeeder file.</info>");
-    }
-
-    /**
-     * Log a message.
-     *
-     * @param string $message
-     */
-    protected function log($message)
-    {
-        $this->log[] = $message;
-    }
-
-    /**
-     * Return the object log.
-     *
-     * @return array
-     */
-    public function getLog()
-    {
-        return $this->log;
     }
 }
