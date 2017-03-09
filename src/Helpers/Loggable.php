@@ -10,7 +10,7 @@ trait Loggable
      * @var array
      */
     protected $log = [];
-    
+
     /**
      * Log a message.
      *

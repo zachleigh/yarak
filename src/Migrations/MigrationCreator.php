@@ -44,7 +44,7 @@ class MigrationCreator
 
         $this->makeDirectoryStructure([
             $this->config->getDatabaseDirectory(),
-            $this->config->getMigrationDirectory()
+            $this->config->getMigrationDirectory(),
         ]);
 
         $this->writeFile(

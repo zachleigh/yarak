@@ -59,7 +59,7 @@ class DirectoryCreatorTest extends TestCase
     /**
      * Assert that the directory creator creates the given path.
      *
-     * @param  string $path
+     * @param string $path
      */
     protected function assertDirectoryCreatorCreatesPath($path)
     {

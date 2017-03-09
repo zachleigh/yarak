@@ -48,7 +48,7 @@ class DirectoryCreator
             $this->config->getAllDatabaseDirectories()
         );
 
-        $this->log("<info>Created all directories.</info>");
+        $this->log('<info>Created all directories.</info>');
     }
 
     /**
@@ -63,7 +63,7 @@ class DirectoryCreator
             $stub
         );
 
-        $this->log("<info>Created ModelFactory file.</info>");
+        $this->log('<info>Created ModelFactory file.</info>');
     }
 
     /**
@@ -78,6 +78,6 @@ class DirectoryCreator
             $stub
         );
 
-        $this->log("<info>Created DatabaseSeeder file.</info>");
+        $this->log('<info>Created DatabaseSeeder file.</info>');
     }
 }

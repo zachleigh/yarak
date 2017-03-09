@@ -129,7 +129,7 @@ class Config
             $this->getDatabaseDirectory(),
             $this->getMigrationDirectory(),
             $this->getFactoryDirectory(),
-            $this->getSeedDirectory()
+            $this->getSeedDirectory(),
         ];
     }
 }

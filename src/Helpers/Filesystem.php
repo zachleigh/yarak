@@ -23,8 +23,8 @@ trait Filesystem
     /**
      * Write contents to path.
      *
-     * @param  string $path
-     * @param  string $contents
+     * @param string $path
+     * @param string $contents
      *
      * @throws WriteError
      */
