@@ -4,6 +4,7 @@ namespace Yarak\tests;
 
 use Yarak\Config\Config;
 use Yarak\Helpers\Paths;
+use Yarak\DB\DirectoryCreator;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Migrations\MigrationCreator;
@@ -100,6 +101,18 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $config = $this->getConfig();
 
         return new MigrationCreator($config);
+    }
+
+    /**
+     * Get an instance of DirectoryCreator.
+     *
+     * @return DirectoryCreator
+     */
+    protected function getDirectoryCreator()
+    {
+        $config = $this->getConfig();
+
+        return new DirectoryCreator($config);
     }
 
     /**

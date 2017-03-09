@@ -1,0 +1,19 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Model Factories
+|--------------------------------------------------------------------------
+|
+| Define model factories in this file. Factories make it easy to create
+| sample data used for testing. Simply return an aray listing the model
+| fields and the desired values. All factories have access to the Faker
+| library. More info here: https://github.com/fzaninotto/Faker
+|
+*/
+
+$factory->define(MyModelClass, function (Faker\Generator $faker) {   
+    return [
+        'my_model_field' => $faker->word
+    ];
+});

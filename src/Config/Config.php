@@ -95,6 +95,26 @@ class Config
     }
 
     /**
+     * Return the factory directory path.
+     *
+     * @return string
+     */
+    public function getFactoryDirectory()
+    {
+        return $this->getDatabaseDirectory().'factories/';
+    }
+
+    /**
+     * Return the seeds directory path.
+     *
+     * @return string
+     */
+    public function getSeedDirectory()
+    {
+        return $this->getDatabaseDirectory().'seeds/';
+    }
+
+    /**
      * Make database directory structure if it doesn't exist.
      */
     public function getAllDatabaseDirectories()
@@ -102,6 +122,8 @@ class Config
         return [
             $this->getDatabaseDirectory(),
             $this->getMigrationDirectory(),
+            $this->getFactoryDirectory(),
+            $this->getSeedDirectory()
         ];
     }
 }

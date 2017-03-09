@@ -42,7 +42,10 @@ class MigrationCreator
 
         $this->failIfClassExists($className);
 
-        $this->makeDirectoryStructure($this->config->getAllDatabaseDirectories());
+        $this->makeDirectoryStructure([
+            $this->config->getDatabaseDirectory(),
+            $this->config->getMigrationDirectory()
+        ]);
 
         try {
             file_put_contents(
@@ -96,7 +99,7 @@ class MigrationCreator
     {
         $stubFile = $create ? 'create.stub' : 'empty.stub';
 
-        $stub = file_get_contents(__DIR__."/../Migrations/Stubs/{$stubFile}");
+        $stub = file_get_contents(__DIR__."/Stubs/{$stubFile}");
 
         return $this->populateStub($stub, $className, $create);
     }

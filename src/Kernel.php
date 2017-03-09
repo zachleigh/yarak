@@ -3,6 +3,7 @@
 namespace Yarak;
 
 use Yarak\Commands\Migrate;
+use Yarak\Commands\DBGenerate;
 use Yarak\Commands\MakeMigration;
 use Yarak\Exceptions\InvalidInput;
 use Symfony\Component\Console\Application;
@@ -54,6 +55,7 @@ class Kernel
      */
     protected function registerCommands(Application $application)
     {
+        $application->add(new DBGenerate($this->config));
         $application->add(new MakeMigration($this->config));
         $application->add(new Migrate($this->config));
     }
