@@ -64,7 +64,7 @@ class DirectoryCreator
                 $stub
             );
         } catch (\Exception $e) {
-            throw new Exception($e);
+            throw new \Exception($e);
         }
 
         $this->log("<info>Created ModelFactory file.</info>");

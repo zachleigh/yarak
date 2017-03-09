@@ -4,9 +4,6 @@ namespace Yarak\Commands;
 
 use Yarak\Config\Config;
 use Yarak\DB\DirectoryCreator;
-use Yarak\Migrations\MigrationCreator;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,7 +35,7 @@ class DBGenerate extends YarakCommand
 
         $creator->create();
 
-        foreach ($migrator->getLog() as $message) {
+        foreach ($creator->getLog() as $message) {
             $output->writeln($message);
         }
     }
