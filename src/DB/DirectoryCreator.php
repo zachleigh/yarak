@@ -60,7 +60,7 @@ class DirectoryCreator
 
         try {
             file_put_contents(
-                $this->config->getFactoryDirectory().'ModelFactory.php',
+                $this->config->getFactoryDirectory('ModelFactory.php'),
                 $stub
             );
         } catch (\Exception $e) {
@@ -79,7 +79,7 @@ class DirectoryCreator
 
         try {
             file_put_contents(
-                $this->config->getSeedDirectory().'DatabaseSeeder.php',
+                $this->config->getSeedDirectory('DatabaseSeeder.php'),
                 $stub
             );
         } catch (\Exception $e) {

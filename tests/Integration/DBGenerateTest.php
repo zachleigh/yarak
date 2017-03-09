@@ -42,8 +42,8 @@ class DBGenerateTest extends TestCase
             $config->getMigrationDirectory(),
             $config->getSeedDirectory(),
             $config->getFactoryDirectory(),
-            $config->getFactoryDirectory().'ModelFactory.php',
-            $config->getSeedDirectory().'DatabaseSeeder.php',
+            $config->getFactoryDirectory('ModelFactory.php'),
+            $config->getSeedDirectory('DatabaseSeeder.php'),
         ];
     }
 

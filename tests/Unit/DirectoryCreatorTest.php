@@ -41,7 +41,7 @@ class DirectoryCreatorTest extends TestCase
      */
     public function it_creates_model_factory_file()
     {
-        $fileDir = $this->getConfig()->getFactoryDirectory().'ModelFactory.php';
+        $fileDir = $this->getConfig()->getFactoryDirectory('ModelFactory.php');
 
         $this->assertDirectoryCreatorCreatesPath($fileDir);
     }
@@ -51,7 +51,7 @@ class DirectoryCreatorTest extends TestCase
      */
     public function it_creates_database_seeder_file()
     {
-        $fileDir = $this->getConfig()->getSeedDirectory().'DatabaseSeeder.php';
+        $fileDir = $this->getConfig()->getSeedDirectory('DatabaseSeeder.php');
 
         $this->assertDirectoryCreatorCreatesPath($fileDir);
     }

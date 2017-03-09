@@ -87,31 +87,37 @@ class Config
     /**
      * Return the migration directory path.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function getMigrationDirectory()
+    public function getMigrationDirectory($path = '')
     {
-        return $this->getDatabaseDirectory().'migrations/';
+        return $this->getDatabaseDirectory().'migrations/'.$path;
     }
 
     /**
      * Return the factory directory path.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function getFactoryDirectory()
+    public function getFactoryDirectory($path = '')
     {
-        return $this->getDatabaseDirectory().'factories/';
+        return $this->getDatabaseDirectory().'factories/'.$path;
     }
 
     /**
      * Return the seeds directory path.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function getSeedDirectory()
+    public function getSeedDirectory($path = '')
     {
-        return $this->getDatabaseDirectory().'seeds/';
+        return $this->getDatabaseDirectory().'seeds/'.$path;
     }
 
     /**

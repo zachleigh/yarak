@@ -133,7 +133,7 @@ class MigrationCreator
     {
         $fileName = $this->buildFileName($name);
 
-        return $this->config->getMigrationDirectory().$fileName;
+        return $this->config->getMigrationDirectory($fileName);
     }
 
     /**
