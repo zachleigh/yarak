@@ -58,14 +58,10 @@ class DirectoryCreator
     {
         $stub = file_get_contents(__DIR__.'/Stubs/factory.stub');
 
-        try {
-            file_put_contents(
-                $this->config->getFactoryDirectory('ModelFactory.php'),
-                $stub
-            );
-        } catch (\Exception $e) {
-            throw new \Exception($e);
-        }
+        $this->writeFile(
+            $this->config->getFactoryDirectory('ModelFactory.php'),
+            $stub
+        );
 
         $this->log("<info>Created ModelFactory file.</info>");
     }
@@ -77,14 +73,10 @@ class DirectoryCreator
     {
         $stub = file_get_contents(__DIR__.'/Stubs/seeder.stub');
 
-        try {
-            file_put_contents(
-                $this->config->getSeedDirectory('DatabaseSeeder.php'),
-                $stub
-            );
-        } catch (\Exception $e) {
-            throw new Exception($e);
-        }
+        $this->writeFile(
+            $this->config->getSeedDirectory('DatabaseSeeder.php'),
+            $stub
+        );
 
         $this->log("<info>Created DatabaseSeeder file.</info>");
     }

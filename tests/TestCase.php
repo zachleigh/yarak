@@ -130,9 +130,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         $this->makeDirectoryStructure($directories);
 
-        $path = $this->getConfig()->getMigrationDirectory().'/'.$name;
+        $path = $this->getConfig()->getMigrationDirectory().$name;
 
-        file_put_contents($path, $file);
+        $this->writeFile($path, $file);
 
         return $path;
     }

@@ -47,14 +47,10 @@ class MigrationCreator
             $this->config->getMigrationDirectory()
         ]);
 
-        try {
-            file_put_contents(
-                $path = $this->getSavePath($name),
-                $this->getStub($className, $create)
-            );
-        } catch (\Exception $e) {
-            throw new Exception($e);
-        }
+        $this->writeFile(
+            $path = $this->getSavePath($name),
+            $this->getStub($className, $create)
+        );
 
         return $path;
     }
