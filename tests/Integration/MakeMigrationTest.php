@@ -1,9 +1,9 @@
 <?php
 
-namespace Yarak\tests\Integration;
+namespace Yarak\Tests\Integration;
 
 use Yarak\Yarak;
-use Yarak\tests\TestCase;
+use Yarak\Tests\TestCase;
 
 class MakeMigrationTest extends TestCase
 {

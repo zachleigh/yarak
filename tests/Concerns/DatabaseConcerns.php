@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\tests\Concerns;
+namespace Yarak\Tests\Concerns;
 
 trait DatabaseConcerns
 {

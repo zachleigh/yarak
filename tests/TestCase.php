@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\tests;
+namespace Yarak\Tests;
 
 use Yarak\Config\Config;
 use Yarak\Helpers\Paths;
@@ -8,7 +8,7 @@ use Yarak\DB\DirectoryCreator;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Migrations\MigrationCreator;
-use Yarak\tests\Concerns\DatabaseConcerns;
+use Yarak\Tests\Concerns\DatabaseConcerns;
 use Yarak\Migrations\CreateMigrationsTable;
 use Symfony\Component\Filesystem\Filesystem;
 use Yarak\Migrations\DatabaseMigrationRepository;
