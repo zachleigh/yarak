@@ -17,7 +17,8 @@
         "symfony/console": "^3.2",
         "vlucas/phpdotenv": "^2.4",
         "symfony/filesystem": "^3.2",
-        "phalcon/zephir": "^0.9.6"
+        "phalcon/zephir": "^0.9.6",
+        "fzaninotto/faker": "^1.6"
     },
     "autoload": {
         "files": [
