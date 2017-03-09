@@ -4,13 +4,13 @@ namespace Yarak\Migrations;
 
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
-use Yarak\Helpers\Paths;
 use Yarak\Helpers\Loggable;
+use Yarak\Helpers\Filesystem;
 use Yarak\DB\ConnectionResolver;
 
 class Migrator
 {
-    use Loggable, Paths;
+    use Filesystem, Loggable;
 
     /**
      * Yarak config.

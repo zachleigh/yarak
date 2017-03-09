@@ -3,19 +3,19 @@
 namespace Yarak\Tests;
 
 use Yarak\Config\Config;
-use Yarak\Helpers\Paths;
+use Yarak\Helpers\Filesystem;
 use Yarak\DB\DirectoryCreator;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Migrations\MigrationCreator;
 use Yarak\Tests\Concerns\DatabaseConcerns;
 use Yarak\Migrations\CreateMigrationsTable;
-use Symfony\Component\Filesystem\Filesystem;
 use Yarak\Migrations\DatabaseMigrationRepository;
+use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    use Paths, DatabaseConcerns;
+    use Filesystem, DatabaseConcerns;
 
     /**
      * Symfony filesystem.
@@ -55,7 +55,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             $connection->dropTable($table);
         }
 
-        $this->filesystem = new Filesystem();
+        $this->filesystem = new SymfonyFilesystem();
 
         $databaseDir = $this->getConfig()->getDatabaseDirectory();
 

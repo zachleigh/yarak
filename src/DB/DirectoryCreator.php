@@ -3,12 +3,12 @@
 namespace Yarak\DB;
 
 use Yarak\Config\Config;
-use Yarak\Helpers\Paths;
 use Yarak\Helpers\Loggable;
+use Yarak\Helpers\Filesystem;
 
 class DirectoryCreator
 {
-    use Loggable, Paths;
+    use Filesystem, Loggable;
 
     /**
      * Yarak config.

@@ -2,7 +2,7 @@
 
 namespace Yarak\Helpers;
 
-trait Paths
+trait Filesystem
 {
     /**
      * Create all directories listed in directories array.

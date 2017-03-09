@@ -5,11 +5,11 @@ namespace Yarak\Migrations;
 use Phalcon\Exception;
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
-use Yarak\Helpers\Paths;
+use Yarak\Helpers\Filesystem;
 
 class MigrationCreator
 {
-    use Paths;
+    use Filesystem;
 
     /**
      * Yarak config.
