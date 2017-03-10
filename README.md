@@ -13,6 +13,8 @@
 
 ### Contents
   - [Install](#install)
+  - [Database](#database)
+    - [Generating Directories And Files](#generating-directories-and-files)
   - [Migrations](#migrations)
     - [Generating Migrations](#generating-migrations)
     - [Writing Migrations](#writing-migrations)
@@ -135,6 +137,17 @@ Test to make sure that it is working in the console:
 ```
 php yarak
 ```
+
+### Database
+Yarak gives users several helpful database functionalities that make development easier.
+  - [Generating Directories And Files](#generating-directories-and-files)
+
+#### Generating Directories And Files
+All database and migration functionalites require a standardized file hierarchy. To generate this hirearchy, use the `db:generate` command:
+```
+php yarak db:generate
+```
+This will create a database directory at the path set in the Yarak config. The database directory will contain migration, seeder, and factory directories and some file stubs to help you get started. 
 
 ### Migrations
 Yarak migrations provide a simple, clean way to manage your database.
