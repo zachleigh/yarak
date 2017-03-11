@@ -36,6 +36,13 @@ class ModelFactoryBuilder
     protected $faker;
 
     /**
+     * Number of times to run factory.
+     *
+     * @var int|null
+     */
+    protected $times;
+
+    /**
      * Construct.
      *
      * @param string    $class
@@ -89,7 +96,7 @@ class ModelFactoryBuilder
         }
 
         if (is_array($made)) {
-            return array_map(function ($model) {
+            return array_map(function (Model $model) {
                 $model->save();
 
                 return $model;
@@ -123,11 +130,15 @@ class ModelFactoryBuilder
     protected function makeInstance(array $attributes = [])
     {
         if (!isset($this->definitions[$this->class][$this->name])) {
-            throw new Exception('Crap!');
+            throw new \Exception(
+                "Definition with name {$this->name} does not exist."
+            );
         }
 
-        $fakerAttributes = $this->definitions[$this->class][$this->name]
-            ->call($this, $this->faker);
+        $fakerAttributes = call_user_func(
+            $this->definitions[$this->class][$this->name],
+            $this->faker
+        );
 
         $finalAttributes = array_merge($fakerAttributes, $attributes);
 

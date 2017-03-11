@@ -17,7 +17,7 @@ set_include_path(
 $loader = new Loader();
 
 $loader->registerNamespaces([
-    'App\Models'      => ROOT_PATH.'models'
+    'App\Models' => ROOT_PATH.'models'
 ]);
 
 $loader->register();
