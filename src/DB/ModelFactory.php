@@ -5,9 +5,12 @@ namespace Yarak\DB;
 use Faker\Generator;
 use Yarak\Config\Config;
 use Phalcon\Di\Injectable;
+use Yarak\Helpers\Filesystem;
 
 class ModelFactory extends Injectable
 {
+    use Filesystem;
+
     /**
      * Faker instance.
      *
@@ -122,12 +125,21 @@ class ModelFactory extends Injectable
 
         $path = $config->getFactoryDirectory();
 
+        $this->makeDirectoryStructure([
+            $config->getDatabaseDirectory(),
+            $path
+        ]);
+
         $dir = new \DirectoryIterator($path);
 
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot()) {
                 require $fileinfo->getRealPath();
             }
+        }
+
+        if (empty($this->definitions)) {
+            throw new \Exception('No factory definitions found.');
         }
 
         return $factory;

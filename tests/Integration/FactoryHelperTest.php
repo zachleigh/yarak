@@ -1,23 +1,18 @@
 <?php
 
-namespace Yarak\Tests\Unit;
+namespace Yarak\Tests\Integration;
 
 use App\Models\Users;
-use Yarak\Helpers\Filesystem;
 use Yarak\Tests\FactoryTestCase;
 
-class FactoryTest extends FactoryTestCase
+class FactoryHelperTest extends FactoryTestCase
 {
-    use Filesystem;
-
     /**
      * @test
      */
-    public function it_makes_a_single_model_instance()
+    public function factory_helper_makes_a_simple_model_instance()
     {
-        $factory = $this->getModelFactory();
-
-        $user = $factory->make(Users::class);
+        $user = factory(Users::class)->make();
 
         $this->assertUserInstanceMade($user);
     }
@@ -25,11 +20,9 @@ class FactoryTest extends FactoryTestCase
     /**
      * @test
      */
-    public function it_doesnt_save_models_when_making_them()
+    public function factory_helper_doesnt_save_models_when_making_them()
     {
-        $factory = $this->getModelFactory();
-
-        $user = $factory->make(Users::class);
+        $user = factory(Users::class)->make();
 
         $this->dontSeeInDatabase('users', [
             'id' => 1,
@@ -39,16 +32,14 @@ class FactoryTest extends FactoryTestCase
     /**
      * @test
      */
-    public function it_uses_user_defined_attributes_when_making_model()
+    public function factory_helper_uses_user_defined_attributes_when_making_model()
     {
-        $factory = $this->getModelFactory();
-
         $attributes = [
             'username' => 'bobsmith',
             'email' => 'bobsmsith@example.com',
         ];
 
-        $user = $factory->make(Users::class, $attributes);
+        $user = factory(Users::class)->make($attributes);
 
         $this->assertUserHasAttributes($user, $attributes);
     }
@@ -56,11 +47,9 @@ class FactoryTest extends FactoryTestCase
     /**
      * @test
      */
-    public function it_makes_multiple_instances_of_models()
+    public function factory_helper_makes_multiple_instances_of_models()
     {
-        $factory = $this->getModelFactory();
-
-        $users = $factory->make(Users::class, [], 3);
+        $users = factory(Users::class, 3)->make();
 
         $this->assertCount(3, $users);
 
@@ -72,11 +61,9 @@ class FactoryTest extends FactoryTestCase
     /**
      * @test
      */
-    public function it_makes_classes_with_a_given_name()
+    public function factory_helper_makes_classes_with_a_given_name()
     {
-        $factory = $this->getModelFactory();
-
-        $user = $factory->makeAs(Users::class, 'myUser');
+        $user = factory(Users::class, 'myUser')->make();
 
         $this->assertInstanceOf(Users::class, $user);
 
@@ -86,11 +73,25 @@ class FactoryTest extends FactoryTestCase
     /**
      * @test
      */
-    public function it_creates_a_single_model_instance()
+    public function factory_helper_makes_multiple_instances_of_models_with_given_name()
     {
-        $factory = $this->getModelFactory();
+        $users = factory(Users::class, 'myUser', 3)->make();
 
-        $user = $factory->create(Users::class);
+        $this->assertCount(3, $users);
+
+        foreach ($users as $user) {
+            $this->assertInstanceOf(Users::class, $user);
+
+            $this->assertEquals('myUsername', $user->username);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function factory_helper_creates_a_single_model_instance()
+    {
+        $user = factory(Users::class)->create();
 
         $this->assertUserInstanceCreated($user);
     }
@@ -100,14 +101,12 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_uses_user_defined_attributes_when_creating_model()
     {
-        $factory = $this->getModelFactory();
-
         $attributes = [
             'username' => 'bobsmith',
             'email' => 'bobsmsith@example.com',
         ];
 
-        $user = $factory->create(Users::class, $attributes);
+        $user = factory(Users::class)->create($attributes);
 
         $this->assertInstanceOf(Users::class, $user);
 
@@ -119,9 +118,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_creates_multiple_instances_of_models()
     {
-        $factory = $this->getModelFactory();
-
-        $users = $factory->create(Users::class, [], 3);
+        $users = factory(Users::class, 3)->create();
 
         $this->assertCount(3, $users);
 
@@ -135,9 +132,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_creates_classes_with_a_given_name()
     {
-        $factory = $this->getModelFactory();
-
-        $user = $factory->createAs(Users::class, 'myUser');
+        $user =factory(Users::class, 'myUser')->create();
 
         $this->assertInstanceOf(Users::class, $user);
 
