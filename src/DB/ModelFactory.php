@@ -4,10 +4,10 @@ namespace Yarak\DB;
 
 use Faker\Generator;
 use Yarak\Config\Config;
-use Phalcon\Di\Injectable;
 use Yarak\Helpers\Filesystem;
+use Phalcon\Mvc\User\Component;
 
-class ModelFactory extends Injectable
+class ModelFactory extends Component
 {
     use Filesystem;
 
