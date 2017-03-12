@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\DB;
+namespace Yarak\DB\Factories;
 
 use Faker\Generator;
 use Phalcon\Mvc\Model;

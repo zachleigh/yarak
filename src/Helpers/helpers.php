@@ -2,7 +2,7 @@
 
 use Faker\Factory;
 use Phalcon\Debug\Dump;
-use Yarak\DB\ModelFactory;
+use Yarak\DB\Factories\ModelFactory;
 
 if (!function_exists('dd')) {
     /**

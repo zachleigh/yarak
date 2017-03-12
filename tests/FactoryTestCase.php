@@ -5,8 +5,8 @@ namespace Yarak\Tests;
 use Faker\Factory;
 use App\Models\Users;
 use Yarak\Config\Config;
-use Yarak\DB\ModelFactory;
 use Yarak\Helpers\Filesystem;
+use Yarak\DB\Factories\ModelFactory;
 
 class FactoryTestCase extends TestCase
 {
@@ -63,6 +63,12 @@ class FactoryTestCase extends TestCase
         ]);
     }
 
+    /**
+     * Assert that user object has given attributes.
+     *
+     * @param  Users  $user
+     * @param  array  $attributes
+     */
     protected function assertUserHasAttributes(Users $user, array $attributes)
     {
         $this->assertInstanceOf(Users::class, $user);
