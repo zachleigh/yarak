@@ -11,7 +11,7 @@ class ConnectionResolver
      *
      * @param array $dbConfig
      *
-     * @return Phalcon\Db\Adapter\Pdo
+     * @return \Phalcon\Db\Adapter\Pdo
      */
     public function getConnection(array $dbConfig)
     {
