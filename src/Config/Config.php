@@ -88,7 +88,7 @@ class Config
      */
     public function getDefault($value)
     {
-        if (isset(self::DEFAULTS[$value])) {
+        if (array_key_exists($value, self::DEFAULTS)) {
             return self::DEFAULTS[$value];
         }
 
