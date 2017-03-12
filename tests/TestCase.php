@@ -75,7 +75,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'application' => [
                 'databaseDir' => __DIR__.'/app/database/',
             ],
-
             'database' => [
                 'adapter'  => 'Mysql',
                 'host'     => '127.0.0.1',
@@ -83,10 +82,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'password' => 'password',
                 'dbname'   => 'yarak',
                 'charset'  => 'utf8',
-            ],
-
-            'yarak' => [
-                'migrationRepository' => 'database',
             ],
         ];
 

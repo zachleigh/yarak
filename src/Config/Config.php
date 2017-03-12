@@ -19,6 +19,15 @@ class Config
     protected $configArray;
 
     /**
+     * Default setting values.
+     *
+     * @var array
+     */
+    const DEFAULTS = [
+        'migrationRepository' => 'database',
+    ];
+
+    /**
      * Private constructor.
      */
     private function __construct(array $configArray)
@@ -58,10 +67,31 @@ class Config
         $current = $this->configArray;
 
         foreach ($value as $configItem) {
-            $current = $current[$configItem];
+
+            if (!isset($current[$configItem])) {
+                return $this->getDefault($configItem);
+            } else {
+                $current = $current[$configItem];
+            }
         }
 
         return $current;
+    }
+
+    /**
+     * Get a setting's default value.
+     *
+     * @param string $value
+     *
+     * @return mixed|null
+     */
+    public function getDefault($value)
+    {
+        if (isset(self::DEFAULTS[$value])) {
+            return self::DEFAULTS[$value];
+        }
+
+        return;
     }
 
     /**

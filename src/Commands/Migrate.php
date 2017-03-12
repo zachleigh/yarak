@@ -96,7 +96,7 @@ class Migrate extends YarakCommand
      */
     protected function getRepository(Config $config)
     {
-        $repositoryType = ucfirst($config->get(['yarak', 'migrationRepository']));
+        $repositoryType = ucfirst($config->get('migrationRepository'));
 
         $repositoryClass = 'Yarak\\Migrations\\'.$repositoryType.'MigrationRepository';
 

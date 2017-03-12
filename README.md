@@ -50,7 +50,6 @@ $di->setShared('yarak',function () {
             'application' => [
                 'databaseDir' => 'path/to/database/directory/',
             ],
-
             'database' => [
                 'adapter'  => $config->database->adapter,
                 'host'     => $config->database->host,
@@ -58,10 +57,6 @@ $di->setShared('yarak',function () {
                 'password' => $config->database->password,
                 'dbname'   => $config->database->dbname,
                 'charset'  => $config->database->charset,
-            ],
-
-            'yarak' => [
-                'migrationRepository' => 'database',
             ],
         ]);
     }
