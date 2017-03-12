@@ -60,6 +60,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $databaseDir = $this->getConfig()->getDatabaseDirectory();
 
         $this->filesystem->remove($databaseDir);
+
+        $this->filesystem->remove(__DIR__.'/app/models');
     }
 
     /**
