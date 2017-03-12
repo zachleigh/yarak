@@ -17,7 +17,7 @@ set_include_path(
 $loader = new Loader();
 
 $loader->registerNamespaces([
-    'App\Models' => ROOT_PATH.'models'
+    'App\Models' => ROOT_PATH.'models',
 ]);
 
 $loader->register();
@@ -26,7 +26,7 @@ $di = new FactoryDefault();
 
 Di::reset();
 
-$di->setShared('db', function () {   
+$di->setShared('db', function () {
     $params = [
         'adapter'  => 'Mysql',
         'host'     => '127.0.0.1',

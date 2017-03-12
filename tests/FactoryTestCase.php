@@ -5,7 +5,6 @@ namespace Yarak\Tests;
 use Faker\Factory;
 use App\Models\Users;
 use Yarak\Config\Config;
-use Yarak\Tests\TestCase;
 use Yarak\DB\ModelFactory;
 use Yarak\Helpers\Filesystem;
 
@@ -60,7 +59,7 @@ class FactoryTestCase extends TestCase
 
         $this->seeInDatabase('users', [
             'username' => $user->username,
-            'email' => $user->email,
+            'email'    => $user->email,
         ]);
     }
 

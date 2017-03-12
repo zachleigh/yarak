@@ -45,7 +45,7 @@ class FactoryTest extends FactoryTestCase
 
         $attributes = [
             'username' => 'bobsmith',
-            'email' => 'bobsmsith@example.com',
+            'email'    => 'bobsmsith@example.com',
         ];
 
         $user = $factory->make(Users::class, $attributes);
@@ -104,7 +104,7 @@ class FactoryTest extends FactoryTestCase
 
         $attributes = [
             'username' => 'bobsmith',
-            'email' => 'bobsmsith@example.com',
+            'email'    => 'bobsmsith@example.com',
         ];
 
         $user = $factory->create(Users::class, $attributes);
@@ -143,7 +143,7 @@ class FactoryTest extends FactoryTestCase
 
         $this->seeInDatabase('users', [
             'username' => $user->username,
-            'email' => $user->email,
+            'email'    => $user->email,
         ]);
     }
 }
