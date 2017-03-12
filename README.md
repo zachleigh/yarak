@@ -10,6 +10,7 @@
   
 ##### Laravel inspired Phalcon devtools 
   - Database migrations that rollback step-by-step, reset the database, and refresh the database.
+  - Model factories for easy test data creation.
 
 ### Contents
   - [Install](#install)
