@@ -15,6 +15,12 @@
   - [Install](#install)
   - [Database](#database)
     - [Generating Directories And Files](#generating-directories-and-files)
+    - [Model Factories](#model-factories)
+      - [Defining Factories](#defining-factories)
+      - [Using The Factory Helper](#using-the-factory-helper)
+      - [Making Multiple Model Instances](#making-multiple-model-instances)
+      - [Overriding The Default Attributes](#overriding-the-default-attributes)
+      - [Using Named Factories](#using-named-factories)
   - [Migrations](#migrations)
     - [Generating Migrations](#generating-migrations)
     - [Writing Migrations](#writing-migrations)
@@ -141,6 +147,12 @@ php yarak
 ### Database
 Yarak gives users several helpful database functionalities that make development easier.
   - [Generating Directories And Files](#generating-directories-and-files)
+  - [Model Factories](#model-factories)
+    - [Defining Factories](#defining-factories)
+    - [Using The Factory Helper](#using-the-factory-helper)
+    - [Making Multiple Model Instances](#making-multiple-model-instances)
+    - [Overriding The Default Attributes](#overriding-the-default-attributes)
+    - [Using Named Factories](#using-named-factories)
 
 #### Generating Directories And Files
 All database and migration functionalites require a standardized file hierarchy. To generate this hirearchy, use the `db:generate` command:
@@ -148,6 +160,128 @@ All database and migration functionalites require a standardized file hierarchy.
 php yarak db:generate
 ```
 This will create a database directory at the path set in the Yarak config. The database directory will contain migration, seeder, and factory directories and some file stubs to help you get started. 
+
+#### Model Factories
+Model factories provide a simple way to create testing data using the [Faker library](https://github.com/fzaninotto/Faker).
+
+##### Defining Factories
+Model factories are located in the `/database/factories` directory. This directory and a stub factory file can be created using the `php yarak db:generate` command.    
+
+To define a factory, use the `define` method on a variable called `$factory`. The `define` method has the following method signature:
+```php
+public function define($class, callable $attributes, $name = 'default')
+```
+The first argument is the full name/namespace of the class. The second argument is a callback that returns an array. This array must contain the data necessary to create the model. The third optional argument is a name for the factory. Setting the name allows you to define multiple factories for a single model.
+
+To create a simple user model factory:
+```php
+use App\Models\Users;
+
+$factory->define(Users::class, function (Faker\Generator $faker) {
+    return [
+        'username' => $faker->userName,
+        'email' => $faker->unique()->safeEmail,
+        'password' => 'password',
+    ];
+});
+```
+
+To create a named user model factory:
+```php
+use App\Models\Users;
+
+$factory->define(Users::class, function (Faker\Generator $faker) {
+    return [
+        'username' => 'myUsername',
+        'email' => 'myEmail',
+        'password' => 'myPassword',
+    ];
+}, 'myUser');
+```
+
+The ModelFactory class responsible for creating model instances extends Phalcon\Mvc\User\Component and has access to the DI and any services registered. To access the ModelFactory class, use the `$factory` variable in the `$attributes` closure.
+```php
+use App\Models\Users;
+
+$factory->define(Users::class, function (Faker\Generator $faker) use ($factory) {
+    return [
+        'username' => $faker->userName,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $factory->security->hash('password'),
+    ];
+});
+```
+
+##### Using The Factory Helper
+Yarak comes with a global `factory` helper function to make creating model instances simple. The factory function returns an instance of ModelFactoryBuilder which can be used to either make or create models. Calling `make` on the returned class simply makes the model class, but does not persist the data in the database. Calling `create` creates the class and persists it in the database.   
+
+Make a user model isntance, but don't persist it:
+```php
+use App\Models\Users;
+
+$user = factory(Users::class)->make();
+```
+
+Create a user model and persist it:
+```php
+use App\Models\Users;
+
+$user = factory(Users::class)->create();
+```
+
+##### Making Multiple Model Instances
+If you require multiple instances of the model class, pass an integer as the second argument to `factory`:
+```php
+use App\Models\Users;
+
+// Make three users
+$users = factory(Users::class, 3)->make();
+
+// Create three users
+$users = factory(Users::class, 3)->create();
+```
+When more than one model is made, an array of models is returned.
+
+##### Overriding The Default Attributes
+To override the default attributes set in the factory definition, pass an array of overrides to `make` or `create`:
+```php
+use App\Models\Users;
+
+// Make a user with username 'bobsmith' and email 'bobsmith@example.com'
+$user = factory(Users::class)->make([
+    'username' => 'bobsmith',
+    'email'    => 'bobsmith@example.com'
+]);
+
+// Create a user with username 'bobsmith' and email 'bobsmith@example.com'
+$user = factory(Users::class)->create([
+    'username' => 'bobsmith',
+    'email'    => 'bobsmith@example.com'
+]);
+```
+
+##### Using Named Factories
+To use a name factory, pass the name as the second argument to the `factory` function:
+```php
+use App\Models\Users;
+
+// Make a user using the factory named 'myUser'
+factory(Users::class, 'myUser')->make()
+
+// Create a user using the factory named 'myUser'
+factory(Users::class, 'myUser')->create()
+```
+
+To make multiple instances of a named factory, pass the desired number of instances as the third argument:
+```php
+use App\Models\Users;
+
+// Make three users using the factory named 'myUser'
+$users = factory(Users::class, 'myUser', 3)->make();
+
+// Create three users using the factory named 'myUser'
+$users = factory(Users::class, 'myUser', 3)->creates();
+```
 
 ### Migrations
 Yarak migrations provide a simple, clean way to manage your database.
