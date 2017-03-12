@@ -38,7 +38,7 @@ class FileDateMigrator implements Migrator
     /**
      * The active database connection.
      *
-     * @var Phalcon\Db\Adapter\Pdo
+     * @var \Phalcon\Db\Adapter\Pdo
      */
     protected $connection = null;
 
@@ -141,18 +141,35 @@ class FileDateMigrator implements Migrator
      * @param int    $batch
      */
     protected function runUp($migration, $batch)
+    {     
+        if ($this->performRun($migration, 'up') === true) {
+            $this->log("<info>Migrated {$migration}.</info>");
+
+            $this->repository->insertRecord($migration, $batch);
+        }
+    }
+
+    /**
+     * Perform a migration run operation.
+     *
+     * @param  string $migration
+     * @param  string $method
+     * 
+     * @return bool
+     */
+    protected function performRun($migration, $method)
     {
         $migrationClass = $this->resolveMigrationClass($migration);
 
         try {
-            $migrationClass->up($this->connection);
+            $migrationClass->$method($this->connection);
+
+            return true;
         } catch (\Exception $e) {
-            return $this->log("<error>{$e->getMessage()}</error>");
+            $this->log("<error>{$e->getMessage()}</error>");
+
+            return false;
         }
-
-        $this->log("<info>Migrated {$migration}.</info>");
-
-        $this->repository->insertRecord($migration, $batch);
     }
 
     /**
@@ -220,17 +237,11 @@ class FileDateMigrator implements Migrator
      */
     protected function runDown($migration)
     {
-        $migrationClass = $this->resolveMigrationClass($migration);
+        if ($this->performRun($migration, 'down') === true) {
+            $this->log("<info>Rolled back {$migration}.</info>");
 
-        try {
-            $migrationClass->down($this->connection);
-        } catch (\Exception $e) {
-            return $this->log("<error>{$e->getMessage()}</error>");
+            $this->repository->deleteRecord($migration);
         }
-
-        $this->log("<info>Rolled back {$migration}.</info>");
-
-        $this->repository->deleteRecord($migration);
     }
 
     /**
@@ -282,7 +293,7 @@ class FileDateMigrator implements Migrator
     /**
      * Set connection to database on object.
      *
-     * @return Pdo
+     * @return this
      */
     public function setConnection()
     {
@@ -298,7 +309,7 @@ class FileDateMigrator implements Migrator
     /**
      * Return the connection.
      *
-     * @return Phalcon\Db\Adapter\Pdo
+     * @return \Phalcon\Db\Adapter\Pdo
      */
     public function getConnection()
     {

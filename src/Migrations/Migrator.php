@@ -61,7 +61,7 @@ interface Migrator
     /**
      * Return the connection.
      *
-     * @return Phalcon\Db\Adapter\Pdo
+     * @return \Phalcon\Db\Adapter\Pdo
      */
     public function getConnection();
 
