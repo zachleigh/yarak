@@ -10,7 +10,7 @@ use Yarak\DB\ConnectionResolver;
 use Yarak\Migrations\MigrationCreator;
 use Yarak\Tests\Concerns\DatabaseConcerns;
 use Yarak\Migrations\CreateMigrationsTable;
-use Yarak\Migrations\DatabaseMigrationRepository;
+use Yarak\Migrations\Repositories\DatabaseMigrationRepository;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class TestCase extends \PHPUnit_Framework_TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Migrations;
+namespace Yarak\Migrations\Repositories;
 
 interface MigrationRepository
 {

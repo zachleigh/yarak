@@ -1,8 +1,9 @@
 <?php
 
-namespace Yarak\Migrations;
+namespace Yarak\Migrations\Repositories;
 
 use Phalcon\Db\Adapter\Pdo;
+use Yarak\Migrations\CreateMigrationsTable;
 
 class DatabaseMigrationRepository implements MigrationRepository
 {

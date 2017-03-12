@@ -7,6 +7,7 @@ use Yarak\Config\Config;
 use Yarak\Helpers\Loggable;
 use Yarak\Helpers\Filesystem;
 use Yarak\DB\ConnectionResolver;
+use Yarak\Migrations\Repositories\MigrationRepository;
 
 class Migrator
 {
