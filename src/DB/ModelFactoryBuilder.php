@@ -30,7 +30,7 @@ class ModelFactoryBuilder
 
     /**
      * Faker instance.
-     * 
+     *
      * @var Generator
      */
     protected $faker;

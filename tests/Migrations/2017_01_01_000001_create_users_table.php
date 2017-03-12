@@ -45,7 +45,7 @@ class CreateUsersTable implements Migration
                         'type'    => Column::TYPE_TIMESTAMP,
                         'notNull' => true,
                         'default' => 'CURRENT_TIMESTAMP',
-                    ])
+                    ]),
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),

@@ -79,6 +79,7 @@ class ModelFactory extends Component
     {
         return $this->forClass($class)->times($times)->create($attributes);
     }
+
     /**
      * Create instances of class using name.
      *
@@ -127,7 +128,7 @@ class ModelFactory extends Component
 
         $this->makeDirectoryStructure([
             $config->getDatabaseDirectory(),
-            $path
+            $path,
         ]);
 
         $this->requireFactories($path, $factory);
@@ -138,8 +139,8 @@ class ModelFactory extends Component
     /**
      * Require all factory files in path.
      *
-     * @param  string $path
-     * @param  ModelFactory $factory
+     * @param string       $path
+     * @param ModelFactory $factory
      *
      * @throws Exception
      */

@@ -36,7 +36,7 @@ class FactoryHelperTest extends FactoryTestCase
     {
         $attributes = [
             'username' => 'bobsmith',
-            'email' => 'bobsmsith@example.com',
+            'email'    => 'bobsmsith@example.com',
         ];
 
         $user = factory(Users::class)->make($attributes);
@@ -103,7 +103,7 @@ class FactoryHelperTest extends FactoryTestCase
     {
         $attributes = [
             'username' => 'bobsmith',
-            'email' => 'bobsmsith@example.com',
+            'email'    => 'bobsmsith@example.com',
         ];
 
         $user = factory(Users::class)->create($attributes);
@@ -132,13 +132,13 @@ class FactoryHelperTest extends FactoryTestCase
      */
     public function it_creates_classes_with_a_given_name()
     {
-        $user =factory(Users::class, 'myUser')->create();
+        $user = factory(Users::class, 'myUser')->create();
 
         $this->assertInstanceOf(Users::class, $user);
 
         $this->seeInDatabase('users', [
             'username' => $user->username,
-            'email' => $user->email,
+            'email'    => $user->email,
         ]);
     }
 }
