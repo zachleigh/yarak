@@ -3,7 +3,6 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
-use Yarak\Migrations\MigrationCreator;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,10 +44,26 @@ class MakeMigration extends YarakCommand
 
         $config = Config::getInstance($this->configArray);
 
-        $creator = new MigrationCreator($config);
+        $creator = $this->getCreator($config);
 
         $creator->create($name, $create);
 
         $output->writeln("<info>Successfully created migration {$name}.</info>");
+    }
+
+    /**
+     * Get a the migration creator class.
+     *
+     * @param Config $config
+     *
+     * @return Yarak\Migrations\MigrationCreator
+     */
+    protected function getCreator(Config $config)
+    {
+        $migratorType = ucfirst($config->get('migratorType'));
+
+        $name = "Yarak\\Migrations\\{$migratorType}\\{$migratorType}MigrationCreator";
+
+        return new $name($config);
     }
 }

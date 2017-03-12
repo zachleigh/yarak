@@ -24,6 +24,7 @@ class Config
      * @var array
      */
     const DEFAULTS = [
+        'migratorType'        => 'fileDate',
         'migrationRepository' => 'database',
     ];
 

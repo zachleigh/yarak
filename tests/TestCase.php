@@ -1,15 +1,15 @@
 <?php
 
-namespace Yarak\Tests;
+namespace Yarak\tests;
 
 use Yarak\Config\Config;
 use Yarak\Helpers\Filesystem;
 use Yarak\DB\DirectoryCreator;
-use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
-use Yarak\Migrations\MigrationCreator;
 use Yarak\Tests\Concerns\DatabaseConcerns;
 use Yarak\Migrations\CreateMigrationsTable;
+use Yarak\Migrations\FileDate\FileDateMigrator;
+use Yarak\Migrations\FileDate\FileDateMigrationCreator;
 use Yarak\Migrations\Repositories\DatabaseMigrationRepository;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
@@ -76,12 +76,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'databaseDir' => __DIR__.'/app/database/',
             ],
             'database' => [
-                'adapter'  => 'Mysql',
-                'host'     => '127.0.0.1',
+                'adapter' => 'Mysql',
+                'host' => '127.0.0.1',
                 'username' => 'root',
                 'password' => 'password',
-                'dbname'   => 'yarak',
-                'charset'  => 'utf8',
+                'dbname' => 'yarak',
+                'charset' => 'utf8',
             ],
         ];
 
@@ -89,15 +89,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get an instance of MigrationCreator.
+     * Get an instance of the migration creator.
      *
-     * @return MigrationCreator
+     * @return Yarak\Migrations\MigrationCreator
      */
-    protected function getMigrationCreator()
+    protected function getMigrationCreator($type = 'fileDate')
     {
         $config = $this->getConfig();
 
-        return new MigrationCreator($config);
+        if (ucfirst($type) === 'FileDate') {
+            return new FileDateMigrationCreator($config);
+        }
     }
 
     /**
@@ -136,8 +138,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Clear the migration table.
-     *
-     * @return Migrator
      */
     protected function clearMigrationTable()
     {
@@ -153,9 +153,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Gett the migrator.
      *
-     * @return Migrator
+     * @return Yarak\Migrations\Migrator
      */
-    protected function getMigrator()
+    protected function getMigrator($type = 'fileDate')
     {
         $config = $this->getConfig();
 
@@ -163,7 +163,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         $repository = new DatabaseMigrationRepository();
 
-        return new Migrator($config, $resolver, $repository);
+        if (ucfirst($type) === 'FileDate') {
+            return new FileDateMigrator($config, $resolver, $repository);
+        }
     }
 
     /**

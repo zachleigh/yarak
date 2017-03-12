@@ -4,7 +4,7 @@ namespace Yarak\Tests\Unit;
 
 use Yarak\Tests\TestCase;
 
-class MigratorTest extends TestCase
+class FileDateMigratorTest extends TestCase
 {
     /**
      * @test

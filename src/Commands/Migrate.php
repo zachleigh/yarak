@@ -3,7 +3,6 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
-use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -80,11 +79,28 @@ class Migrate extends YarakCommand
     {
         $config = Config::getInstance($this->configArray);
 
-        return new Migrator(
+        $migratorClassName = $this->getMigratorClassName($config);
+
+        return new $migratorClassName(
             $config,
             new ConnectionResolver(),
             $this->getRepository($config)
         );
+    }
+
+    /**
+     * Get the name of the migrator class.
+     *
+     * @param  Config $config
+     *
+     * @return string
+     */
+    protected function getMigratorClassName(Config $config)
+    {
+        $migratorType = ucfirst($config->get('migratorType'));
+
+        return "Yarak\\Migrations\\$migratorType\\".
+            $migratorType.'Migrator';
     }
 
     /**
@@ -99,8 +115,7 @@ class Migrate extends YarakCommand
         $repositoryType = ucfirst($config->get('migrationRepository'));
 
         $repositoryClass = 'Yarak\\Migrations\\Repositories\\'.
-            $repositoryType.
-            'MigrationRepository';
+            $repositoryType.'MigrationRepository';
 
         return new $repositoryClass();
     }
