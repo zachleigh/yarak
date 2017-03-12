@@ -39,8 +39,8 @@ if (!function_exists('factory')) {
                 ->times(isset($arguments[2]) ? $arguments[2] : null);
         } elseif (isset($arguments[1])) {
             return $factory->forClass($arguments[0])->times($arguments[1]);
-        } else {
-            return $factory->forClass($arguments[0]);
         }
+
+        return $factory->forClass($arguments[0]);
     }
 }

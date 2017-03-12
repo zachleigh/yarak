@@ -130,6 +130,21 @@ class ModelFactory extends Component
             $path
         ]);
 
+        $this->requireFactories($path, $factory);
+
+        return $factory;
+    }
+
+    /**
+     * Require all factory files in path.
+     *
+     * @param  string $path
+     * @param  ModelFactory $factory
+     *
+     * @throws Exception
+     */
+    protected function requireFactories($path, $factory)
+    {
         $dir = new \DirectoryIterator($path);
 
         foreach ($dir as $fileinfo) {
@@ -141,8 +156,6 @@ class ModelFactory extends Component
         if (empty($this->definitions)) {
             throw new \Exception('No factory definitions found.');
         }
-
-        return $factory;
     }
 
     /**
