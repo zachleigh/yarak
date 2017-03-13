@@ -76,6 +76,10 @@ class FileDateMigratorTest extends TestCase
 
         $fileName = $this->getFileNameFromPath($path);
 
+        $this->dontSeeInDatabase('migrations', [
+            'migration' => $fileName,
+        ]);
+
         $migrator = $this->getMigrator();
 
         $migrator->run();
@@ -437,6 +441,10 @@ class FileDateMigratorTest extends TestCase
         $migrator = $this->getMigrator();
 
         $this->createTwoSteps($migrator);
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table',
+        ]);
 
         $migrator->rollback();
 

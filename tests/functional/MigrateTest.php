@@ -25,6 +25,14 @@ class MigrateTest extends TestCase
 
         $this->seeTableDoesntExist('posts');
 
+        $this->dontSeeInDatabase('migrations', [
+            'migration' => '2017_01_01_000001_create_users_table'
+        ]);
+
+        $this->dontSeeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table'
+        ]);
+
         Yarak::call('migrate', [], $this->getConfig()->getAll());
 
         $this->seeTableExists('users');
@@ -55,6 +63,14 @@ class MigrateTest extends TestCase
 
         $this->seeTableExists('posts');
 
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000001_create_users_table',
+        ]);
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table',
+        ]);
+
         Yarak::call('migrate', [
             '--rollback' => true,
         ], $this->getConfig()->getAll());
@@ -84,6 +100,14 @@ class MigrateTest extends TestCase
         $this->seeTableExists('users');
 
         $this->seeTableExists('posts');
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000001_create_users_table',
+        ]);
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table',
+        ]);
 
         Yarak::call('migrate', [
             '--rollback' => true,
@@ -116,6 +140,10 @@ class MigrateTest extends TestCase
 
         $this->seeTableExists('posts');
 
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table',
+        ]);
+
         Yarak::call('migrate', [
             '--rollback' => true,
         ], $this->getConfig()->getAll());
@@ -145,6 +173,14 @@ class MigrateTest extends TestCase
         $this->seeTableExists('users');
 
         $this->seeTableExists('posts');
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000001_create_users_table',
+        ]);
+
+        $this->seeInDatabase('migrations', [
+            'migration' => '2017_01_01_000002_create_posts_table',
+        ]);
 
         Yarak::call('migrate', [
             '--reset' => true,

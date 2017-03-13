@@ -99,7 +99,7 @@ class TestCase extends \Codeception\Test\Unit
      */
     protected function createMigration($name = '2017_01_01_000001_create_users_table.php')
     {
-        $file = file_get_contents(__DIR__.'/Migrations/'.$name);
+        $file = file_get_contents(__DIR__.'/_data/Migrations/'.$name);
 
         $directories = $this->getConfig()->getAllDatabaseDirectories();
 

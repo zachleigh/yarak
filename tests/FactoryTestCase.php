@@ -107,7 +107,7 @@ class FactoryTestCase extends TestCase
 
         $this->writeFile(
             $config->getFactoryDirectory('ModelFactory.php'),
-            file_get_contents(__DIR__.'/Stubs/factory.stub')
+            file_get_contents(__DIR__.'/_data/Stubs/factory.stub')
         );
     }
 
@@ -121,7 +121,7 @@ class FactoryTestCase extends TestCase
     {
         $this->writeFile(
             __DIR__."/../app/models/{$fileName}.php",
-            file_get_contents(__DIR__."/Stubs/{$stubName}.stub")
+            file_get_contents(__DIR__."/_data/Stubs/{$stubName}.stub")
         );
     }
 
