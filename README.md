@@ -282,9 +282,9 @@ $users = factory(Users::class, 'myUser', 3)->creates();
 ```
 
 ##### Model Relationships
-When making model instances that require model relationships to also be built, you have a few options.   
+When making model instances that require model relationships to also be built, you have a couple options.   
 
-You can manually create related models. In this example, we have Posts and Users which have a one-to-many relationship: a post can only belong to one user but a user can have many posts. The posts table contains a `users_id` column that references the `id` column on the users table.
+First, you can manually create related models. In this example, we have Posts and Users which have a one-to-many relationship: a post can only belong to one user but a user can have many posts. The posts table contains a `users_id` column that references the `id` column on the users table. Posts table migration:
 ```php
 $connection->createTable(
     'posts',
@@ -354,7 +354,7 @@ $factory->define(Posts::class, function (Faker\Generator $faker) {
         'body'  => $faker->paragraph(4, true),
     ];
 });
-``
+```
 
 To create three users with one post each, we could simply loop over newly created users and create a post for each, sending the user id as an attribute override:
 ```php
@@ -383,10 +383,18 @@ foreach ($users as $user) {
 }
 ```
 
-You may also pass a closure returning a relationship in a factory definition:
+Another way to create relationships is by using a closure returning a relationship in a factory definition:
 ```php
 use App\Models\Posts;
 use App\Models\Users;
+
+$factory->define(Users::class, function (Faker\Generator $faker) use ($factory) {
+    return [
+        'username' => $faker->userName,
+        'email'    => $faker->unique()->safeEmail,
+        'password' => $factory->security->hash('password'),
+    ];
+});
 
 $factory->define(Posts::class, function (Faker\Generator $faker) {
     return [
@@ -398,7 +406,7 @@ $factory->define(Posts::class, function (Faker\Generator $faker) {
     ];
 }, 'withUser');
 ```
-Here we are creating a new user for each new post created by the factory and naming this factory 'withUser'. To create 20 posts made by 20 users, we can simply do this:
+Here we are using a factory within the factory to create a new user for each new post created. We are also naming the factory 'withUser' for convenience. To create 20 posts made by 20 users, we can simply do this:
 ```php
 use App\Models\Posts;
 
