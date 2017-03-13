@@ -4,6 +4,7 @@ namespace Yarak\DB\Factories;
 
 use Faker\Generator;
 use Phalcon\Mvc\Model;
+use Yarak\Exceptions\FactoryNotFound;
 
 class ModelFactoryBuilder
 {
@@ -125,12 +126,14 @@ class ModelFactoryBuilder
      *
      * @param array $attributes
      *
+     * @throws FactoryNotFound
+     *
      * @return Phalcon\Mvc\Model
      */
     protected function makeInstance(array $attributes = [])
     {
         if (!isset($this->definitions[$this->class][$this->name])) {
-            throw new \Exception(
+            throw FactoryNotFound::factoryDefinitionNotFound(
                 "Definition for class {$this->class} with name {$this->name} does not exist."
             );
         }

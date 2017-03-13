@@ -6,6 +6,7 @@ use Faker\Generator;
 use Yarak\Config\Config;
 use Yarak\Helpers\Filesystem;
 use Phalcon\Mvc\User\Component;
+use Yarak\Exceptions\FactoryNotFound;
 
 class ModelFactory extends Component
 {
@@ -142,7 +143,7 @@ class ModelFactory extends Component
      * @param string       $path
      * @param ModelFactory $factory
      *
-     * @throws Exception
+     * @throws FactoryNotFound
      */
     protected function requireFactories($path, $factory)
     {
@@ -155,7 +156,9 @@ class ModelFactory extends Component
         }
 
         if (empty($this->definitions)) {
-            throw new \Exception('No factory definitions found.');
+            throw FactoryNotFound::factoryDefinitionNotFound(
+                'No factory definitions found.'
+            );
         }
     }
 

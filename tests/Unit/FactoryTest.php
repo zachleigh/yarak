@@ -161,4 +161,34 @@ class FactoryTest extends FactoryTestCase
 
         $this->seeInDatabase('users', ['id' => 1]);
     }
+
+    /**
+     * @test
+     *
+     * @expectedException Yarak\Exceptions\FactoryNotFound
+     * @expectedExceptionMessage Definition for class App\Models\Posts with name invalid does not exist.
+     */
+    public function it_throws_exception_for_invalid_factory()
+    {
+        $factory = $this->getModelFactory();
+
+        $post = $factory->createAs(Posts::class, 'invalid');
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException Yarak\Exceptions\FactoryNotFound
+     * @expectedExceptionMessage No factory definitions found.
+     */
+    public function it_throws_exception_when_no_factories_found()
+    {
+        $factoryDir = $this->getConfig()->getFactoryDirectory();
+
+        $this->filesystem->remove($factoryDir);
+
+        $factory = $this->getModelFactory();
+
+        $user = $factory->make(Users::class);
+    }
 }

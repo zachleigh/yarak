@@ -19,4 +19,16 @@ class WriteError extends Exception
 
         return new static($message);
     }
+
+    /**
+     * Writing to the filesystem failed because the given class exists.
+     *
+     * @param string $class
+     *
+     * @return static
+     */
+    public static function classExists($class)
+    {
+        return new static("Class {$class} already exists.");
+    }
 }

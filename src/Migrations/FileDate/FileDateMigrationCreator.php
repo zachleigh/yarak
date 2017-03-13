@@ -2,10 +2,10 @@
 
 namespace Yarak\Migrations\FileDate;
 
-use Phalcon\Exception;
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
 use Yarak\Helpers\Filesystem;
+use Yarak\Exceptions\WriteError;
 use Yarak\Migrations\MigrationCreator;
 
 class FileDateMigrationCreator implements MigrationCreator
@@ -74,14 +74,12 @@ class FileDateMigrationCreator implements MigrationCreator
      *
      * @param string $className
      *
-     * @throws Phalcon\Exception
+     * @throws WriteError
      */
     protected function failIfClassExists($className)
     {
         if (class_exists($className)) {
-            throw new Exception(
-                sprintf('Class "%s" already exists.', $className)
-            );
+            throw WriteError::classExists($className);
         }
     }
 
