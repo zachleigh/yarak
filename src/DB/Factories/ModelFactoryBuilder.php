@@ -142,6 +142,24 @@ class ModelFactoryBuilder
 
         $finalAttributes = array_merge($fakerAttributes, $attributes);
 
-        return new $this->class($finalAttributes);
+        return new $this->class($this->callClosureAttributes($finalAttributes));
+    }
+
+    /**
+     * Call any closures in attributes.
+     *
+     * @param  array  $attributes
+     *
+     * @return array
+     */
+    protected function callClosureAttributes(array $attributes)
+    {
+        return array_map(function ($attribute) use ($attributes) {
+            if ($attribute instanceof \Closure) {
+                return $attribute($attributes);
+            }
+
+            return $attribute;
+        }, $attributes);
     }
 }

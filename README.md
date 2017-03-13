@@ -21,8 +21,8 @@
       - [Using The Factory Helper](#using-the-factory-helper)
       - [Making Multiple Model Instances](#making-multiple-model-instances)
       - [Overriding The Default Attributes](#overriding-the-default-attributes)
-      - [Model Relationships](#model-relationships)
       - [Using Named Factories](#using-named-factories)
+      - [Model Relationships](#model-relationships)
   - [Migrations](#migrations)
     - [Generating Migrations](#generating-migrations)
     - [Writing Migrations](#writing-migrations)
@@ -149,8 +149,8 @@ Yarak gives users several helpful database functionalities that make development
     - [Using The Factory Helper](#using-the-factory-helper)
     - [Making Multiple Model Instances](#making-multiple-model-instances)
     - [Overriding The Default Attributes](#overriding-the-default-attributes)
-    - [Model Relationships](#model-relationships)
     - [Using Named Factories](#using-named-factories)
+    - [Model Relationships](#model-relationships)
 
 #### Generating Directories And Files
 All database and migration functionalites require a standardized file hierarchy. To generate this hirearchy, use the `db:generate` command:
@@ -258,6 +258,29 @@ $user = factory(Users::class)->create([
 ]);
 ```
 
+##### Using Named Factories
+To use a name factory, pass the name as the second argument to the `factory` function:
+```php
+use App\Models\Users;
+
+// Make a user using the factory named 'myUser'
+factory(Users::class, 'myUser')->make()
+
+// Create a user using the factory named 'myUser'
+factory(Users::class, 'myUser')->create()
+```
+
+To make multiple instances of a named factory, pass the desired number of instances as the third argument:
+```php
+use App\Models\Users;
+
+// Make three users using the factory named 'myUser'
+$users = factory(Users::class, 'myUser', 3)->make();
+
+// Create three users using the factory named 'myUser'
+$users = factory(Users::class, 'myUser', 3)->creates();
+```
+
 ##### Model Relationships
 When making model instances that require model relationships to also be built, you have a few options.   
 
@@ -360,27 +383,26 @@ foreach ($users as $user) {
 }
 ```
 
-##### Using Named Factories
-To use a name factory, pass the name as the second argument to the `factory` function:
+You may also pass a closure returning a relationship in a factory definition:
 ```php
+use App\Models\Posts;
 use App\Models\Users;
 
-// Make a user using the factory named 'myUser'
-factory(Users::class, 'myUser')->make()
-
-// Create a user using the factory named 'myUser'
-factory(Users::class, 'myUser')->create()
+$factory->define(Posts::class, function (Faker\Generator $faker) {
+    return [
+        'title'    => $faker->unique()->sentence(4, true),
+        'body'     => $faker->paragraph(4, true),
+        'users_id' => function () {
+            return factory(Users::class)->create()->id;
+        }
+    ];
+}, 'withUser');
 ```
-
-To make multiple instances of a named factory, pass the desired number of instances as the third argument:
+Here we are creating a new user for each new post created by the factory and naming this factory 'withUser'. To create 20 posts made by 20 users, we can simply do this:
 ```php
-use App\Models\Users;
+use App\Models\Posts;
 
-// Make three users using the factory named 'myUser'
-$users = factory(Users::class, 'myUser', 3)->make();
-
-// Create three users using the factory named 'myUser'
-$users = factory(Users::class, 'myUser', 3)->creates();
+factory(Posts::class, 'withUser', 20)->create();
 ```
 
 ### Migrations

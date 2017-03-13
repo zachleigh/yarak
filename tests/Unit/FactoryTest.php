@@ -147,4 +147,18 @@ class FactoryTest extends FactoryTestCase
             'email'    => $user->email,
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function it_handles_relationship_closures()
+    {
+        $factory = $this->getModelFactory();
+
+        $post = $factory->createAs(Posts::class, 'withUser');
+
+        $this->assertEquals(1, $post->users->id);
+
+        $this->seeInDatabase('users', ['id' => 1]);
+    }
 }
