@@ -68,7 +68,6 @@ class Config
         $current = $this->configArray;
 
         foreach ($value as $configItem) {
-
             if (!isset($current[$configItem])) {
                 return $this->getDefault($configItem);
             } else {
@@ -91,8 +90,6 @@ class Config
         if (array_key_exists($value, self::DEFAULTS)) {
             return self::DEFAULTS[$value];
         }
-
-        return null;
     }
 
     /**

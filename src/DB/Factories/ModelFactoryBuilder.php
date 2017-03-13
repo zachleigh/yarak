@@ -148,7 +148,7 @@ class ModelFactoryBuilder
     /**
      * Call any closures in attributes.
      *
-     * @param  array  $attributes
+     * @param array $attributes
      *
      * @return array
      */
