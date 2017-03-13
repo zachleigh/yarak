@@ -27,7 +27,7 @@ class ConfigTest extends TestCase
         $config = Config::getInstance();
 
         $default = $config->get('migrationRepository');
-// dd($default);
+
         $this->assertEquals('database', $default);
     }
 }

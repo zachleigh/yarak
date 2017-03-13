@@ -111,7 +111,7 @@ class ModelFactoryBuilder
      *
      * @param int|null $times
      *
-     * @return this
+     * @return $this
      */
     public function times($times = null)
     {

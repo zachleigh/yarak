@@ -89,7 +89,7 @@ trait DatabaseConcerns
      *
      * @param string $table
      *
-     * @return this
+     * @return $this
      */
     protected function seeTableIsEmpty($table)
     {
@@ -110,7 +110,7 @@ trait DatabaseConcerns
      *
      * @param string $table
      *
-     * @return this
+     * @return $this
      */
     protected function seeTableExists($table)
     {
@@ -129,7 +129,7 @@ trait DatabaseConcerns
      *
      * @param string $table
      *
-     * @return this
+     * @return $this
      */
     protected function seeTableDoesntExist($table)
     {

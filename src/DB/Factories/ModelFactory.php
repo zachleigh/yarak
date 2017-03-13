@@ -116,7 +116,7 @@ class ModelFactory extends Component
     /**
      * Load factory definitions onto object.
      *
-     * @return this
+     * @return $this
      */
     protected function load()
     {
@@ -166,7 +166,7 @@ class ModelFactory extends Component
      * @param callable $attributes
      * @param string   $name
      *
-     * @return this
+     * @return $this
      */
     public function define($class, callable $attributes, $name = 'default')
     {

@@ -293,7 +293,7 @@ class FileDateMigrator implements Migrator
     /**
      * Set connection to database on object.
      *
-     * @return this
+     * @return $this
      */
     public function setConnection()
     {
