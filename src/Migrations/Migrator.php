@@ -54,7 +54,7 @@ interface Migrator
     /**
      * Set connection to database on object.
      *
-     * @return Pdo
+     * @return $this
      */
     public function setConnection();
 
