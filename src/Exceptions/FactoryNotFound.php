@@ -9,7 +9,7 @@ class FactoryNotFound extends Exception
     /**
      * Factory definition can not be found.
      *
-     * @param string $command
+     * @param string $message
      *
      * @return static
      */
