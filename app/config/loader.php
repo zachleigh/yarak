@@ -1,7 +1,6 @@
 <?php
 
 use Phalcon\Loader;
-use Phalcon\Di\FactoryDefault;
 
 $loader = new Loader();
 
@@ -10,8 +9,3 @@ $loader->registerNamespaces([
 ]);
 
 $loader->register();
-
-/**
- * Composer
- */
-// require_once BASE_PATH . '/vendor/autoload.php';

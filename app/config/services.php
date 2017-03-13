@@ -3,10 +3,7 @@
 use Yarak\Kernel;
 use Phalcon\Mvc\View;
 use Phalcon\Security;
-use Sonohini\Acl\Acl;
-use Sonohini\Auth\Auth;
 use Phalcon\Mvc\Dispatcher;
-use Elasticsearch\ClientBuilder;
 use Phalcon\Flash\Direct as Flash;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
@@ -110,7 +107,7 @@ $di->set('security', function () {
     return new Security();
 });
 
- $di->set('modelsManager', function() {
+ $di->set('modelsManager', function () {
       return new ModelsManager();
  });
 
@@ -131,4 +128,3 @@ $di->setShared('yarak', function () {
         ],
     ]);
 });
-

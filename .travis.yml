@@ -24,7 +24,7 @@ install:
     - php codecept.phar --version
 
 script:
-    - php codecept.phar run acceptance --no-interaction
+    - php codecept.phar run --no-interaction
 
 cache:
     directories:
