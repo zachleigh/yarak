@@ -108,8 +108,6 @@ class MigrateTest extends TestCase
      */
     public function it_rollsback_last_step()
     {
-        // $this->dropTable(['users', 'posts']);
-
         $migrator = $this->getMigrator();
 
         $this->createTwoSteps($migrator);

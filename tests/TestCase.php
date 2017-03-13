@@ -35,12 +35,6 @@ class TestCase extends \Codeception\Test\Unit
 
         $this->filesystem = new SymfonyFilesystem();
 
-        // $databaseDir = Config::getInstance()->getDatabaseDirectory();
-
-        // $this->filesystem->remove($databaseDir);
-
-        // $this->filesystem->remove(__DIR__.'/../app/models');
-
         $this->_loaded = true;
     }
 
@@ -54,32 +48,36 @@ class TestCase extends \Codeception\Test\Unit
         return Config::getInstance();
     }
 
+    /**
+     * Remove test app database directory.
+     */
     protected function removeDatabaseDirectory()
     {
-        $migrationDir = Config::getInstance()->getDatabaseDirectory();
-
-        $this->filesystem->remove($migrationDir);
+        $this->filesystem->remove(Config::getInstance()->getDatabaseDirectory());
     }
 
+    /**
+     * Remove test app migration directory.
+     */
     protected function removeMigrationDirectory()
     {
-        $migrationDir = Config::getInstance()->getMigrationDirectory();
-
-        $this->filesystem->remove($migrationDir);
+        $this->filesystem->remove(Config::getInstance()->getMigrationDirectory());
     }
 
+    /**
+     * Remove test app seed directory.
+     */
     protected function removeSeedDirectory()
     {
-        $seedDir = Config::getInstance()->getSeedDirectory();
-
-        $this->filesystem->remove($seedDir);
+        $this->filesystem->remove(Config::getInstance()->getSeedDirectory());
     }
 
+    /**
+     * Remove test app factory directory.
+     */
     protected function removeFactoryDirectory()
     {
-        $factoryDir = Config::getInstance()->getFactoryDirectory();
-
-        $this->filesystem->remove($factoryDir);
+        $this->filesystem->remove(Config::getInstance()->getFactoryDirectory());
     }
 
     /**
@@ -88,10 +86,8 @@ class TestCase extends \Codeception\Test\Unit
      * @return DirectoryCreator
      */
     protected function getDirectoryCreator()
-    {
-        $config = $this->getConfig();
-        
-        return new DirectoryCreator($config);
+    {      
+        return new DirectoryCreator($this->getConfig());
     }
 
     /**
@@ -123,14 +119,12 @@ class TestCase extends \Codeception\Test\Unit
      */
     protected function getMigrator($type = 'fileDate')
     {
-        $config = $this->getConfig();
-
-        $resolver = new ConnectionResolver();
-
-        $repository = new DatabaseMigrationRepository();
-
         if (ucfirst($type) === 'FileDate') {
-            return new FileDateMigrator($config, $resolver, $repository);
+            return new FileDateMigrator(
+                $this->getConfig(),
+                new ConnectionResolver(),
+                new DatabaseMigrationRepository()
+            );
         }
     }
 
@@ -141,10 +135,8 @@ class TestCase extends \Codeception\Test\Unit
      */
     protected function getMigrationCreator($type = 'fileDate')
     {
-        $config = $this->getConfig();
-
         if (ucfirst($type) === 'FileDate') {
-            return new FileDateMigrationCreator($config);
+            return new FileDateMigrationCreator($this->getConfig());
         }
     }
 
