@@ -2,14 +2,18 @@
 
 namespace Yarak\Tests\Concerns;
 
+use Yarak\DB\ConnectionResolver;
+
 trait DatabaseConcerns
 {
+    protected $connection;
+    
     /**
      * Return a database connection.
      *
      * @return Phalcon\Db\Adapter\Pdo
      */
-    abstract public function getConnection();
+    // abstract public function getConnection();
 
     /**
      * Assert that a given where condition exists in the database.
@@ -141,5 +145,37 @@ trait DatabaseConcerns
         );
 
         return $this;
+    }
+
+    /**
+     * Return a database connection.
+     *
+     * @return Phalcon\Db\Adapter\Pdo
+     */
+    protected function getConnection()
+    {
+        if ($this->connection) {
+            return $this->connection;
+        }
+
+        $dbConfig = $this->getConfig()->get('database');
+
+        $resolver = new ConnectionResolver();
+
+        return $this->connection = $resolver->getConnection($dbConfig);
+    }
+
+    /**
+     * Drop given tables.
+     *
+     * @param  array  $tables
+     */
+    protected function dropTable(array $tables)
+    {
+        $connection = $this->getConnection();
+
+        foreach ($tables as $table) {
+            $connection->dropTable($table);
+        }
     }
 }

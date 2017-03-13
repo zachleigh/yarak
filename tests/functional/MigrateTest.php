@@ -1,12 +1,15 @@
 <?php
 
-namespace Yarak\Tests\Integration;
+namespace Yarak\Tests\Functional;
 
 use Yarak\Yarak;
 use Yarak\Tests\TestCase;
+use Yarak\Tests\Concerns\DatabaseConcerns;
 
 class MigrateTest extends TestCase
 {
+    use DatabaseConcerns;
+
     /**
      * @test
      */
@@ -16,6 +19,8 @@ class MigrateTest extends TestCase
 
         $this->createMigration('2017_01_01_000002_create_posts_table.php');
 
+        Yarak::call('migrate', ['--reset' => true], $this->getConfig()->toArray());
+        
         $this->seeTableDoesntExist('users');
 
         $this->seeTableDoesntExist('posts');
@@ -103,6 +108,8 @@ class MigrateTest extends TestCase
      */
     public function it_rollsback_last_step()
     {
+        // $this->dropTable(['users', 'posts']);
+
         $migrator = $this->getMigrator();
 
         $this->createTwoSteps($migrator);

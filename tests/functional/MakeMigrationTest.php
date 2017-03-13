@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Tests\Integration;
+namespace Yarak\Tests\Functional;
 
 use Yarak\Yarak;
 use Yarak\Tests\TestCase;
@@ -12,6 +12,8 @@ class MakeMigrationTest extends TestCase
      */
     public function it_makes_basic_migration()
     {
+        $this->removeMigrationDirectory();
+
         $config = $this->getConfig();
 
         Yarak::call('make:migration', [
@@ -34,6 +36,8 @@ class MakeMigrationTest extends TestCase
      */
     public function it_makes_create_migration()
     {
+        $this->removeMigrationDirectory();
+        
         $config = $this->getConfig();
 
         Yarak::call('make:migration', [

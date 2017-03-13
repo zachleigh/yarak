@@ -2,10 +2,23 @@
 
 namespace Yarak\Tests\Unit;
 
+use Yarak\Yarak;
 use Yarak\Tests\TestCase;
+use Yarak\Tests\Concerns\DatabaseConcerns;
 
 class FileDateMigratorTest extends TestCase
 {
+    use DatabaseConcerns;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        Yarak::call('migrate', ['--reset' => true], $this->getConfig()->toArray());
+
+        $this->removeMigrationDirectory();
+    }
+
     /**
      * @test
      */
@@ -14,6 +27,8 @@ class FileDateMigratorTest extends TestCase
         $migrator = $this->getMigrator()->setConnection();
 
         $connection = $migrator->getConnection();
+
+        $connection->dropTable('migrations');
 
         $this->assertFalse($connection->tableExists('migrations'));
 

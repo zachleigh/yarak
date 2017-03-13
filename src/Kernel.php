@@ -76,4 +76,9 @@ class Kernel
             throw InvalidInput::invalidCommand($command);
         }
     }
+    
+    public function getConfig()
+    {
+        return $this->config;
+    }
 }

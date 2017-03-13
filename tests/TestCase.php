@@ -1,68 +1,47 @@
 <?php
 
-namespace Yarak\tests;
+namespace Yarak\Tests;
 
+use Phalcon\Di;
+use Yarak\Yarak;
 use Yarak\Config\Config;
+use Sonohini\Models\Roles;
 use Yarak\Helpers\Filesystem;
+use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
-use Yarak\Tests\Concerns\DatabaseConcerns;
-use Yarak\Migrations\CreateMigrationsTable;
 use Yarak\Migrations\FileDate\FileDateMigrator;
 use Yarak\Migrations\FileDate\FileDateMigrationCreator;
 use Yarak\Migrations\Repositories\DatabaseMigrationRepository;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends \Codeception\Test\Unit
 {
-    use Filesystem, DatabaseConcerns;
+    use Filesystem;
 
     /**
-     * Symfony filesystem.
-     *
-     * @var Filesystem
+     * @var bool
      */
-    protected $filesystem;
+    private $_loaded = false;
 
     /**
-     * Tables used for testing.
-     *
-     * @var array
-     */
-    protected $tables = [
-        'migrations',
-        'posts_users',
-        'posts',
-        'users',
-    ];
-
-    /**
-     * Connection to database.
-     *
-     * @var Phalcon\Db\Adapter\Pdo
-     */
-    private $connection = null;
-
-    /**
-     * Set up the class before a test.
+     * Setup the test case.
      */
     public function setUp()
     {
         parent::setUp();
 
-        $connection = $this->getConnection();
-
-        foreach ($this->tables as $table) {
-            $connection->dropTable($table);
-        }
+        $this->di = new FactoryDefault();
 
         $this->filesystem = new SymfonyFilesystem();
 
-        $databaseDir = $this->getConfig()->getDatabaseDirectory();
+        // $databaseDir = Config::getInstance()->getDatabaseDirectory();
 
-        $this->filesystem->remove($databaseDir);
+        // $this->filesystem->remove($databaseDir);
 
-        $this->filesystem->remove(__DIR__.'/app/models');
+        // $this->filesystem->remove(__DIR__.'/../app/models');
+
+        $this->_loaded = true;
     }
 
     /**
@@ -70,37 +49,37 @@ class TestCase extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    protected function getConfig()
+    public function getConfig()
     {
-        $configArray = [
-            'application' => [
-                'databaseDir' => __DIR__.'/app/database/',
-            ],
-            'database' => [
-                'adapter'  => 'Mysql',
-                'host'     => '127.0.0.1',
-                'username' => 'root',
-                'password' => 'password',
-                'dbname'   => 'yarak',
-                'charset'  => 'utf8',
-            ],
-        ];
-
-        return Config::getInstance($configArray);
+        return Config::getInstance();
     }
 
-    /**
-     * Get an instance of the migration creator.
-     *
-     * @return Yarak\Migrations\MigrationCreator
-     */
-    protected function getMigrationCreator($type = 'fileDate')
+    protected function removeDatabaseDirectory()
     {
-        $config = $this->getConfig();
+        $migrationDir = Config::getInstance()->getDatabaseDirectory();
 
-        if (ucfirst($type) === 'FileDate') {
-            return new FileDateMigrationCreator($config);
-        }
+        $this->filesystem->remove($migrationDir);
+    }
+
+    protected function removeMigrationDirectory()
+    {
+        $migrationDir = Config::getInstance()->getMigrationDirectory();
+
+        $this->filesystem->remove($migrationDir);
+    }
+
+    protected function removeSeedDirectory()
+    {
+        $seedDir = Config::getInstance()->getSeedDirectory();
+
+        $this->filesystem->remove($seedDir);
+    }
+
+    protected function removeFactoryDirectory()
+    {
+        $factoryDir = Config::getInstance()->getFactoryDirectory();
+
+        $this->filesystem->remove($factoryDir);
     }
 
     /**
@@ -111,7 +90,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected function getDirectoryCreator()
     {
         $config = $this->getConfig();
-
+        
         return new DirectoryCreator($config);
     }
 
@@ -138,21 +117,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Clear the migration table.
-     */
-    protected function clearMigrationTable()
-    {
-        $connection = $this->getConnection();
-
-        if ($connection->tableExists('migrations')) {
-            $migration = new CreateMigrationsTable();
-
-            $migration->down($connection);
-        }
-    }
-
-    /**
-     * Gett the migrator.
+     * Get the migrator.
      *
      * @return Yarak\Migrations\Migrator
      */
@@ -170,36 +135,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Return a database connection.
+     * Get an instance of the migration creator.
      *
-     * @return Phalcon\Db\Adapter\Pdo
+     * @return Yarak\Migrations\MigrationCreator
      */
-    protected function getConnection()
+    protected function getMigrationCreator($type = 'fileDate')
     {
-        if ($this->connection) {
-            return $this->connection;
+        $config = $this->getConfig();
+
+        if (ucfirst($type) === 'FileDate') {
+            return new FileDateMigrationCreator($config);
         }
-
-        $dbConfig = $this->getConfig()->get('database');
-
-        $resolver = new ConnectionResolver();
-
-        return $this->connection = $resolver->getConnection($dbConfig);
-    }
-
-    /**
-     * Get a file name from a path.
-     *
-     * @param string $path
-     * @param string $extension
-     *
-     * @return string
-     */
-    protected function getFileNameFromPath($path, $extension = '.php')
-    {
-        $pathArray = explode('/', $path);
-
-        return str_replace($extension, '', array_pop($pathArray));
     }
 
     /**
@@ -223,6 +169,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function createTwoSteps($migrator)
     {
+        $this->removeMigrationDirectory();
+        
         $this->createMigration();
 
         $migrator->run();
@@ -230,5 +178,20 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->createMigration('2017_01_01_000002_create_posts_table.php');
 
         $migrator->run();
+    }
+
+    /**
+     * Get a file name from a path.
+     *
+     * @param string $path
+     * @param string $extension
+     *
+     * @return string
+     */
+    protected function getFileNameFromPath($path, $extension = '.php')
+    {
+        $pathArray = explode('/', $path);
+
+        return str_replace($extension, '', array_pop($pathArray));
     }
 }

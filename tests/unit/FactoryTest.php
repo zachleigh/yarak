@@ -32,8 +32,8 @@ class FactoryTest extends FactoryTestCase
 
         $user = $factory->make(Users::class);
 
-        $this->dontSeeInDatabase('users', [
-            'id' => 1,
+        $this->tester->dontSeeRecord(Users::class, [
+            'username' => $user->username,
         ]);
     }
 
@@ -112,7 +112,7 @@ class FactoryTest extends FactoryTestCase
 
         $this->assertInstanceOf(Users::class, $user);
 
-        $this->seeInDatabase('users', $attributes);
+        $this->tester->seeRecord(Users::class, $attributes);
     }
 
     /**
@@ -142,7 +142,7 @@ class FactoryTest extends FactoryTestCase
 
         $this->assertInstanceOf(Users::class, $user);
 
-        $this->seeInDatabase('users', [
+        $this->tester->seeRecord(Users::class, [
             'username' => $user->username,
             'email'    => $user->email,
         ]);
@@ -157,9 +157,9 @@ class FactoryTest extends FactoryTestCase
 
         $post = $factory->createAs(Posts::class, 'withUser');
 
-        $this->assertEquals(1, $post->users->id);
+        $this->tester->seeRecord(Users::class, ['id' => $post->users->id]);
 
-        $this->seeInDatabase('users', ['id' => 1]);
+        $this->tester->seeRecord(Posts::class, ['users_id' => $post->users->id]);
     }
 
     /**

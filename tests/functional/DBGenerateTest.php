@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Tests\Integration;
+namespace Yarak\Tests\Functional;
 
 use Yarak\Yarak;
 use Yarak\Config\Config;
@@ -20,6 +20,8 @@ class DBGenerateTest extends TestCase
      */
     public function it_makes_all_directories_and_files()
     {
+        $this->removeDatabaseDirectory();
+        
         $config = $this->getConfig();
 
         $this->setPaths($config);

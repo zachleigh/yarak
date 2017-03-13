@@ -19,7 +19,7 @@ class FactoryTestCase extends TestCase
     {
         parent::setUp();
 
-        $config = $this->getConfig();
+        $config = Config::getInstance();
 
         $this->createAllPaths($config);
 
@@ -30,8 +30,6 @@ class FactoryTestCase extends TestCase
         $this->createMigration('2017_01_01_000002_create_posts_table.php');
 
         $this->getMigrator()->run();
-
-        require_once __DIR__.'/TestHelper.php';
     }
 
     /**
@@ -59,7 +57,7 @@ class FactoryTestCase extends TestCase
     {
         $this->assertInstanceOf(Users::class, $user);
 
-        $this->seeInDatabase('users', [
+        $this->tester->seeRecord(Users::class, [
             'username' => $user->username,
             'email'    => $user->email,
         ]);
@@ -91,7 +89,7 @@ class FactoryTestCase extends TestCase
     {
         $directories = $config->getAllDatabaseDirectories();
 
-        $directories[] = __DIR__.'/app/models';
+        $directories[] = __DIR__.'/../app/models';
 
         $this->makeDirectoryStructure($directories);
     }
@@ -122,7 +120,7 @@ class FactoryTestCase extends TestCase
     protected function copyModelStub($stubName, $fileName)
     {
         $this->writeFile(
-            __DIR__."/app/models/{$fileName}.php",
+            __DIR__."/../app/models/{$fileName}.php",
             file_get_contents(__DIR__."/Stubs/{$stubName}.stub")
         );
     }

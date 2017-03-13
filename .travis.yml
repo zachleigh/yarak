@@ -17,8 +17,14 @@ before_install:
     - composer install --prefer-source --no-interaction
     - ./install-phalcon.sh 3.0.x
 
+install:
+    - echo "Download and Install codecept.phar"
+    - wget -c -nc --retry-connrefused --tries=0 http://codeception.com/releases/2.2.8/codecept.phar
+    - chmod +x codecept.phar
+    - php codecept.phar --version
+
 script:
-    - vendor/bin/phpunit
+    - php codecept.phar run acceptance --no-interaction
 
 cache:
     directories:

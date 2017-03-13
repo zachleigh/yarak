@@ -2,7 +2,6 @@
 
 namespace Yarak\Tests\Unit;
 
-use Yarak\Config\Config;
 use Yarak\Tests\TestCase;
 
 class ConfigTest extends TestCase
@@ -12,7 +11,7 @@ class ConfigTest extends TestCase
      */
     public function it_gets_default_values()
     {
-        $config = Config::getInstance();
+        $config = $this->getConfig();
 
         $default = $config->getDefault('migrationRepository');
 
@@ -24,7 +23,7 @@ class ConfigTest extends TestCase
      */
     public function it_gets_default_values_through_get()
     {
-        $config = Config::getInstance();
+        $config = $this->getConfig();
 
         $default = $config->get('migrationRepository');
 

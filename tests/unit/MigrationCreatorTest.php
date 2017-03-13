@@ -11,6 +11,8 @@ class MigrationCreatorTest extends TestCase
      */
     public function it_creates_directory_structure_if_not_present()
     {
+        $this->removeDatabaseDirectory();
+        
         $databaseDir = $this->getConfig()->getDatabaseDirectory();
 
         $this->assertFileNotExists($databaseDir);

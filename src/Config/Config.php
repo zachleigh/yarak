@@ -46,6 +46,12 @@ class Config
     public static function getInstance(array $configArray = [])
     {
         if (empty(self::$instance)) {
+            if (empty($configArray)) {
+                $di = \Phalcon\DI::getDefault();
+
+                $configArray = $di->getShared('yarak')->getConfig();
+            }
+
             self::$instance = new self($configArray);
         }
 
@@ -159,5 +165,15 @@ class Config
             $this->getFactoryDirectory(),
             $this->getSeedDirectory(),
         ];
+    }
+
+    /**
+     * Return the config array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->configArray;
     }
 }

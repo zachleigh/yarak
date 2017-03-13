@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Tests\Integration;
+namespace Yarak\Tests\Functional;
 
 use App\Models\Posts;
 use App\Models\Users;
@@ -25,8 +25,8 @@ class FactoryHelperTest extends FactoryTestCase
     {
         $user = factory(Users::class)->make();
 
-        $this->dontSeeInDatabase('users', [
-            'id' => 1,
+        $this->tester->dontSeeRecord(Users::class, [
+            'username' => $user->username
         ]);
     }
 
@@ -111,7 +111,7 @@ class FactoryHelperTest extends FactoryTestCase
 
         $this->assertInstanceOf(Users::class, $user);
 
-        $this->seeInDatabase('users', $attributes);
+        $this->tester->seeRecord(Users::class, $attributes);
     }
 
     /**
@@ -137,7 +137,7 @@ class FactoryHelperTest extends FactoryTestCase
 
         $this->assertInstanceOf(Users::class, $user);
 
-        $this->seeInDatabase('users', [
+        $this->tester->seeRecord(Users::class, [
             'username' => $user->username,
             'email'    => $user->email,
         ]);
