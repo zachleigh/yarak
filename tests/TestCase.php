@@ -77,12 +77,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
                 'databaseDir' => __DIR__.'/app/database/',
             ],
             'database' => [
-                'adapter' => 'Mysql',
-                'host' => '127.0.0.1',
+                'adapter'  => 'Mysql',
+                'host'     => '127.0.0.1',
                 'username' => 'root',
                 'password' => 'password',
-                'dbname' => 'yarak',
-                'charset' => 'utf8',
+                'dbname'   => 'yarak',
+                'charset'  => 'utf8',
             ],
         ];
 

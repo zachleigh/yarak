@@ -152,7 +152,7 @@ class FactoryHelperTest extends FactoryTestCase
 
         foreach ($users as $user) {
             $post = factory(Posts::class)->create([
-                'users_id' => $user->id
+                'users_id' => $user->id,
             ]);
 
             $this->assertEquals($user->id, $post->users_id);
@@ -168,7 +168,7 @@ class FactoryHelperTest extends FactoryTestCase
 
         foreach ($users as $user) {
             $posts = factory(Posts::class, 3)->create([
-                'users_id' => $user->id
+                'users_id' => $user->id,
             ]);
 
             foreach ($posts as $post) {

@@ -123,7 +123,7 @@ class Migrate extends YarakCommand
     /**
      * Get the name of the migrator class.
      *
-     * @param  Config $config
+     * @param Config $config
      *
      * @return string
      */

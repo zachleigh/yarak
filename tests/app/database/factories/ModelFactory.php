@@ -33,6 +33,6 @@ $factory->define(Posts::class, function (Faker\Generator $faker) {
         'body'     => $faker->paragraph(4, true),
         'users_id' => function () {
             return factory(Users::class)->create()->id;
-        }
+        },
     ];
 }, 'withUser');

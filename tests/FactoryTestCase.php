@@ -29,7 +29,6 @@ class FactoryTestCase extends TestCase
 
         $this->createMigration('2017_01_01_000002_create_posts_table.php');
 
-
         $this->getMigrator()->run();
 
         require_once __DIR__.'/TestHelper.php';
@@ -69,8 +68,8 @@ class FactoryTestCase extends TestCase
     /**
      * Assert that user object has given attributes.
      *
-     * @param  Users  $user
-     * @param  array  $attributes
+     * @param Users $user
+     * @param array $attributes
      */
     protected function assertUserHasAttributes(Users $user, array $attributes)
     {
@@ -117,8 +116,8 @@ class FactoryTestCase extends TestCase
     /**
      * Copy a model stub to the test app directory.
      *
-     * @param  string $stubName
-     * @param  string $fileName
+     * @param string $stubName
+     * @param string $fileName
      */
     protected function copyModelStub($stubName, $fileName)
     {

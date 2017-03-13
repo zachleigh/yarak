@@ -154,7 +154,7 @@ class FileDateMigrator implements Migrator
      *
      * @param string $migration
      * @param string $method
-     * 
+     *
      * @return bool
      */
     protected function performRun($migration, $method)
