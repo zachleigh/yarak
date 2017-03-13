@@ -45,9 +45,9 @@ class FileDateMigrator implements Migrator
     /**
      * Construct.
      *
-     * @param Config                       $config
-     * @param ConnectionResolver           $resolver
-     * @param MigrationRepositoryInterface $repository
+     * @param Config              $config
+     * @param ConnectionResolver  $resolver
+     * @param MigrationRepository $repository
      */
     public function __construct(
         Config $config,
@@ -141,7 +141,7 @@ class FileDateMigrator implements Migrator
      * @param int    $batch
      */
     protected function runUp($migration, $batch)
-    {     
+    {
         if ($this->performRun($migration, 'up') === true) {
             $this->log("<info>Migrated {$migration}.</info>");
 
@@ -152,8 +152,8 @@ class FileDateMigrator implements Migrator
     /**
      * Perform a migration run operation.
      *
-     * @param  string $migration
-     * @param  string $method
+     * @param string $migration
+     * @param string $method
      * 
      * @return bool
      */

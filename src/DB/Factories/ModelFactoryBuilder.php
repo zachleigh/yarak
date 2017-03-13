@@ -131,7 +131,7 @@ class ModelFactoryBuilder
     {
         if (!isset($this->definitions[$this->class][$this->name])) {
             throw new \Exception(
-                "Definition with name {$this->name} does not exist."
+                "Definition for class {$this->class} with name {$this->name} does not exist."
             );
         }
 

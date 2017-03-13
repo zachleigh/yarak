@@ -2,6 +2,7 @@
 
 namespace Yarak\Tests\Unit;
 
+use App\Models\Posts;
 use App\Models\Users;
 use Yarak\Helpers\Filesystem;
 use Yarak\Tests\FactoryTestCase;

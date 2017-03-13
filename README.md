@@ -21,6 +21,7 @@
       - [Using The Factory Helper](#using-the-factory-helper)
       - [Making Multiple Model Instances](#making-multiple-model-instances)
       - [Overriding The Default Attributes](#overriding-the-default-attributes)
+      - [Model Relationships](#model-relationships)
       - [Using Named Factories](#using-named-factories)
   - [Migrations](#migrations)
     - [Generating Migrations](#generating-migrations)
@@ -148,6 +149,7 @@ Yarak gives users several helpful database functionalities that make development
     - [Using The Factory Helper](#using-the-factory-helper)
     - [Making Multiple Model Instances](#making-multiple-model-instances)
     - [Overriding The Default Attributes](#overriding-the-default-attributes)
+    - [Model Relationships](#model-relationships)
     - [Using Named Factories](#using-named-factories)
 
 #### Generating Directories And Files
@@ -254,6 +256,108 @@ $user = factory(Users::class)->create([
     'username' => 'bobsmith',
     'email'    => 'bobsmith@example.com'
 ]);
+```
+
+##### Model Relationships
+When making model instances that require model relationships to also be built, you have a few options.   
+
+You can manually create related models. In this example, we have Posts and Users which have a one-to-many relationship: a post can only belong to one user but a user can have many posts. The posts table contains a `users_id` column that references the `id` column on the users table.
+```php
+$connection->createTable(
+    'posts',
+    null,
+    [
+        'columns' => [
+            new Column('id', [
+                'type'          => Column::TYPE_INTEGER,
+                'size'          => 10,
+                'unsigned'      => true,
+                'notNull'       => true,
+                'autoIncrement' => true,
+            ]),
+            new Column('title', [
+                'type'    => Column::TYPE_VARCHAR,
+                'size'    => 200,
+                'notNull' => true,
+            ]),
+            new Column('body', [
+                'type'    => Column::TYPE_TEXT,
+                'notNull' => true,
+            ]),
+            new Column('users_id', [
+                'type'     => Column::TYPE_INTEGER,
+                'size'     => 10,
+                'unsigned' => true,
+                'notNull'  => true,
+            ]),
+            new Column('created_at', [
+                'type'    => Column::TYPE_TIMESTAMP,
+                'notNull' => true,
+                'default' => 'CURRENT_TIMESTAMP',
+            ]),
+        ],
+        'indexes' => [
+            new Index('PRIMARY', ['id'], 'PRIMARY')
+        ],
+        'references' => [
+            new Reference(
+                'user_idfk',
+                [
+                    'referencedTable'   => 'users',
+                    'columns'           => ['users_id'],
+                    'referencedColumns' => ['id'],
+                ]
+            ),
+        ],
+    ]
+);
+```
+First, we need to create factories for both users and posts:
+```php
+use App\Models\Posts;
+use App\Models\Users;
+
+$factory->define(Users::class, function (Faker\Generator $faker) use ($factory) {
+    return [
+        'username' => $faker->userName,
+        'email'    => $faker->unique()->safeEmail,
+        'password' => $factory->security->hash('password'),
+    ];
+});
+
+$factory->define(Posts::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->unique()->sentence(4, true),
+        'body'  => $faker->paragraph(4, true),
+    ];
+});
+``
+
+To create three users with one post each, we could simply loop over newly created users and create a post for each, sending the user id as an attribute override:
+```php
+use App\Models\Posts;
+use App\Models\Users;
+
+$users = factory(Users::class, 3)->create();
+
+foreach ($users as $user) {
+    factory(Posts::class)->create([
+        'users_id' => $user->id
+    ]);
+}
+```
+For multiple posts, simply pass the desired number as the second variable to the factory helper:
+```php
+use App\Models\Posts;
+use App\Models\Users;
+
+$users = factory(Users::class, 3)->create();
+
+foreach ($users as $user) {
+    factory(Posts::class, 3)->create([
+        'users_id' => $user->id
+    ]);
+}
 ```
 
 ##### Using Named Factories

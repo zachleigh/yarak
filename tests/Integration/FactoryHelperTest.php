@@ -2,6 +2,7 @@
 
 namespace Yarak\Tests\Integration;
 
+use App\Models\Posts;
 use App\Models\Users;
 use Yarak\Tests\FactoryTestCase;
 
@@ -140,5 +141,39 @@ class FactoryHelperTest extends FactoryTestCase
             'username' => $user->username,
             'email'    => $user->email,
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_create_single_relationship_with_foreach_loop()
+    {
+        $users = factory(Users::class, 3)->create();
+
+        foreach ($users as $user) {
+            $post = factory(Posts::class)->create([
+                'users_id' => $user->id
+            ]);
+
+            $this->assertEquals($user->id, $post->users_id);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_create_multiple_relationships_with_foreach_loop()
+    {
+        $users = factory(Users::class, 3)->create();
+
+        foreach ($users as $user) {
+            $posts = factory(Posts::class, 3)->create([
+                'users_id' => $user->id
+            ]);
+
+            foreach ($posts as $post) {
+                $this->assertEquals($user->id, $post->users_id);
+            }
+        }
     }
 }

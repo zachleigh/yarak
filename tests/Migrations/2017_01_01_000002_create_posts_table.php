@@ -36,7 +36,7 @@ class CreatePostsTable implements Migration
                         'type'    => Column::TYPE_TEXT,
                         'notNull' => true,
                     ]),
-                    new Column('user_id', [
+                    new Column('users_id', [
                         'type'     => Column::TYPE_INTEGER,
                         'size'     => 10,
                         'unsigned' => true,
@@ -50,14 +50,13 @@ class CreatePostsTable implements Migration
                 ],
                 'indexes' => [
                     new Index('PRIMARY', ['id'], 'PRIMARY'),
-                    new Index('user_id', ['user_id']),
                 ],
                 'references' => [
                     new Reference(
-                        'user_idfk',
+                        'users_idfk',
                         [
                             'referencedTable'   => 'users',
-                            'columns'           => ['user_id'],
+                            'columns'           => ['users_id'],
                             'referencedColumns' => ['id'],
                         ]
                     ),

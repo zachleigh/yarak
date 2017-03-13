@@ -92,7 +92,7 @@ class Config
             return self::DEFAULTS[$value];
         }
 
-        return;
+        return null;
     }
 
     /**

@@ -31,6 +31,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $tables = [
         'migrations',
+        'posts_users',
         'posts',
         'users',
     ];
