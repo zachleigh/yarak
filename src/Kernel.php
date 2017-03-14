@@ -87,9 +87,4 @@ class Kernel
     {
         return $this->config;
     }
-
-    public function getDI()
-    {
-        return new FactoryDefault();
-    }
 }

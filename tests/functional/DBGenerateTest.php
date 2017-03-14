@@ -37,7 +37,7 @@ class DBGenerateTest extends \Codeception\Test\Unit
 
         $this->assertAllPathsDontExist();
 
-        Yarak::call('db:generate', [], $config->getAll());
+        Yarak::call('db:generate');
 
         $this->assertAllPathsExist();
     }

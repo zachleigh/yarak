@@ -3,27 +3,22 @@
 namespace Yarak;
 
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\User\Component;
 use Yarak\Exceptions\FileNotFound;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class Yarak extends Component
+class Yarak
 {
     /**
      * Call a Yarak console command.
      *
-     * @param string $command
-     * @param array  $arguments Argument array.
-     * @param array  $config    Config values, for testing purposes.
+     * @param string         $command
+     * @param array          $arguments Argument array.
+     * @param FactoryDefault $di        DI, may be necessary for php 5.6.
      */
-    public static function call($command, array $arguments = [], array $config = [])
+    public static function call($command, array $arguments = [], FactoryDefault $di = null)
     {
-        if (!empty($config)) {
-            $kernel = self::getKernelWithConfig($config);
-        } else {
-            $kernel = self::getKernel();
-        }
+        $kernel = self::getKernel($di);
 
         $arguments = ['command' => $command] + $arguments;
 
@@ -35,25 +30,24 @@ class Yarak extends Component
     }
 
     /**
-     * Get an instance of Yarak kernel built with the given config.
-     *
-     * @param array $config
-     *
-     * @return Kernel
-     */
-    protected static function getKernelWithConfig(array $config)
-    {
-        return new Kernel($config);
-    }
-
-    /**
      * Resolve Yarak kernel from di.
+     *
+     * @param FactoryDefault|null $di
      *
      * @throws FileNotFound
      *
      * @return Kernel
      */
-    protected static function getKernel()
+    protected static function getKernel($di)
+    {
+        if ($di === null) {
+            $di = self::getDI();
+        }
+
+        return $di->get('yarak');
+    }
+
+    protected static function getDI()
     {
         $di = new FactoryDefault();
 
@@ -72,6 +66,6 @@ class Yarak extends Component
             );
         }
 
-        return $di['yarak'];
+        return $di;
     }
 }

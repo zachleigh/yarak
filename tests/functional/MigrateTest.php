@@ -2,6 +2,7 @@
 
 namespace Yarak\tests\functional;
 
+use Phalcon\DI;
 use Yarak\Yarak;
 
 class MigrateTest extends \Codeception\Test\Unit
@@ -31,7 +32,7 @@ class MigrateTest extends \Codeception\Test\Unit
 
         $this->tester->createMigration('2017_01_01_000002_create_posts_table.php');
 
-        Yarak::call('migrate');
+        Yarak::call('migrate', [], DI::getDefault());
 
         $this->tester->seeTableExists('users');
 

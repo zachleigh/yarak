@@ -17,7 +17,7 @@ class FileDateMigratorTest extends TestCase
     {
         parent::setUp();
 
-        Yarak::call('migrate', ['--reset' => true], $this->getConfig()->toArray());
+        Yarak::call('migrate', ['--reset' => true]);
 
         $this->removeMigrationDirectory();
     }
