@@ -640,7 +640,7 @@ php yarak migrate --refresh
 ### Calling Yarak In Code
 To call a Yarak command from your codebase, use the Yarak::call static method.
 ```php
-public static function call($command, array $arguments = [], array $config = [])
+public static function call($command, array $arguments = [], FactoryDefault $di = [])
 ```
 For example, to call `migrate --rollback --steps=2`:
 ```php
@@ -652,15 +652,21 @@ Yarak::call('migrate', [
 ]);
 ```
 
-Yarak will attempt to resolve its config from /app/config/service.php. If your services file is in a different location, you will need to pass the config array manually.
+Yarak will attempt to resolve its config from /app/config/service.php. If your services file is in a different location, you will need to pass an instance of $di manually.
 ```php
 use Yarak\Yarak;
 
 Yarak::call('migrate', [
     '--rollback' => true,
     '--steps'    => 2,
-], $configArray);
+], $di);
 ```
+
+If you are running PHP 5.6 or lower, using the static call method may result in the following error message: 
+```
+Cannot bind an instance to a static closure
+```
+To avoid this error, pass the $di as the third variable to Yarak::call as shown above.
 
 ### Contributing
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/yarak/issues).
