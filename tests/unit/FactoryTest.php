@@ -1,11 +1,11 @@
 <?php
 
-namespace Yarak\Tests\Unit;
+namespace Yarak\tests\unit;
 
 use App\Models\Posts;
 use App\Models\Users;
 use Yarak\Helpers\Filesystem;
-use Yarak\Tests\FactoryTestCase;
+use Yarak\tests\FactoryTestCase;
 
 class FactoryTest extends FactoryTestCase
 {

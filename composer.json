@@ -31,7 +31,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Yarak\\Tests\\": "tests/"
+            "Yarak\\tests\\": "tests/"
         }
     }
 }

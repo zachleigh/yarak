@@ -1,8 +1,8 @@
 <?php
 
-namespace Yarak\Tests\Unit;
+namespace Yarak\tests\unit;
 
-use Yarak\Tests\TestCase;
+use Yarak\tests\TestCase;
 
 class DirectoryCreatorTest extends TestCase
 {

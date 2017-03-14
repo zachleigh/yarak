@@ -1,10 +1,10 @@
 <?php
 
-namespace Yarak\Tests\Functional;
+namespace Yarak\tests\functional;
 
 use Yarak\Yarak;
-use Yarak\Tests\TestCase;
-use Yarak\Tests\Concerns\DatabaseConcerns;
+use Yarak\tests\TestCase;
+use Yarak\tests\Concerns\DatabaseConcerns;
 
 class MigrateTest extends TestCase
 {

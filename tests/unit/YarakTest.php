@@ -1,9 +1,9 @@
 <?php
 
-namespace Yarak\Tests\Unit;
+namespace Yarak\tests\unit;
 
 use Yarak\Yarak;
-use Yarak\Tests\TestCase;
+use Yarak\tests\TestCase;
 
 class YarakTest extends TestCase
 {

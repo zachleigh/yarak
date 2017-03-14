@@ -1,10 +1,10 @@
 <?php
 
-namespace Yarak\Tests\Functional;
+namespace Yarak\tests\functional;
 
 use Yarak\Yarak;
 use Yarak\Config\Config;
-use Yarak\Tests\TestCase;
+use Yarak\tests\TestCase;
 
 class DBGenerateTest extends TestCase
 {

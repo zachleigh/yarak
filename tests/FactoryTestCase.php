@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Tests;
+namespace Yarak\tests;
 
 use Faker\Factory;
 use App\Models\Users;

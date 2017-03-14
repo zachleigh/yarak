@@ -1,10 +1,10 @@
 <?php
 
-namespace Yarak\Tests\Unit;
+namespace Yarak\tests\unit;
 
 use Yarak\Yarak;
-use Yarak\Tests\TestCase;
-use Yarak\Tests\Concerns\DatabaseConcerns;
+use Yarak\tests\TestCase;
+use Yarak\tests\Concerns\DatabaseConcerns;
 
 class FileDateMigratorTest extends TestCase
 {

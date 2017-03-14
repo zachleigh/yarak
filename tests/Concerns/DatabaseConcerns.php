@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Tests\Concerns;
+namespace Yarak\tests\Concerns;
 
 use Yarak\DB\ConnectionResolver;
 
