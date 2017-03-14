@@ -4,9 +4,8 @@ namespace Yarak\tests\functional;
 
 use Yarak\Yarak;
 use Yarak\Config\Config;
-use Yarak\tests\TestCase;
 
-class DBGenerateTest extends TestCase
+class DBGenerateTest extends \Codeception\Test\Unit
 {
     /**
      * Array of paths that should be created.
@@ -16,13 +15,23 @@ class DBGenerateTest extends TestCase
     protected $paths = [];
 
     /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->setUp();
+    }
+
+    /**
      * @test
      */
     public function it_makes_all_directories_and_files()
     {
-        $this->removeDatabaseDirectory();
+        $this->tester->removeDatabaseDirectory();
         
-        $config = $this->getConfig();
+        $config = $this->tester->getConfig();
 
         $this->setPaths($config);
 
