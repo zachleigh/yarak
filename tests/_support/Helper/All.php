@@ -5,7 +5,6 @@ namespace Helper;
 use Phalcon\Di;
 use Yarak\Yarak;
 use Yarak\Config\Config;
-use Yarak\Helpers\Filesystem;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
@@ -16,8 +15,6 @@ use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class All extends \Codeception\Module
 {
-    use Filesystem;
-
     /**
      * Setup the test case.
      */

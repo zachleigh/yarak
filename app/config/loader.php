@@ -10,4 +10,4 @@ $loader->registerNamespaces([
 
 $loader->register();
 
-require_once BASE_PATH . '/vendor/autoload.php';
+require_once BASE_PATH.'/vendor/autoload.php';
