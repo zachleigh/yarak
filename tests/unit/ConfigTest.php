@@ -2,16 +2,24 @@
 
 namespace Yarak\tests\unit;
 
-use Yarak\tests\TestCase;
-
-class ConfigTest extends TestCase
+class ConfigTest extends \Codeception\Test\Unit
 {
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->setUp();
+    }
+    
     /**
      * @test
      */
     public function it_gets_default_values()
     {
-        $config = $this->getConfig();
+        $config = $this->tester->getConfig();
 
         $default = $config->getDefault('migrationRepository');
 
@@ -23,7 +31,7 @@ class ConfigTest extends TestCase
      */
     public function it_gets_default_values_through_get()
     {
-        $config = $this->getConfig();
+        $config = $this->tester->getConfig();
 
         $default = $config->get('migrationRepository');
 

@@ -4,23 +4,29 @@ namespace Yarak\tests\unit;
 
 use App\Models\Posts;
 use App\Models\Users;
-use Yarak\Helpers\Filesystem;
-use Yarak\tests\FactoryTestCase;
 
-class FactoryTest extends FactoryTestCase
+class FactoryTest extends \Codeception\Test\Unit
 {
-    use Filesystem;
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->factorySetUp();
+    }
 
     /**
      * @test
      */
     public function it_makes_a_single_model_instance()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $user = $factory->make(Users::class);
 
-        $this->assertUserInstanceMade($user);
+        $this->tester->assertUserInstanceMade($user);
     }
 
     /**
@@ -28,7 +34,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_doesnt_save_models_when_making_them()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $user = $factory->make(Users::class);
 
@@ -42,7 +48,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_uses_user_defined_attributes_when_making_model()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $attributes = [
             'username' => 'bobsmith',
@@ -51,7 +57,7 @@ class FactoryTest extends FactoryTestCase
 
         $user = $factory->make(Users::class, $attributes);
 
-        $this->assertUserHasAttributes($user, $attributes);
+        $this->tester->assertUserHasAttributes($user, $attributes);
     }
 
     /**
@@ -59,14 +65,14 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_makes_multiple_instances_of_models()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $users = $factory->make(Users::class, [], 3);
 
         $this->assertCount(3, $users);
 
         foreach ($users as $user) {
-            $this->assertUserInstanceMade($user);
+            $this->tester->assertUserInstanceMade($user);
         }
     }
 
@@ -75,7 +81,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_makes_classes_with_a_given_name()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $user = $factory->makeAs(Users::class, 'myUser');
 
@@ -89,11 +95,11 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_creates_a_single_model_instance()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $user = $factory->create(Users::class);
 
-        $this->assertUserInstanceCreated($user);
+        $this->tester->assertUserInstanceCreated($user, $this->tester);
     }
 
     /**
@@ -101,7 +107,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_uses_user_defined_attributes_when_creating_model()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $attributes = [
             'username' => 'bobsmith',
@@ -120,14 +126,14 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_creates_multiple_instances_of_models()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $users = $factory->create(Users::class, [], 3);
 
         $this->assertCount(3, $users);
 
         foreach ($users as $user) {
-            $this->assertUserInstanceCreated($user);
+            $this->tester->assertUserInstanceCreated($user, $this->tester);
         }
     }
 
@@ -136,7 +142,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_creates_classes_with_a_given_name()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $user = $factory->createAs(Users::class, 'myUser');
 
@@ -153,7 +159,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_handles_relationship_closures()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $post = $factory->createAs(Posts::class, 'withUser');
 
@@ -170,7 +176,7 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_throws_exception_for_invalid_factory()
     {
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $post = $factory->createAs(Posts::class, 'invalid');
     }
@@ -183,11 +189,11 @@ class FactoryTest extends FactoryTestCase
      */
     public function it_throws_exception_when_no_factories_found()
     {
-        $factoryDir = $this->getConfig()->getFactoryDirectory();
+        $factoryDir = $this->tester->getConfig()->getFactoryDirectory();
 
-        $this->filesystem->remove($factoryDir);
+        $this->tester->getFilesystem()->remove($factoryDir);
 
-        $factory = $this->getModelFactory();
+        $factory = $this->tester->getModelFactory();
 
         $user = $factory->make(Users::class);
     }

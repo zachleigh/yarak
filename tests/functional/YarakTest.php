@@ -4,10 +4,19 @@ namespace Yarak\tests\unit;
 
 use Phalcon\DI;
 use Yarak\Yarak;
-use Yarak\tests\TestCase;
 
-class YarakTest extends TestCase
+class YarakTest extends \Codeception\Test\Unit
 {
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->setUp();
+    }
+    
     /**
      * @test
      *

@@ -2,22 +2,32 @@
 
 namespace Yarak\tests\unit;
 
-use Yarak\tests\TestCase;
-
-class FileDateMigrationCreatorTest extends TestCase
+class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
 {
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->setUp();
+    }
+
     /**
      * @test
      */
     public function it_creates_directory_structure_if_not_present()
     {
-        $this->removeDatabaseDirectory();
+        $this->tester->removeDatabaseDirectory();
         
-        $databaseDir = $this->getConfig()->getDatabaseDirectory();
+        $databaseDir = $this->tester->getConfig()->getDatabaseDirectory();
 
         $this->assertFileNotExists($databaseDir);
 
-        $path = $this->getMigrationCreator()->create('create_test_table');
+        $path = $this->tester
+            ->getMigrationCreator()
+            ->create('create_test_table');
 
         $this->assertFileExists($path);
     }
@@ -27,7 +37,9 @@ class FileDateMigrationCreatorTest extends TestCase
      */
     public function it_makes_an_empty_migration()
     {
-        $path = $this->getMigrationCreator()->create('create_test_table');
+        $path = $this->tester
+            ->getMigrationCreator()
+            ->create('create_test_table');
 
         $this->assertFileExists($path);
     }
@@ -37,7 +49,9 @@ class FileDateMigrationCreatorTest extends TestCase
      */
     public function it_sets_empty_migration_class_name()
     {
-        $path = $this->getMigrationCreator()->create('create_test_table');
+        $path = $this->tester
+            ->getMigrationCreator()
+            ->create('create_test_table');
 
         $data = file_get_contents($path);
 
@@ -49,7 +63,9 @@ class FileDateMigrationCreatorTest extends TestCase
      */
     public function it_makes_create_table_migration()
     {
-        $path = $this->getMigrationCreator()->create('create_test_table');
+        $path = $this->tester
+            ->getMigrationCreator()
+            ->create('create_test_table');
 
         $this->assertFileExists($path);
     }
@@ -59,7 +75,9 @@ class FileDateMigrationCreatorTest extends TestCase
      */
     public function it_sets_create_migration_class_name()
     {
-        $path = $this->getMigrationCreator()->create('create_test_table', 'test');
+        $path = $this->tester
+            ->getMigrationCreator()
+            ->create('create_test_table', 'test');
 
         $data = file_get_contents($path);
 
@@ -71,7 +89,9 @@ class FileDateMigrationCreatorTest extends TestCase
      */
     public function it_sets_create_migration_table_name()
     {
-        $path = $this->getMigrationCreator()->create('create_test_table', 'test');
+        $path = $this->tester
+            ->getMigrationCreator()
+            ->create('create_test_table', 'test');
 
         $data = file_get_contents($path);
 

@@ -4,16 +4,18 @@ namespace Helper;
 
 use Phalcon\Di;
 use Yarak\Yarak;
+use Faker\Factory;
 use App\Models\Users;
 use Codeception\Actor;
 use Yarak\Config\Config;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
+use Yarak\DB\Factories\ModelFactory;
+use Symfony\Component\Filesystem\Filesystem;
 use Yarak\Migrations\FileDate\FileDateMigrator;
 use Yarak\Migrations\FileDate\FileDateMigrationCreator;
 use Yarak\Migrations\Repositories\DatabaseMigrationRepository;
-use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class All extends \Codeception\Module
 {
@@ -25,13 +27,20 @@ class All extends \Codeception\Module
     protected $connection;
 
     /**
+     * Symfony filesystem.
+     *
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * Setup the test case.
      */
     public function setUp()
     {
         $this->di = new FactoryDefault();
 
-        $this->filesystem = new SymfonyFilesystem();
+        $this->filesystem = new Filesystem();
 
         $this->resetDatabase();
     }
@@ -94,6 +103,11 @@ class All extends \Codeception\Module
     public function removeFactoryDirectory()
     {
         $this->filesystem->remove(Config::getInstance()->getFactoryDirectory());
+    }
+
+    public function getFilesystem()
+    {
+        return $this->filesystem;
     }
 
     /**
@@ -184,7 +198,7 @@ class All extends \Codeception\Module
         if ($migrator === null) {
             $migrator = $this->getMigrator();
         }
-        
+
         $this->removeMigrationDirectory();
 
         $this->createMigration();
@@ -259,7 +273,7 @@ class All extends \Codeception\Module
 
         $tester->seeRecord(Users::class, [
             'username' => $user->username,
-            'email'    => $user->email,
+            'email' => $user->email,
         ]);
     }
 
@@ -425,7 +439,7 @@ class All extends \Codeception\Module
             $connection->dropTable($table);
         }
     }
-    
+
     /**
      * Create all directories listed in directories array.
      *

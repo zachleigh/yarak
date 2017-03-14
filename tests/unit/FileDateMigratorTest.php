@@ -4,13 +4,9 @@ namespace Yarak\tests\unit;
 
 use Phalcon\DI;
 use Yarak\Yarak;
-use Yarak\tests\TestCase;
-use Yarak\tests\Concerns\DatabaseConcerns;
 
-class FileDateMigratorTest extends TestCase
+class FileDateMigratorTest extends \Codeception\Test\Unit
 {
-    use DatabaseConcerns;
-
     /**
      * Setup the class.
      */
@@ -18,11 +14,7 @@ class FileDateMigratorTest extends TestCase
     {
         parent::setUp();
 
-        Yarak::call('migrate', [
-            '--reset' => true
-        ], DI::getDefault());
-
-        $this->removeMigrationDirectory();
+        $this->tester->setUp();
     }
 
     /**
@@ -30,7 +22,7 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_creates_migration_table_if_it_doesnt_exist_when_running()
     {
-        $migrator = $this->getMigrator()->setConnection();
+        $migrator = $this->tester->getMigrator()->setConnection();
 
         $connection = $migrator->getConnection();
 
@@ -48,7 +40,7 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_logs_message_if_no_pending_migrations()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
@@ -64,13 +56,13 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_runs_a_single_migration()
     {
-        $path = $this->createMigration();
+        $path = $this->tester->createMigration();
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
     }
 
     /**
@@ -78,19 +70,17 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_inserts_migration_record_when_migration_is_run()
     {
-        $path = $this->createMigration();
+        $path = $this->tester->createMigration();
 
-        $fileName = $this->getFileNameFromPath($path);
+        $fileName = $this->tester->getFileNameFromPath($path);
 
-        $this->dontSeeInDatabase('migrations', [
-            'migration' => $fileName,
-        ]);
+        $this->tester->seeTableDoesntExist('migrations');
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => $fileName,
         ]);
     }
@@ -100,15 +90,15 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_sets_batch_number_when_running_single_migration()
     {
-        $path = $this->createMigration();
+        $path = $this->tester->createMigration();
 
-        $fileName = $this->getFileNameFromPath($path);
+        $fileName = $this->tester->getFileNameFromPath($path);
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => $fileName,
             'batch'     => 1,
         ]);
@@ -119,9 +109,9 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_logs_run_migration_events()
     {
-        $path = $this->createMigration();
+        $path = $this->tester->createMigration();
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
@@ -140,9 +130,9 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_only_runs_migration_if_it_hasnt_been_run_yet()
     {
-        $path = $this->createMigration();
+        $path = $this->tester->createMigration();
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
@@ -172,13 +162,13 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_runs_multiple_migrations()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createSingleStep($migrator);
+        $this->tester->createSingleStep($migrator);
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
 
         $log = $migrator->getLog();
 
@@ -200,16 +190,16 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_inserts_same_batch_number_when_two_migrations_are_run_at_once()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createSingleStep($migrator);
+        $this->tester->createSingleStep($migrator);
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
             'batch'     => 1,
         ]);
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
             'batch'     => 1,
         ]);
@@ -220,16 +210,16 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_increments_batch_number_when_migrations_are_run_at_different_times()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
             'batch'     => 1,
         ]);
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
             'batch'     => 2,
         ]);
@@ -240,9 +230,9 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_inserts_migration_repository_records_in_order()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createSingleStep($migrator);
+        $this->tester->createSingleStep($migrator);
 
         $log = $migrator->getLog();
 
@@ -262,7 +252,7 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_logs_message_if_nothing_to_rollback()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->rollback();
 
@@ -278,17 +268,17 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_rollsback_a_single_migration()
     {
-        $this->createMigration();
+        $this->tester->createMigration();
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
         $migrator->rollback();
 
-        $this->seeTableDoesntExist('users');
+        $this->tester->seeTableDoesntExist('users');
 
         $log = $migrator->getLog();
 
@@ -305,19 +295,19 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_rollsback_multiple_migrations_in_single_step()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createSingleStep($migrator);
+        $this->tester->createSingleStep($migrator);
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
 
         $migrator->rollback(1);
 
-        $this->seeTableDoesntExist('users');
+        $this->tester->seeTableDoesntExist('users');
 
-        $this->seeTableDoesntExist('posts');
+        $this->tester->seeTableDoesntExist('posts');
 
         $log = $migrator->getLog();
 
@@ -339,21 +329,21 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_removes_filename_record_when_migration_is_rolledback()
     {
-        $path = $this->createMigration();
+        $path = $this->tester->createMigration();
 
-        $fileName = $this->getFileNameFromPath($path);
+        $fileName = $this->tester->getFileNameFromPath($path);
 
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => $fileName,
         ]);
 
         $migrator->rollback();
 
-        $this->dontSeeInDatabase('migrations', [
+        $this->tester->dontSeeInDatabase('migrations', [
             'migration' => $fileName,
         ]);
     }
@@ -363,17 +353,17 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_rolls_back_a_single_step_by_default()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
 
         $migrator->rollback();
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableDoesntExist('posts');
+        $this->tester->seeTableDoesntExist('posts');
 
         $log = $migrator->getLog();
 
@@ -390,15 +380,15 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_rolls_back_multiple_steps()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
         $migrator->rollback(2);
 
-        $this->seeTableDoesntExist('users');
+        $this->tester->seeTableDoesntExist('users');
 
-        $this->seeTableDoesntExist('posts');
+        $this->tester->seeTableDoesntExist('posts');
 
         $log = $migrator->getLog();
 
@@ -420,9 +410,9 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_rolls_back_migrations_in_reverse_order()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createSingleStep($migrator);
+        $this->tester->createSingleStep($migrator);
 
         $migrator->rollback();
 
@@ -444,25 +434,25 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_only_removes_rolled_back_migrations_from_migrations_table()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
         ]);
 
         $migrator->rollback();
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableDoesntExist('posts');
+        $this->tester->seeTableDoesntExist('posts');
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
         ]);
 
-        $this->dontSeeInDatabase('migrations', [
+        $this->tester->dontSeeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
         ]);
     }
@@ -472,19 +462,19 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_resets_the_database()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
 
         $migrator->reset();
 
-        $this->seeTableDoesntExist('users');
+        $this->tester->seeTableDoesntExist('users');
 
-        $this->seeTableDoesntExist('posts');
+        $this->tester->seeTableDoesntExist('posts');
 
         $log = $migrator->getLog();
 
@@ -496,21 +486,21 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_refreshes_the_database_when_nothing_to_rollback()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createSingleStep($migrator);
+        $this->tester->createSingleStep($migrator);
 
         $migrator->rollback();
 
-        $this->seeTableDoesntExist('users');
+        $this->tester->seeTableDoesntExist('users');
 
-        $this->seeTableDoesntExist('posts');
+        $this->tester->seeTableDoesntExist('posts');
 
         $migrator->refresh();
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
     }
 
     /**
@@ -518,19 +508,19 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_refreshes_the_database()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
 
         $migrator->refresh();
 
-        $this->seeTableExists('users');
+        $this->tester->seeTableExists('users');
 
-        $this->seeTableExists('posts');
+        $this->tester->seeTableExists('posts');
 
         $log = $migrator->getLog();
 
@@ -542,18 +532,18 @@ class FileDateMigratorTest extends TestCase
      */
     public function it_refreshes_the_database_in_single_step()
     {
-        $migrator = $this->getMigrator();
+        $migrator = $this->tester->getMigrator();
 
-        $this->createTwoSteps($migrator);
+        $this->tester->createTwoSteps($migrator);
 
         $migrator->refresh();
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
             'batch'     => 1,
         ]);
 
-        $this->seeInDatabase('migrations', [
+        $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000002_create_posts_table',
             'batch'     => 1,
         ]);

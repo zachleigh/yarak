@@ -2,18 +2,26 @@
 
 namespace Yarak\tests\unit;
 
-use Yarak\tests\TestCase;
-
-class DirectoryCreatorTest extends TestCase
+class DirectoryCreatorTest extends \Codeception\Test\Unit
 {
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->setUp();
+    }
+
     /**
      * @test
      */
     public function it_creates_the_migrations_directory()
     {
-        $this->removeMigrationDirectory();
+        $this->tester->removeMigrationDirectory();
 
-        $migrationsDir = $this->getConfig()->getMigrationDirectory();
+        $migrationsDir = $this->tester->getConfig()->getMigrationDirectory();
 
         $this->assertDirectoryCreatorCreatesPath($migrationsDir);
     }
@@ -23,9 +31,9 @@ class DirectoryCreatorTest extends TestCase
      */
     public function it_creates_the_seeds_directory()
     {
-        $this->removeSeedDirectory();
+        $this->tester->removeSeedDirectory();
 
-        $seedsDir = $this->getConfig()->getSeedDirectory();
+        $seedsDir = $this->tester->getConfig()->getSeedDirectory();
 
         $this->assertDirectoryCreatorCreatesPath($seedsDir);
     }
@@ -35,9 +43,9 @@ class DirectoryCreatorTest extends TestCase
      */
     public function it_creates_the_factories_directory()
     {
-        $this->removeFactoryDirectory();
+        $this->tester->removeFactoryDirectory();
 
-        $factoryDir = $this->getConfig()->getFactoryDirectory();
+        $factoryDir = $this->tester->getConfig()->getFactoryDirectory();
 
         $this->assertDirectoryCreatorCreatesPath($factoryDir);
     }
@@ -47,9 +55,11 @@ class DirectoryCreatorTest extends TestCase
      */
     public function it_creates_model_factory_file()
     {
-        $fileDir = $this->getConfig()->getFactoryDirectory('ModelFactory.php');
+        $fileDir = $this->tester
+            ->getConfig()
+            ->getFactoryDirectory('ModelFactory.php');
 
-        $this->filesystem->remove($fileDir);
+        $this->tester->getFilesystem()->remove($fileDir);
 
         $this->assertDirectoryCreatorCreatesPath($fileDir);
     }
@@ -59,9 +69,11 @@ class DirectoryCreatorTest extends TestCase
      */
     public function it_creates_database_seeder_file()
     {
-        $fileDir = $this->getConfig()->getSeedDirectory('DatabaseSeeder.php');
+        $fileDir = $this->tester
+            ->getConfig()
+            ->getSeedDirectory('DatabaseSeeder.php');
 
-        $this->filesystem->remove($fileDir);
+        $this->tester->getFilesystem()->remove($fileDir);
 
         $this->assertDirectoryCreatorCreatesPath($fileDir);
     }
@@ -75,7 +87,7 @@ class DirectoryCreatorTest extends TestCase
     {
         $this->assertFileNotExists($path);
 
-        $this->getDirectoryCreator()->create();
+        $this->tester->getDirectoryCreator()->create();
 
         $this->assertFileExists($path);
     }
