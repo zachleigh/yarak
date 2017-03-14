@@ -6,14 +6,12 @@ use Yarak\DB\ConnectionResolver;
 
 trait DatabaseConcerns
 {
-    protected $connection;
-    
     /**
-     * Return a database connection.
+     * Database connection.
      *
-     * @return Phalcon\Db\Adapter\Pdo
+     * @var Phalcon\Db\Adapter\Pdo
      */
-    // abstract public function getConnection();
+    protected $connection;
 
     /**
      * Assert that a given where condition exists in the database.
@@ -168,7 +166,7 @@ trait DatabaseConcerns
     /**
      * Drop given tables.
      *
-     * @param  array  $tables
+     * @param array $tables
      */
     protected function dropTable(array $tables)
     {

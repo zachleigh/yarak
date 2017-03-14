@@ -8,6 +8,7 @@ use Yarak\Helpers\Loggable;
 use Yarak\Helpers\Filesystem;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
+use Yarak\Exceptions\FileNotFound;
 use Yarak\Migrations\Repositories\MigrationRepository;
 
 class FileDateMigrator implements Migrator
@@ -177,11 +178,19 @@ class FileDateMigrator implements Migrator
      *
      * @param string $migration
      *
+     * @throws FileNotFound
+     *
      * @return Yarak\Migrations\Migration
      */
     protected function resolveMigrationClass($migration)
     {
-        require_once $this->config->getMigrationDirectory().$migration.'.php';
+        $migrationFile = $this->config->getMigrationDirectory().$migration.'.php';
+
+        if (!file_exists($migrationFile)) {
+            throw FileNotFound::migrationFileNotFound($migration, $migrationFile);
+        }
+
+        require_once $migrationFile;
 
         $class = Str::studly(implode('_', array_slice(explode('_', $migration), 4)));
 

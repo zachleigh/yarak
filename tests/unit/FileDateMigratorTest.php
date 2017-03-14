@@ -10,6 +10,9 @@ class FileDateMigratorTest extends TestCase
 {
     use DatabaseConcerns;
 
+    /**
+     * Setup the class.
+     */
     public function setUp()
     {
         parent::setUp();

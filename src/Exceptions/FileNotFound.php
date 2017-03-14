@@ -20,4 +20,18 @@ class FileNotFound extends Exception
             $additional
         );
     }
+
+    /**
+     * The migration file can not be found.
+     *
+     * @param string $migrationFileName
+     *
+     * @return static
+     */
+    public static function migrationFileNotFound($migrationFileName, $path)
+    {
+        return new static(
+            "The migration file {$migrationFileName} could not be found at {$path}"
+        );
+    }
 }

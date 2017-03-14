@@ -5,7 +5,6 @@ namespace Yarak\tests;
 use Phalcon\Di;
 use Yarak\Yarak;
 use Yarak\Config\Config;
-use Sonohini\Models\Roles;
 use Yarak\Helpers\Filesystem;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
@@ -36,6 +35,26 @@ class TestCase extends \Codeception\Test\Unit
         $this->filesystem = new SymfonyFilesystem();
 
         $this->_loaded = true;
+
+        $this->resetDatabase();
+    }
+
+    /**
+     * Clear all database tables.
+     */
+    protected function resetDatabase()
+    {
+        $migrator = $this->getMigrator()->setConnection();
+
+        $connection = $migrator->getConnection();
+
+        $connection->dropTable('posts');
+
+        $connection->dropTable('users');
+
+        $connection->dropTable('migrations');
+
+        $this->removeDatabaseDirectory();
     }
 
     /**
@@ -86,7 +105,7 @@ class TestCase extends \Codeception\Test\Unit
      * @return DirectoryCreator
      */
     protected function getDirectoryCreator()
-    {      
+    {
         return new DirectoryCreator($this->getConfig());
     }
 
@@ -162,7 +181,7 @@ class TestCase extends \Codeception\Test\Unit
     protected function createTwoSteps($migrator)
     {
         $this->removeMigrationDirectory();
-        
+
         $this->createMigration();
 
         $migrator->run();

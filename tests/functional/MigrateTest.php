@@ -15,23 +15,15 @@ class MigrateTest extends TestCase
      */
     public function it_runs_migrations()
     {
-        $this->createMigration();
-
-        $this->createMigration('2017_01_01_000002_create_posts_table.php');
-
-        Yarak::call('migrate', ['--reset' => true], $this->getConfig()->toArray());
-        
         $this->seeTableDoesntExist('users');
 
         $this->seeTableDoesntExist('posts');
 
-        $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000001_create_users_table'
-        ]);
+        $this->seeTableDoesntExist('migrations');
 
-        $this->dontSeeInDatabase('migrations', [
-            'migration' => '2017_01_01_000002_create_posts_table'
-        ]);
+        $this->createMigration();
+
+        $this->createMigration('2017_01_01_000002_create_posts_table.php');
 
         Yarak::call('migrate', [], $this->getConfig()->getAll());
 
