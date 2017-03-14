@@ -55,7 +55,9 @@ class Yarak extends Component
      */
     protected static function getKernel()
     {
-        $di = new FactoryDefault();
+        $kernel = new Kernel();
+
+        $di = $kernel->getDI();
 
         $servicesPath = __DIR__.'/../../../../app/config/services.php';
 
@@ -71,8 +73,6 @@ class Yarak extends Component
                 'to Yarak::call.'
             );
         }
-
-        // $di->getConfig();
 
         return $di->get('yarak');
     }
