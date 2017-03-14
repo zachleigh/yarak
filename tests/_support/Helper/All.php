@@ -7,7 +7,6 @@ use Yarak\Yarak;
 use App\Models\Users;
 use Codeception\Actor;
 use Yarak\Config\Config;
-use Yarak\Helpers\Filesystem;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
@@ -18,8 +17,6 @@ use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class All extends \Codeception\Module
 {
-    use Filesystem;
-
     /**
      * Database connection.
      *
@@ -426,6 +423,37 @@ class All extends \Codeception\Module
 
         foreach ($tables as $table) {
             $connection->dropTable($table);
+        }
+    }
+    
+    /**
+     * Create all directories listed in directories array.
+     *
+     * @param array $directories
+     */
+    public function makeDirectoryStructure(array $directories)
+    {
+        foreach ($directories as $directory) {
+            if (!file_exists($directory)) {
+                mkdir($directory);
+            }
+        }
+    }
+
+    /**
+     * Write contents to path.
+     *
+     * @param string $path
+     * @param string $contents
+     *
+     * @throws WriteError
+     */
+    public function writeFile($path, $contents)
+    {
+        try {
+            file_put_contents($path, $contents);
+        } catch (\Exception $e) {
+            throw WriteError::fileWriteFailed($e, $path);
         }
     }
 }

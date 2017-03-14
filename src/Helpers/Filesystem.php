@@ -11,7 +11,7 @@ trait Filesystem
      *
      * @param array $directories
      */
-    public function makeDirectoryStructure(array $directories)
+    protected function makeDirectoryStructure(array $directories)
     {
         foreach ($directories as $directory) {
             if (!file_exists($directory)) {
@@ -28,7 +28,7 @@ trait Filesystem
      *
      * @throws WriteError
      */
-    public function writeFile($path, $contents)
+    protected function writeFile($path, $contents)
     {
         try {
             file_put_contents($path, $contents);
