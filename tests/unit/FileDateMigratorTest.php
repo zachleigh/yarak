@@ -58,9 +58,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
     {
         $path = $this->tester->createMigration();
 
-        $migrator = $this->tester->getMigrator();
-
-        $migrator->run();
+        $this->tester->getMigrator()->run();
 
         $this->tester->seeTableExists('users');
     }
@@ -72,16 +70,12 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
     {
         $path = $this->tester->createMigration();
 
-        $fileName = $this->tester->getFileNameFromPath($path);
-
         $this->tester->seeTableDoesntExist('migrations');
 
-        $migrator = $this->tester->getMigrator();
-
-        $migrator->run();
+        $this->tester->getMigrator()->run();
 
         $this->tester->seeInDatabase('migrations', [
-            'migration' => $fileName,
+            'migration' => $this->tester->getFileNameFromPath($path),
         ]);
     }
 
@@ -92,14 +86,10 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
     {
         $path = $this->tester->createMigration();
 
-        $fileName = $this->tester->getFileNameFromPath($path);
-
-        $migrator = $this->tester->getMigrator();
-
-        $migrator->run();
+        $migrator = $this->tester->getMigrator()->run();
 
         $this->tester->seeInDatabase('migrations', [
-            'migration' => $fileName,
+            'migration' => $this->tester->getFileNameFromPath($path),
             'batch'     => 1,
         ]);
     }
@@ -109,7 +99,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_logs_run_migration_events()
     {
-        $path = $this->tester->createMigration();
+        $this->tester->createMigration();
 
         $migrator = $this->tester->getMigrator();
 
@@ -130,7 +120,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_only_runs_migration_if_it_hasnt_been_run_yet()
     {
-        $path = $this->tester->createMigration();
+        $this->tester->createMigration();
 
         $migrator = $this->tester->getMigrator();
 
@@ -190,9 +180,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_inserts_same_batch_number_when_two_migrations_are_run_at_once()
     {
-        $migrator = $this->tester->getMigrator();
-
-        $this->tester->createSingleStep($migrator);
+        $this->tester->createSingleStep();
 
         $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',
@@ -210,9 +198,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_increments_batch_number_when_migrations_are_run_at_different_times()
     {
-        $migrator = $this->tester->getMigrator();
-
-        $this->tester->createTwoSteps($migrator);
+        $this->tester->createTwoSteps();
 
         $this->tester->seeInDatabase('migrations', [
             'migration' => '2017_01_01_000001_create_users_table',

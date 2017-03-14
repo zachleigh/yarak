@@ -25,7 +25,7 @@ class MakeMigrationTest extends \Codeception\Test\Unit
         $config = $this->tester->getConfig();
 
         Yarak::call('make:migration', [
-            'name'    => 'create_new_table'
+            'name' => 'create_new_table'
         ], DI::getDefault());
 
         $files = scandir($config->getMigrationDirectory());

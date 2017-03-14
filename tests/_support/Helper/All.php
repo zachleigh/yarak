@@ -105,6 +105,11 @@ class All extends \Codeception\Module
         $this->filesystem->remove(Config::getInstance()->getFactoryDirectory());
     }
 
+    /**
+     * Return symfony filesystem instance.
+     *
+     * @return Filesystem
+     */
     public function getFilesystem()
     {
         return $this->filesystem;

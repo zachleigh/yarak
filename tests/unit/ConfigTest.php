@@ -19,9 +19,9 @@ class ConfigTest extends \Codeception\Test\Unit
      */
     public function it_gets_default_values()
     {
-        $config = $this->tester->getConfig();
-
-        $default = $config->getDefault('migrationRepository');
+        $default = $this->tester
+            ->getConfig()
+            ->getDefault('migrationRepository');
 
         $this->assertEquals('database', $default);
     }
@@ -31,9 +31,7 @@ class ConfigTest extends \Codeception\Test\Unit
      */
     public function it_gets_default_values_through_get()
     {
-        $config = $this->tester->getConfig();
-
-        $default = $config->get('migrationRepository');
+        $default = $this->tester->getConfig()->get('migrationRepository');
 
         $this->assertEquals('database', $default);
     }

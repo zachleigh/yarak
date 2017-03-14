@@ -4,7 +4,6 @@ namespace Yarak\tests\functional;
 
 use Phalcon\DI;
 use Yarak\Yarak;
-use Yarak\Config\Config;
 
 class DBGenerateTest extends \Codeception\Test\Unit
 {
@@ -31,10 +30,8 @@ class DBGenerateTest extends \Codeception\Test\Unit
     public function it_makes_all_directories_and_files()
     {
         $this->tester->removeDatabaseDirectory();
-        
-        $config = $this->tester->getConfig();
 
-        $this->setPaths($config);
+        $this->setPaths();
 
         $this->assertAllPathsDontExist();
 
@@ -45,11 +42,11 @@ class DBGenerateTest extends \Codeception\Test\Unit
 
     /**
      * Set all paths to be created.
-     *
-     * @param Config $config
      */
-    protected function setPaths(Config $config)
+    protected function setPaths()
     {
+        $config = $this->tester->getConfig();
+
         $this->paths = [
             $config->getMigrationDirectory(),
             $config->getSeedDirectory(),
