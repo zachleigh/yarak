@@ -68,7 +68,9 @@ class MigrateTest extends \Codeception\Test\Unit
             'migration' => '2017_01_01_000002_create_posts_table',
         ]);
 
-        Yarak::call('migrate', ['--rollback' => true]);
+        Yarak::call('migrate', [
+            '--rollback' => true
+        ], DI::getDefault());
 
         $this->tester->seeTableDoesntExist('users');
 
@@ -105,7 +107,7 @@ class MigrateTest extends \Codeception\Test\Unit
         Yarak::call('migrate', [
             '--rollback' => true,
             '--steps'    => 2,
-        ]);
+        ], DI::getDefault());
 
         $this->tester->seeTableDoesntExist('users');
 
@@ -135,7 +137,9 @@ class MigrateTest extends \Codeception\Test\Unit
             'migration' => '2017_01_01_000002_create_posts_table',
         ]);
 
-        Yarak::call('migrate', ['--rollback' => true]);
+        Yarak::call('migrate', [
+            '--rollback' => true
+        ], DI::getDefault());
 
         $this->tester->seeTableExists('users');
 
@@ -169,7 +173,9 @@ class MigrateTest extends \Codeception\Test\Unit
             'migration' => '2017_01_01_000002_create_posts_table',
         ]);
 
-        Yarak::call('migrate', ['--reset' => true]);
+        Yarak::call('migrate', [
+            '--reset' => true
+        ], DI::getDefault());
 
         $this->tester->seeTableDoesntExist('users');
 
@@ -205,7 +211,9 @@ class MigrateTest extends \Codeception\Test\Unit
             'batch'     => 2,
         ]);
 
-        Yarak::call('migrate', ['--refresh' => true]);
+        Yarak::call('migrate', [
+            '--refresh' => true
+        ], DI::getDefault());
 
         $this->tester->seeTableExists('users');
 

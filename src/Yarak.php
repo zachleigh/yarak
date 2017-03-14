@@ -34,8 +34,6 @@ class Yarak
      *
      * @param FactoryDefault|null $di
      *
-     * @throws FileNotFound
-     *
      * @return Kernel
      */
     protected static function getKernel($di)
@@ -47,6 +45,13 @@ class Yarak
         return $di->get('yarak');
     }
 
+    /**
+     * Get a fresh DI instance.
+     *
+     * @throws FileNotFound
+     *
+     * @return FactoryDefault
+     */
     protected static function getDI()
     {
         $di = new FactoryDefault();
