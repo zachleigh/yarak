@@ -4,6 +4,7 @@ namespace Yarak;
 
 use Yarak\Commands\Migrate;
 use Yarak\Commands\DBGenerate;
+use Phalcon\Di\FactoryDefault;
 use Yarak\Commands\MakeMigration;
 use Yarak\Exceptions\InvalidInput;
 use Symfony\Component\Console\Application;
@@ -23,7 +24,7 @@ class Kernel
      *
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
         $this->config = $config;
     }
@@ -77,6 +78,11 @@ class Kernel
         }
     }
     
+    /**
+     * Return the Yarak config array.
+     *
+     * @return array
+     */
     public function getConfig()
     {
         return $this->config;

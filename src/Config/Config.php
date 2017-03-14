@@ -174,6 +174,6 @@ class Config
      */
     public function toArray()
     {
-        return $this->configArray;
+        return $this->getAll();
     }
 }

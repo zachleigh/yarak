@@ -2,6 +2,7 @@
 
 namespace Yarak\tests\unit;
 
+use Phalcon\DI;
 use Yarak\Yarak;
 use Yarak\tests\TestCase;
 use Yarak\tests\Concerns\DatabaseConcerns;
@@ -17,7 +18,9 @@ class FileDateMigratorTest extends TestCase
     {
         parent::setUp();
 
-        Yarak::call('migrate', ['--reset' => true], $this->getConfig()->toArray());
+        Yarak::call('migrate', [
+            '--reset' => true
+        ], DI::getDefault());
 
         $this->removeMigrationDirectory();
     }

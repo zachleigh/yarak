@@ -2,6 +2,7 @@
 
 namespace Yarak\tests\functional;
 
+use Phalcon\DI;
 use Yarak\Yarak;
 use Yarak\Config\Config;
 
@@ -37,7 +38,7 @@ class DBGenerateTest extends \Codeception\Test\Unit
 
         $this->assertAllPathsDontExist();
 
-        Yarak::call('db:generate', [], $config->getAll());
+        Yarak::call('db:generate', [], DI::getDefault());
 
         $this->assertAllPathsExist();
     }

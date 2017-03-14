@@ -2,23 +2,31 @@
 
 namespace Yarak\tests\functional;
 
+use Phalcon\DI;
 use Yarak\Yarak;
-use Yarak\tests\TestCase;
 
-class MakeMigrationTest extends TestCase
+class MakeMigrationTest extends \Codeception\Test\Unit
 {
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->setUp();
+    }
+
     /**
      * @test
      */
     public function it_makes_basic_migration()
     {
-        $this->removeMigrationDirectory();
-
-        $config = $this->getConfig();
+        $config = $this->tester->getConfig();
 
         Yarak::call('make:migration', [
-            'name'    => 'create_new_table',
-        ], $config->getAll());
+            'name'    => 'create_new_table'
+        ], DI::getDefault());
 
         $files = scandir($config->getMigrationDirectory());
 
@@ -35,15 +43,13 @@ class MakeMigrationTest extends TestCase
      * @test
      */
     public function it_makes_create_migration()
-    {
-        $this->removeMigrationDirectory();
-        
-        $config = $this->getConfig();
+    {      
+        $config = $this->tester->getConfig();
 
         Yarak::call('make:migration', [
             'name'     => 'create_new_table',
             '--create' => 'new',
-        ], $config->getAll());
+        ], DI::getDefault());
 
         $files = scandir($config->getMigrationDirectory());
 

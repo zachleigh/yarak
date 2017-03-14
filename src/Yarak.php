@@ -12,17 +12,13 @@ class Yarak
     /**
      * Call a Yarak console command.
      *
-     * @param string $command
-     * @param array  $arguments Argument array.
-     * @param array  $config    Config values, for testing purposes.
+     * @param string         $command
+     * @param array          $arguments Argument array.
+     * @param FactoryDefault $di        DI, may be necessary for php 5.6.
      */
-    public static function call($command, array $arguments = [], array $config = [])
+    public static function call($command, array $arguments = [], FactoryDefault $di = null)
     {
-        if (!empty($config)) {
-            $kernel = self::getKernelWithConfig($config);
-        } else {
-            $kernel = self::getKernel();
-        }
+        $kernel = self::getKernel($di);
 
         $arguments = ['command' => $command] + $arguments;
 
@@ -34,29 +30,37 @@ class Yarak
     }
 
     /**
-     * Get an instance of Yarak kernel built with the given config.
+     * Resolve Yarak kernel from di.
      *
-     * @param array $config
+     * @param FactoryDefault|null $di
      *
      * @return Kernel
      */
-    protected static function getKernelWithConfig(array $config)
+    protected static function getKernel($di)
     {
-        return new Kernel($config);
+        if ($di === null) {
+            $di = self::getDI();
+        }
+
+        return $di->get('yarak');
     }
 
     /**
-     * Resolve Yarak kernel from di.
+     * Get a fresh DI instance.
      *
      * @throws FileNotFound
      *
-     * @return Kernel
+     * @return FactoryDefault
      */
-    protected static function getKernel()
+    protected static function getDI()
     {
         $di = new FactoryDefault();
 
         $servicesPath = __DIR__.'/../../../../app/config/services.php';
+
+        if (!realpath($servicesPath)) {
+            $servicesPath = __DIR__.'/../app/config/services.php';
+        }
 
         try {
             include $servicesPath;
@@ -67,8 +71,6 @@ class Yarak
             );
         }
 
-        $di->getConfig();
-
-        return $di->get('yarak');
+        return $di;
     }
 }
