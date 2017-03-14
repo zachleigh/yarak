@@ -5,4 +5,5 @@ modules:
         - \Helper\All
         - Asserts
         - Phalcon
+        - Db
         

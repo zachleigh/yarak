@@ -58,6 +58,10 @@ class Yarak
 
         $servicesPath = __DIR__.'/../../../../app/config/services.php';
 
+        if (!realpath($servicesPath)) {
+            $servicesPath = __DIR__.'/../app/config/services.php';
+        }
+
         try {
             include $servicesPath;
         } catch (\Exception $e) {

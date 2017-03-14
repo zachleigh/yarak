@@ -4,7 +4,10 @@ namespace Helper;
 
 use Phalcon\Di;
 use Yarak\Yarak;
+use App\Models\Users;
+use Codeception\Actor;
 use Yarak\Config\Config;
+use Yarak\Helpers\Filesystem;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
@@ -15,6 +18,15 @@ use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class All extends \Codeception\Module
 {
+    use Filesystem;
+
+    /**
+     * Database connection.
+     *
+     * @var Phalcon\Db\Adapter\Pdo
+     */
+    protected $connection;
+
     /**
      * Setup the test case.
      */
@@ -106,7 +118,7 @@ class All extends \Codeception\Module
      */
     public function createMigration($name = '2017_01_01_000001_create_users_table.php')
     {
-        $file = file_get_contents(__DIR__.'/_data/Migrations/'.$name);
+        $file = file_get_contents(__DIR__.'/../../_data/Migrations/'.$name);
 
         $directories = $this->getConfig()->getAllDatabaseDirectories();
 
@@ -152,8 +164,12 @@ class All extends \Codeception\Module
      *
      * @param Yarak\Migrations\Migrator $migrator
      */
-    public function createSingleStep($migrator)
+    public function createSingleStep($migrator = null)
     {
+        if ($migrator === null) {
+            $migrator = $this->getMigrator();
+        }
+
         $this->createMigration();
 
         $this->createMigration('2017_01_01_000002_create_posts_table.php');
@@ -166,8 +182,12 @@ class All extends \Codeception\Module
      *
      * @param Yarak\Migrations\Migrator $migrator
      */
-    public function createTwoSteps($migrator)
+    public function createTwoSteps($migrator = null)
     {
+        if ($migrator === null) {
+            $migrator = $this->getMigrator();
+        }
+        
         $this->removeMigrationDirectory();
 
         $this->createMigration();
@@ -192,5 +212,220 @@ class All extends \Codeception\Module
         $pathArray = explode('/', $path);
 
         return str_replace($extension, '', array_pop($pathArray));
+    }
+
+    /**
+     * Setup the class.
+     */
+    public function factorySetUp()
+    {
+        $this->setUp();
+
+        $config = Config::getInstance();
+
+        $this->createAllPaths($config);
+
+        $this->copyStubs($config);
+
+        $this->createMigration();
+
+        $this->createMigration('2017_01_01_000002_create_posts_table.php');
+
+        $this->getMigrator()->run();
+    }
+
+    /**
+     * Assert that given user is instance of Users and properties are set.
+     *
+     * @param Users $user
+     */
+    public function assertUserInstanceMade(Users $user)
+    {
+        $this->assertInstanceOf(Users::class, $user);
+
+        $this->assertTrue(is_string($user->username));
+
+        $this->assertTrue(is_string($user->email));
+
+        $this->assertTrue(is_string($user->password));
+    }
+
+    /**
+     * Assert that given user is instance of user and saved in database.
+     *
+     * @param Users $user
+     * @param Actor $tester
+     */
+    public function assertUserInstanceCreated(Users $user, Actor $tester)
+    {
+        $this->assertInstanceOf(Users::class, $user);
+
+        $tester->seeRecord(Users::class, [
+            'username' => $user->username,
+            'email'    => $user->email,
+        ]);
+    }
+
+    /**
+     * Assert that user object has given attributes.
+     *
+     * @param Users $user
+     * @param array $attributes
+     */
+    public function assertUserHasAttributes(Users $user, array $attributes)
+    {
+        $this->assertInstanceOf(Users::class, $user);
+
+        $this->assertEquals($attributes['username'], $user->username);
+
+        $this->assertEquals($attributes['email'], $user->email);
+
+        $this->assertTrue(is_string($user->password));
+    }
+
+    /**
+     * Create all paths necessary for seeding.
+     *
+     * @param Config $config
+     */
+    public function createAllPaths(Config $config)
+    {
+        $directories = $config->getAllDatabaseDirectories();
+
+        $directories[] = __DIR__.'/../../../app/models';
+
+        $this->makeDirectoryStructure($directories);
+    }
+
+    /**
+     * Copy stubs to test app.
+     *
+     * @param Config $config
+     */
+    protected function copyStubs(Config $config)
+    {
+        $this->copyModelStub('usersModel', 'Users');
+
+        $this->copyModelStub('postsModel', 'Posts');
+
+        $this->writeFile(
+            $config->getFactoryDirectory('ModelFactory.php'),
+            file_get_contents(__DIR__.'/../../_data/Stubs/factory.stub')
+        );
+    }
+
+    /**
+     * Copy a model stub to the test app directory.
+     *
+     * @param string $stubName
+     * @param string $fileName
+     */
+    protected function copyModelStub($stubName, $fileName)
+    {
+        $this->writeFile(
+            __DIR__."/../../../app/models/{$fileName}.php",
+            file_get_contents(__DIR__."/../../_data/Stubs/{$stubName}.stub")
+        );
+    }
+
+    /**
+     * Get an instance of ModelFactory.
+     *
+     * @return ModelFactory
+     */
+    public function getModelFactory()
+    {
+        return new ModelFactory(Factory::create());
+    }
+
+    /**
+     * Assert that a table is empty.
+     *
+     * @param string $table
+     *
+     * @return $this
+     */
+    public function seeTableIsEmpty($table)
+    {
+        $connection = $this->getConnection();
+
+        $statement = "SELECT * FROM {$table}";
+
+        $count = $connection->query($statement)->numRows();
+
+        $this->assertEquals(0, $count, sprintf(
+            'Found unexpected records in database table [%s].', $table));
+
+        return $this;
+    }
+
+    /**
+     * Assert that a table exists.
+     *
+     * @param string $table
+     *
+     * @return $this
+     */
+    public function seeTableExists($table)
+    {
+        $connection = $this->getConnection();
+
+        $this->assertTrue(
+            $connection->tableExists($table),
+            "Failed asserting that table {$table} exists."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that a table doesn't exist.
+     *
+     * @param string $table
+     *
+     * @return $this
+     */
+    public function seeTableDoesntExist($table)
+    {
+        $connection = $this->getConnection();
+
+        $this->assertFalse(
+            $connection->tableExists($table),
+            "Failed asserting that table {$table} does not exist."
+        );
+
+        return $this;
+    }
+
+    /**
+     * Return a database connection.
+     *
+     * @return Phalcon\Db\Adapter\Pdo
+     */
+    public function getConnection()
+    {
+        if ($this->connection) {
+            return $this->connection;
+        }
+
+        $dbConfig = $this->getConfig()->get('database');
+
+        $resolver = new ConnectionResolver();
+
+        return $this->connection = $resolver->getConnection($dbConfig);
+    }
+
+    /**
+     * Drop given tables.
+     *
+     * @param array $tables
+     */
+    public function dropTable(array $tables)
+    {
+        $connection = $this->getConnection();
+
+        foreach ($tables as $table) {
+            $connection->dropTable($table);
+        }
     }
 }

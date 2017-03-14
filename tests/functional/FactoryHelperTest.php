@@ -4,10 +4,19 @@ namespace Yarak\tests\functional;
 
 use App\Models\Posts;
 use App\Models\Users;
-use Yarak\tests\FactoryTestCase;
 
-class FactoryHelperTest extends FactoryTestCase
+class FactoryHelperTest extends \Codeception\Test\Unit
 {
+    /**
+     * Setup the class.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->tester->factorySetUp();
+    }
+
     /**
      * @test
      */
@@ -15,7 +24,7 @@ class FactoryHelperTest extends FactoryTestCase
     {
         $user = factory(Users::class)->make();
 
-        $this->assertUserInstanceMade($user);
+        $this->tester->assertUserInstanceMade($user);
     }
 
     /**
@@ -42,7 +51,7 @@ class FactoryHelperTest extends FactoryTestCase
 
         $user = factory(Users::class)->make($attributes);
 
-        $this->assertUserHasAttributes($user, $attributes);
+        $this->tester->assertUserHasAttributes($user, $attributes);
     }
 
     /**
@@ -55,7 +64,7 @@ class FactoryHelperTest extends FactoryTestCase
         $this->assertCount(3, $users);
 
         foreach ($users as $user) {
-            $this->assertUserInstanceMade($user);
+            $this->tester->assertUserInstanceMade($user);
         }
     }
 
@@ -94,7 +103,7 @@ class FactoryHelperTest extends FactoryTestCase
     {
         $user = factory(Users::class)->create();
 
-        $this->assertUserInstanceCreated($user);
+        $this->tester->assertUserInstanceCreated($user, $this->tester);
     }
 
     /**
@@ -124,7 +133,7 @@ class FactoryHelperTest extends FactoryTestCase
         $this->assertCount(3, $users);
 
         foreach ($users as $user) {
-            $this->assertUserInstanceCreated($user);
+            $this->tester->assertUserInstanceCreated($user, $this->tester);
         }
     }
 
