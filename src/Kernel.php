@@ -77,6 +77,11 @@ class Kernel
         }
     }
     
+    /**
+     * Return the Yarak config array.
+     *
+     * @return array
+     */
     public function getConfig()
     {
         return $this->config;

@@ -3,11 +3,12 @@
 namespace Yarak;
 
 use Phalcon\Di\FactoryDefault;
+use Phalcon\Mvc\User\Component;
 use Yarak\Exceptions\FileNotFound;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class Yarak
+class Yarak extends Component
 {
     /**
      * Call a Yarak console command.
@@ -71,7 +72,7 @@ class Yarak
             );
         }
 
-        $di->getConfig();
+        // $di->getConfig();
 
         return $di->get('yarak');
     }
