@@ -640,7 +640,7 @@ php yarak migrate --refresh
 ### Calling Yarak In Code
 To call a Yarak command from your codebase, use the Yarak::call static method.
 ```php
-public static function call($command, array $arguments = [], FactoryDefault $di = [])
+public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = [])
 ```
 For example, to call `migrate --rollback --steps=2`:
 ```php
@@ -654,7 +654,10 @@ Yarak::call('migrate', [
 
 Yarak will attempt to resolve its config from /app/config/service.php. If your services file is in a different location, you will need to pass an instance of $di manually.
 ```php
+use Phalcon\DI;
 use Yarak\Yarak;
+
+$di = DI::getDefault();
 
 Yarak::call('migrate', [
     '--rollback' => true,

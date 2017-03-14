@@ -2,6 +2,7 @@
 
 namespace Yarak;
 
+use Phalcon\DiInterface;
 use Phalcon\Di\FactoryDefault;
 use Yarak\Exceptions\FileNotFound;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,7 +17,7 @@ class Yarak
      * @param array          $arguments Argument array.
      * @param FactoryDefault $di        DI, may be necessary for php 5.6.
      */
-    public static function call($command, array $arguments = [], FactoryDefault $di = null)
+    public static function call($command, array $arguments = [], DiInterface $di = null)
     {
         $kernel = self::getKernel($di);
 
