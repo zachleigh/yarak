@@ -39,7 +39,7 @@ $di->setShared('view', function () {
             $volt = new VoltEngine($view, $this);
 
             $volt->setOptions([
-                'compiledPath' => $config->application->cacheDir,
+                'compiledPath'      => $config->application->cacheDir,
                 'compiledSeparator' => '_',
             ]);
 
@@ -58,11 +58,11 @@ $di->setShared('db', function () {
     $class = 'Phalcon\Db\Adapter\Pdo\\'.$config->database->adapter;
 
     $params = [
-        'host' => $config->database->host,
+        'host'     => $config->database->host,
         'username' => $config->database->username,
         'password' => $config->database->password,
-        'dbname' => $config->database->dbname,
-        'charset' => $config->database->charset,
+        'dbname'   => $config->database->dbname,
+        'charset'  => $config->database->charset,
     ];
 
     if ($config->database->adapter == 'Postgresql') {
@@ -82,9 +82,9 @@ $di->setShared('modelsMetadata', function () {
 
 $di->set('flash', function () {
     return new Flash([
-        'error' => 'alert alert-danger',
+        'error'   => 'alert alert-danger',
         'success' => 'alert alert-success',
-        'notice' => 'alert alert-info',
+        'notice'  => 'alert alert-info',
         'warning' => 'alert alert-warning',
     ]);
 });
@@ -108,7 +108,7 @@ $di->set('security', function () {
 });
 
  $di->set('modelsManager', function () {
-      return new ModelsManager();
+     return new ModelsManager();
  });
 
 $di->setShared('yarak', function () {
@@ -119,12 +119,12 @@ $di->setShared('yarak', function () {
             'databaseDir' => APP_PATH.'/database/',
         ],
         'database' => [
-            'adapter' => $config->database->adapter,
-            'host' => $config->database->host,
+            'adapter'  => $config->database->adapter,
+            'host'     => $config->database->host,
             'username' => $config->database->username,
             'password' => $config->database->password,
-            'dbname' => $config->database->dbname,
-            'charset' => $config->database->charset,
+            'dbname'   => $config->database->dbname,
+            'charset'  => $config->database->charset,
         ],
     ]);
 });

@@ -4,7 +4,6 @@ namespace Yarak;
 
 use Yarak\Commands\Migrate;
 use Yarak\Commands\DBGenerate;
-use Phalcon\Di\FactoryDefault;
 use Yarak\Commands\MakeMigration;
 use Yarak\Exceptions\InvalidInput;
 use Symfony\Component\Console\Application;
@@ -77,7 +76,7 @@ class Kernel
             throw InvalidInput::invalidCommand($command);
         }
     }
-    
+
     /**
      * Return the Yarak config array.
      *
