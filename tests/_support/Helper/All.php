@@ -5,6 +5,7 @@ namespace Helper;
 use Phalcon\Di;
 use Yarak\Yarak;
 use Faker\Factory;
+use App\Models\Posts;
 use App\Models\Users;
 use Codeception\Actor;
 use Yarak\Config\Config;
@@ -242,7 +243,7 @@ class All extends \Codeception\Module
     }
 
     /**
-     * Setup the class.
+     * Setup factory test class.
      */
     public function factorySetUp()
     {
@@ -254,11 +255,29 @@ class All extends \Codeception\Module
 
         $this->copyStubs($config);
 
-        $this->createMigration();
+        $this->createSingleStep();
+    }
 
-        $this->createMigration('2017_01_01_000002_create_posts_table.php');
+    /**
+     * Setup seeder test class.
+     */
+    public function seederSetUp()
+    {
+        $this->factorySetUp();
 
-        $this->getMigrator()->run();
+        $this->copySeeders();
+    }
+
+    /**
+     * Copy all seeder file stubs to test app.
+     */
+    protected function copySeeders()
+    {
+        $this->copySeederStub('usersTableSeeder');
+
+        $this->copySeederStub('postsTableSeeder');
+
+        $this->copySeederStub('databaseSeeder');
     }
 
     /**
@@ -311,6 +330,29 @@ class All extends \Codeception\Module
     }
 
     /**
+     * Assert that the users and posts tables are empty.
+     */
+    public function assertTablesEmpty()
+    {
+        $this->assertCount(0, Users::find());
+
+        $this->assertCount(0, Posts::find());
+    }
+
+    /**
+     * Assert tables have given number of records.
+     *
+     * @param int $usersCount
+     * @param int $postsCount
+     */
+    public function assertTablesCount($usersCount, $postsCount)
+    {
+        $this->assertCount($usersCount, Users::find());
+
+        $this->assertCount($postsCount, Posts::find());
+    }
+
+    /**
      * Create all paths necessary for seeding.
      *
      * @param Config $config
@@ -351,6 +393,21 @@ class All extends \Codeception\Module
     {
         $this->writeFile(
             __DIR__."/../../../app/models/{$fileName}.php",
+            file_get_contents(__DIR__."/../../_data/Stubs/{$stubName}.stub")
+        );
+    }
+
+    /**
+     * Copy a seed file to the database/seed directory.
+     *
+     * @param  string $stubName
+     */
+    protected function copySeederStub($stubName)
+    {
+        $fileName = ucfirst($stubName);
+
+        $this->writeFile(
+            __DIR__."/../../../app/database/seeds/{$fileName}.php",
             file_get_contents(__DIR__."/../../_data/Stubs/{$stubName}.stub")
         );
     }

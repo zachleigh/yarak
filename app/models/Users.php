@@ -15,4 +15,8 @@ class Users extends Model
             ['alias' => 'posts']
         );
     }
+
+    public function getID() {
+        return $this->id;
+    }
 }

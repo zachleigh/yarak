@@ -2,10 +2,22 @@
 
 namespace Yarak\DB\Seeders;
 
-interface Seeder
+abstract class Seeder
 {
     /**
-     * Run the database seed.
+     * Run the database seed logic.
      */
-    public function run();
+    abstract public function run();
+
+    /**
+     * Call the run method on the given seeder class.
+     *
+     * @param  string $class
+     */
+    protected function call($class)
+    {
+        $seedRunner = new SeedRunner();
+
+        $seedRunner->run($class);
+    }
 }

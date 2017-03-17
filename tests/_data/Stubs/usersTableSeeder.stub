@@ -1,0 +1,22 @@
+<?php
+
+use App\Models\Posts;
+use App\Models\Users;
+use Yarak\DB\Seeders\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $users = factory(Users::class, 5)->create();
+
+        foreach ($users as $user) {
+            factory(Posts::class, 5)->create(['users_id' => $user->getId()]);
+        }
+    }
+}
