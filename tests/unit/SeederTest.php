@@ -48,7 +48,7 @@ class SeederTest extends \Codeception\Test\Unit
      * @test
      *
      * @expectedException Yarak\Exceptions\FileNotFound
-     * @expectedExceptionMessage The seeder file InvalidSeeder could not be found in /home/zachleigh/Web/Yarak/app/database/seeds/.
+     * @expectedExceptionMessage The seeder file InvalidSeeder could not be found in 
      */
     public function it_throws_exception_for_seeder_file_not_found()
     {
