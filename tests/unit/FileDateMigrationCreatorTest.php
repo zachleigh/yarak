@@ -17,7 +17,7 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_directory_structure_if_not_present()
+    public function migration_creator_creates_directory_structure_if_not_present()
     {
         $this->tester->removeDatabaseDirectory();
         

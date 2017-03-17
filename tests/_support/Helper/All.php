@@ -11,6 +11,7 @@ use Yarak\Config\Config;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
+use Yarak\DB\Seeders\SeederCreator;
 use Yarak\DB\Factories\ModelFactory;
 use Symfony\Component\Filesystem\Filesystem;
 use Yarak\Migrations\FileDate\FileDateMigrator;
@@ -173,6 +174,16 @@ class All extends \Codeception\Module
         if (ucfirst($type) === 'FileDate') {
             return new FileDateMigrationCreator($this->getConfig());
         }
+    }
+
+    /**
+     * Get an instance of the seeder creator.
+     *
+     * @return SeederCreator
+     */
+    public function getSeederCreator()
+    {
+        return new SeederCreator($this->getConfig());
     }
 
     /**

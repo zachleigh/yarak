@@ -1,6 +1,6 @@
 <?php
 
-use Yarak\DB\Seeder;
+use Yarak\DB\Seeders;
 
 class DatabaseSeeder extends Seeder
 {
