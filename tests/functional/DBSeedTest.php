@@ -2,6 +2,7 @@
 
 namespace Yarak\tests\functional;
 
+use Phalcon\DI;
 use Yarak\Yarak;
 
 class DBSeedTest extends \Codeception\Test\Unit
@@ -25,7 +26,7 @@ class DBSeedTest extends \Codeception\Test\Unit
 
         Yarak::call('db:seed', [
             'class' => 'UsersTableSeeder'
-        ]);
+        ], DI::getDefault());
 
         $this->tester->assertTablesCount(5, 25);
     }
@@ -37,7 +38,7 @@ class DBSeedTest extends \Codeception\Test\Unit
     {
         $this->tester->assertTablesEmpty();
 
-        Yarak::call('db:seed');
+        Yarak::call('db:seed', [], DI::getDefault());
 
         $this->tester->assertTablesCount(5, 50);
     }
