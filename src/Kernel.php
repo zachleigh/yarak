@@ -2,6 +2,7 @@
 
 namespace Yarak;
 
+use Yarak\Commands\DBSeed;
 use Yarak\Commands\Migrate;
 use Yarak\Commands\DBGenerate;
 use Yarak\Commands\MakeSeeder;
@@ -57,6 +58,7 @@ class Kernel
     protected function registerCommands(Application $application)
     {
         $application->add(new DBGenerate($this->config));
+        $application->add(new DBSeed($this->config));
         $application->add(new MakeMigration($this->config));
         $application->add(new MakeSeeder($this->config));
         $application->add(new Migrate($this->config));
