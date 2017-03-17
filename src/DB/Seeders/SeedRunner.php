@@ -3,10 +3,15 @@
 namespace Yarak\DB\Seeders;
 
 use Yarak\Config\Config;
+use Yarak\Helpers\Loggable;
 use Yarak\Exceptions\FileNotFound;
 
 class SeedRunner
 {
+    use Loggable;
+
+    protected $loaded = false;
+
     /**
      * Run the given seeder class.
      *
@@ -20,6 +25,10 @@ class SeedRunner
 
         $seederClass = $this->resolveSeeder($config, $class);
 
+        $seederClass->setRunner($this);
+
+        $this->log("<info>Ran seeder class {$class}.</info>");
+
         $seederClass->run();
     }
 
@@ -30,16 +39,20 @@ class SeedRunner
      */
     protected function loadSeeders(Config $config)
     {
-        $seedPath = $config->getSeedDirectory();
+        if (!$this->loaded) {
+            $seedPath = $config->getSeedDirectory();
 
-        $files = scandir($seedPath);
+            $files = scandir($seedPath);
 
-        $files = array_filter($files, function ($file) {
-            return strpos($file, '.php') !== false;
-        });
+            $files = array_filter($files, function ($file) {
+                return strpos($file, '.php') !== false;
+            });
 
-        foreach ($files as $file) {
-            require_once $seedPath.$file;
+            foreach ($files as $file) {
+                require_once $seedPath.$file;
+            }
+
+            $this->loaded = true;
         }
     }
 

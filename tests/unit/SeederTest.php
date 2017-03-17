@@ -46,6 +46,24 @@ class SeederTest extends \Codeception\Test\Unit
 
     /**
      * @test
+     */
+    public function it_logs_seeding_messages()
+    {
+        $seedRunner = new SeedRunner();
+
+        $seedRunner->run('DatabaseSeeder');
+
+        $log = $seedRunner->getLog();
+
+        $this->assertEquals('<info>Ran seeder class DatabaseSeeder.</info>', $log[0]);
+
+        $this->assertEquals('<info>Ran seeder class UsersTableSeeder.</info>', $log[1]);
+
+        $this->assertEquals('<info>Ran seeder class PostsTableSeeder.</info>', $log[2]);
+    }
+
+    /**
+     * @test
      *
      * @expectedException Yarak\Exceptions\FileNotFound
      * @expectedExceptionMessage The seeder file InvalidSeeder could not be found in 

@@ -16,8 +16,11 @@ abstract class Seeder
      */
     protected function call($class)
     {
-        $seedRunner = new SeedRunner();
+        $this->runner->run($class);
+    }
 
-        $seedRunner->run($class);
+    public function setRunner(SeedRunner $runner)
+    {
+        $this->runner = $runner;
     }
 }
