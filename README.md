@@ -23,6 +23,10 @@
       - [Overriding The Default Attributes](#overriding-the-default-attributes)
       - [Using Named Factories](#using-named-factories)
       - [Model Relationships](#model-relationships)
+    - [Database Seeding](#database-seeding)
+      - [Creating Database Seeders](#creating-database-seeders)
+      - [Writing Database Seeders](#writing-database-seeders)
+      - [Using Database Seeders](#using-database-seeders)
   - [Migrations](#migrations)
     - [Generating Migrations](#generating-migrations)
     - [Writing Migrations](#writing-migrations)
@@ -151,6 +155,10 @@ Yarak gives users several helpful database functionalities that make development
     - [Overriding The Default Attributes](#overriding-the-default-attributes)
     - [Using Named Factories](#using-named-factories)
     - [Model Relationships](#model-relationships)
+  - [Database Seeding](#database-seeding)
+    - [Creating Database Seeders](#creating-database-seeders)
+    - [Writing Database Seeders](#writing-database-seeders)
+    - [Using Database Seeders](#using-database-seeders)
 
 #### Generating Directories And Files
 All database and migration functionalites require a standardized file hierarchy. To generate this hirearchy, use the `db:generate` command:
@@ -413,6 +421,90 @@ use App\Models\Posts;
 factory(Posts::class, 'withUser', 20)->create();
 ```
 
+#### Creating Database Seeders
+To create an empty database seeder file, use the `make:seeder` command:
+```
+php yarak make:seeder SeederName
+```
+This will generate an empty seeder file in /database/seeds. It is recommended to create separate seeder files for individual database tables.
+
+#### Writing Database Seeders
+All database seeders must have a `run` method where the database seeding logic is defined. In the run method, do whatever is necessary to fill the database table. Using [model factories](#model-factories) makes this process simple to acheive. An example seeder for a users tables might look like this:
+```php
+use App\Models\Users;
+use Yarak\DB\Seeders\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        factory(Users::class, 5)->create();
+    }
+}
+```
+Running this seeder will create five users in the database.    
+
+The parent Seeder class has a `call` method that will call the `run` method on other seeder files. This allows you to create several seeder files and then make a master DatabaseSeeder that will fill the entire database. We already have a UsersTableSeeder above, so let's now make a PostsTableSeeder:
+```php
+use App\Models\Posts;
+use App\Models\Users;
+use Yarak\DB\Seeders\Seeder;
+
+class PostsTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $allUsers = Users::find();
+
+        foreach ($allUsers as $user) {
+            factory(Posts::class, 5)->create(['users_id' => $user->getId()]);
+        }
+    }
+}
+```
+This will create 5 posts for each of our users. We can then combine our two seeder files in a master DatabaseSeeder file:
+```php
+use Yarak\DB\Seeders\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call(UsersTableSeeder::class);
+        $this->call(PostsTableSeeder::class);
+    }
+}
+```
+This will run each seeder file in the order they are listed. First, we will create five users with the UsersTableSeeder, then for each of those users, we will create five posts with the PostsTableSeeder. 
+
+#### Using Database Seeders
+To run database seeder files, use the `db:seed` command:
+```
+php yarak db:seed SeederName
+```
+The default seeder name is 'DatabaseSeeder'.
+
+You may also use the `--seed` flag with the `migrate --refresh` command:
+```
+php yarak migrate --refresh --seed --class=SeederName
+```
+:exclamation:**Refreshing the database will remove all data from your database.** This command will drop all tables, run all the migrations again, then fill the database using the given seeder class name. The default value for the seeder name is 'DatabaseSeeder'.
+
 ### Migrations
 Yarak migrations provide a simple, clean way to manage your database.
   - [Generating Migrations](#generating-migrations)
@@ -636,6 +728,8 @@ Refreshing the database will rollback all migrations and then re-run them all in
 ```
 php yarak migrate --refresh
 ```
+
+When using the `--refresh` flag, you may also use the `--seed` flag to run all your [database seeders](#database-seeding) after the database has been refreshed. See [Using Database Seeders](#using-database-seeders) for more information.
 
 ### Calling Yarak In Code
 To call a Yarak command from your codebase, use the Yarak::call static method.
