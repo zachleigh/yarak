@@ -19,7 +19,7 @@ abstract class Seeder
     /**
      * Call the run method on the given seeder class.
      *
-     * @param  string $class
+     * @param string $class
      */
     protected function call($class)
     {

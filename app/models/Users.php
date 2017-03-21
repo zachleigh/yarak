@@ -16,7 +16,8 @@ class Users extends Model
         );
     }
 
-    public function getID() {
+    public function getID()
+    {
         return $this->id;
     }
 }

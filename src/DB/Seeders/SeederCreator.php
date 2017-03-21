@@ -29,7 +29,7 @@ class SeederCreator
     /**
      * Create a seeder file with the given name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -40,7 +40,7 @@ class SeederCreator
         $this->makeDirectoryStructure([
             $this->config->getDatabaseDirectory(),
             $seedDir,
-        ]);      
+        ]);
 
         $this->writeFile(
             $path = $seedDir.$name.'.php',
@@ -53,7 +53,7 @@ class SeederCreator
     /**
      * Get the stub and insert the given class name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
