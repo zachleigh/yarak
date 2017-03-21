@@ -3,7 +3,9 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
+use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
+use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +23,9 @@ class Migrate extends YarakCommand
             ->addRollback()
             ->addSteps()
             ->addReset()
-            ->addRefresh();
+            ->addRefresh()
+            ->addSeed()
+            ->addSeedClass();
     }
 
     /**
@@ -78,6 +82,30 @@ class Migrate extends YarakCommand
     }
 
     /**
+     * Add seed option.
+     */
+    protected function addSeed()
+    {
+        return $this->addOption(
+            'seed',
+            null,
+            InputOption::VALUE_NONE,
+            'Seed the database after refreshing.'
+        );
+    }
+
+    protected function addSeedClass()
+    {
+        return $this->addOption(
+            'class',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'The name of the seeder class to run.',
+            'DatabaseSeeder'
+        );
+    }
+
+    /**
      * Execute the command.
      *
      * @param InputInterface  $input
@@ -92,7 +120,7 @@ class Migrate extends YarakCommand
         } elseif ($input->getOption('reset')) {
             $migrator->reset();
         } elseif ($input->getOption('refresh')) {
-            $migrator->refresh();
+            $this->preformRefresh($migrator, $input);
         } else {
             $migrator->run();
         }
@@ -150,5 +178,26 @@ class Migrate extends YarakCommand
             $repositoryType.'MigrationRepository';
 
         return new $repositoryClass();
+    }
+
+    /**
+     * Perform the database refresh.
+     *
+     * @param  Migrator       $migrator
+     * @param  InputInterface $input
+     */
+    protected function preformRefresh(Migrator $migrator, InputInterface $input)
+    {
+        $migrator->refresh();
+
+        if ($input->getOption('seed')) {
+            $seedRunner = new SeedRunner();
+
+            $seedRunner->run($input->getOption('class'));
+        }
+
+        foreach ($seedRunner->getLog() as $message) {
+            $output->writeln($message);
+        }
     }
 }

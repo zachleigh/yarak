@@ -229,4 +229,47 @@ class MigrateTest extends \Codeception\Test\Unit
             'batch'     => 1,
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function it_seeds_the_database_after_refresh()
+    {
+        $this->tester->seederSetUp();
+
+        $this->tester->createTwoSteps();
+
+        Yarak::call('migrate', [
+            '--refresh' => true,
+            '--seed'    => true
+        ], DI::getDefault());
+
+        $this->tester->seeTableExists('users');
+
+        $this->tester->seeTableExists('posts');
+
+        $this->tester->assertTablesCount(5, 50);
+    }
+
+    /**
+     * @test
+     */
+    public function it_seeds_the_database_with_specified_class()
+    {
+        $this->tester->seederSetUp();
+
+        $this->tester->createTwoSteps();
+
+        Yarak::call('migrate', [
+            '--refresh' => true,
+            '--seed'    => true,
+            '--class'   => 'UsersTableSeeder'
+        ], DI::getDefault());
+
+        $this->tester->seeTableExists('users');
+
+        $this->tester->seeTableExists('posts');
+
+        $this->tester->assertTablesCount(5, 25);
+    }
 }

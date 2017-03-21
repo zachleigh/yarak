@@ -12,6 +12,7 @@ use Yarak\Config\Config;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
+use Yarak\Exceptions\WriteError;
 use Yarak\DB\Seeders\SeederCreator;
 use Yarak\DB\Factories\ModelFactory;
 use Symfony\Component\Filesystem\Filesystem;
@@ -540,7 +541,7 @@ class All extends \Codeception\Module
         try {
             file_put_contents($path, $contents);
         } catch (\Exception $e) {
-            throw WriteError::fileWriteFailed($e, $path);
+            throw WriteErpror::fileWriteFailed($e, $path);
         }
     }
 }
