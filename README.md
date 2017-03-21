@@ -421,14 +421,17 @@ use App\Models\Posts;
 factory(Posts::class, 'withUser', 20)->create();
 ```
 
-#### Creating Database Seeders
+#### Database Seeding
+Database seeding gives you the ability to fill your database with testing data in a matter of seconds.
+
+##### Creating Database Seeders
 To create an empty database seeder file, use the `make:seeder` command:
 ```
 php yarak make:seeder SeederName
 ```
 This will generate an empty seeder file in /database/seeds. It is recommended to create separate seeder files for individual database tables.
 
-#### Writing Database Seeders
+##### Writing Database Seeders
 All database seeders must have a `run` method where the database seeding logic is defined. In the run method, do whatever is necessary to fill the database table. Using [model factories](#model-factories) makes this process simple to acheive. An example seeder for a users tables might look like this:
 ```php
 use App\Models\Users;
@@ -492,7 +495,7 @@ class DatabaseSeeder extends Seeder
 ```
 This will run each seeder file in the order they are listed. First, we will create five users with the UsersTableSeeder, then for each of those users, we will create five posts with the PostsTableSeeder. 
 
-#### Using Database Seeders
+##### Using Database Seeders
 To run database seeder files, use the `db:seed` command:
 ```
 php yarak db:seed SeederName
