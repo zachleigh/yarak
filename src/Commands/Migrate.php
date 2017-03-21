@@ -120,7 +120,7 @@ class Migrate extends YarakCommand
         } elseif ($input->getOption('reset')) {
             $migrator->reset();
         } elseif ($input->getOption('refresh')) {
-            $this->preformRefresh($migrator, $input);
+            $this->preformRefresh($migrator, $input, $output);
         } else {
             $migrator->run();
         }
@@ -183,21 +183,25 @@ class Migrate extends YarakCommand
     /**
      * Perform the database refresh.
      *
-     * @param  Migrator       $migrator
-     * @param  InputInterface $input
+     * @param Migrator        $migrator
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      */
-    protected function preformRefresh(Migrator $migrator, InputInterface $input)
-    {
+    protected function preformRefresh(
+        Migrator $migrator,
+        InputInterface $input,
+        OutputInterface $output
+    ) {
         $migrator->refresh();
 
         if ($input->getOption('seed')) {
             $seedRunner = new SeedRunner();
 
             $seedRunner->run($input->getOption('class'));
-        }
 
-        foreach ($seedRunner->getLog() as $message) {
-            $output->writeln($message);
+            foreach ($seedRunner->getLog() as $message) {
+                $output->writeln($message);
+            }
         }
     }
 }

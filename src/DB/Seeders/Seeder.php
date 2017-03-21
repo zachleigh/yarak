@@ -5,6 +5,13 @@ namespace Yarak\DB\Seeders;
 abstract class Seeder
 {
     /**
+     * SeedRunner instance.
+     *
+     * @var SeedRunner
+     */
+    protected $runner;
+
+    /**
      * Run the database seed logic.
      */
     abstract public function run();
@@ -19,6 +26,11 @@ abstract class Seeder
         $this->runner->run($class);
     }
 
+    /**
+     * Set SeedRunner instance on object.
+     *
+     * @param SeedRunner $runner
+     */
     public function setRunner(SeedRunner $runner)
     {
         $this->runner = $runner;

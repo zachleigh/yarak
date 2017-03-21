@@ -10,6 +10,11 @@ class SeedRunner
 {
     use Loggable;
 
+    /**
+     * If true, seeders have been required.
+     *
+     * @var boolean
+     */
     protected $loaded = false;
 
     /**
