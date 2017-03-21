@@ -2,8 +2,6 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Config\Config;
-use Yarak\DB\DirectoryCreator;
 use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

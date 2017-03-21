@@ -13,7 +13,7 @@ class SeedRunner
     /**
      * If true, seeders have been required.
      *
-     * @var boolean
+     * @var bool
      */
     protected $loaded = false;
 
@@ -39,7 +39,7 @@ class SeedRunner
 
     /**
      * Load all the seeders in the seeders directory.
-     * 
+     *
      * @param Config $config
      */
     protected function loadSeeders(Config $config)
