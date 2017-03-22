@@ -1,6 +1,6 @@
 {
     "name": "zachleigh/yarak",
-    "description": "Devtools for Phalcon",
+    "description": "Laravel inspired devtools for Phalcon. Database migrations, model factories and database seeders.",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -9,7 +9,7 @@
             "email": "zachleigh@fastmail.jp"
         }
     ],
-    "keywords": ["phalcon", "devtools", "migrations", "yarak"],
+    "keywords": ["phalcon", "devtools", "migrations", "factories", "seeders", "database", "yarak"],
     "homepage": "https://github.com/zachlegih/yarak",
     "minimum-stability": "stable",
     "require": {
