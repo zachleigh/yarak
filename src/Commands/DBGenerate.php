@@ -37,9 +37,5 @@ class DBGenerate extends YarakCommand
         $creator = new DirectoryCreator($config, $symfonyOutput);
 
         $creator->create();
-
-        foreach ($creator->getLog() as $message) {
-            $output->writeln($message);
-        }
     }
 }

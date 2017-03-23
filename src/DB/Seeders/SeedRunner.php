@@ -3,19 +3,34 @@
 namespace Yarak\DB\Seeders;
 
 use Yarak\Config\Config;
-use Yarak\Helpers\Loggable;
+use Yarak\Output\Output;
 use Yarak\Exceptions\FileNotFound;
 
 class SeedRunner
 {
-    use Loggable;
-
     /**
      * If true, seeders have been required.
      *
      * @var bool
      */
     protected $loaded = false;
+
+    /**
+     * Output strategy.
+     *
+     * @var Output
+     */
+    protected $output;
+
+    /**
+     * Construct.
+     *
+     * @param Output $output
+     */
+    public function __construct(Output $output)
+    {
+        $this->output = $output;
+    }
 
     /**
      * Run the given seeder class.
@@ -30,9 +45,9 @@ class SeedRunner
 
         $seederClass = $this->resolveSeeder($config, $class);
 
-        $seederClass->setRunner($this);
+        $seederClass->setRunner($this)->setOutput($this->output);
 
-        $this->log("<info>Ran seeder class {$class}.</info>");
+        $this->output->writeInfo("Running seeder class {$class}.");
 
         $seederClass->run();
     }

@@ -51,11 +51,23 @@ class Logger implements Output
         $this->write("<comment>{$message}</comment>");
     }
 
+    /**
+     * Return the log array.
+     *
+     * @return array
+     */
     public function getLog()
     {
         return $this->log;
     }
 
+    /**
+     * Return true if log contains message.
+     *
+     * @param  string  $message
+     *
+     * @return boolean
+     */
     public function hasMessage($message)
     {
         return in_array($message, $this->getLog());

@@ -2,6 +2,8 @@
 
 namespace Yarak\DB\Seeders;
 
+use Yarak\Output\Output;
+
 abstract class Seeder
 {
     /**
@@ -10,6 +12,13 @@ abstract class Seeder
      * @var SeedRunner
      */
     protected $runner;
+
+    /**
+     * Output strategy.
+     *
+     * @var Output
+     */
+    protected $output;
 
     /**
      * Run the database seed logic.
@@ -30,9 +39,27 @@ abstract class Seeder
      * Set SeedRunner instance on object.
      *
      * @param SeedRunner $runner
+     *
+     * @return $this
      */
     public function setRunner(SeedRunner $runner)
     {
         $this->runner = $runner;
+
+        return $this;
+    }
+
+    /**
+     * Set output strategy on object.
+     *
+     * @param Output $output
+     *
+     * @return $this
+     */
+    public function setOutput(Output $output)
+    {
+        $this->output = $output;
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Yarak\Commands;
 
+use Yarak\Output\SymfonyOutput;
 use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,7 +34,9 @@ class DBSeed extends YarakCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $seedRunner = new SeedRunner();
+        $symfonyOutput = new SymfonyOutput($output);
+
+        $seedRunner = new SeedRunner($symfonyOutput);
 
         $seedRunner->run($input->getArgument('class'));
 
