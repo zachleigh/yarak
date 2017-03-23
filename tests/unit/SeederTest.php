@@ -67,12 +67,6 @@ class SeederTest extends \Codeception\Test\Unit
         $this->assertTrue(
             $logger->hasMessage('<info>Running seeder class PostsTableSeeder.</info>')
         );
-
-        // $this->assertEquals('<info>Ran seeder class DatabaseSeeder.</info>', $log[0]);
-
-        // $this->assertEquals('<info>Ran seeder class UsersTableSeeder.</info>', $log[1]);
-
-        // $this->assertEquals('<info>Ran seeder class PostsTableSeeder.</info>', $log[2]);
     }
 
     /**

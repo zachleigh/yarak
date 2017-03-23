@@ -4,7 +4,7 @@ namespace Yarak\Output;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SymfonyOutput implements Output
+class SymfonyOutput extends Output
 {
     /**
      * Symfony command output.
@@ -31,35 +31,5 @@ class SymfonyOutput implements Output
     public function write($message)
     {
         $this->output->writeln($message);
-    }
-
-    /**
-     * Write an info message.
-     *
-     * @param string $message
-     */
-    public function writeInfo($message)
-    {
-        $this->write("<info>{$message}</info>");
-    }
-
-    /**
-     * Write an error message.
-     *
-     * @param string $message
-     */
-    public function writeError($message)
-    {
-        $this->write("<error>{$message}</error>");
-    }
-
-    /**
-     * Write a comment message.
-     *
-     * @param string $message
-     */
-    public function writeComment($message)
-    {
-        $this->write("<comment>{$message}</comment>");
     }
 }
