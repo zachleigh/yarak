@@ -9,6 +9,7 @@ use App\Models\Posts;
 use App\Models\Users;
 use Codeception\Actor;
 use Yarak\Config\Config;
+use Yarak\Output\Logger;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
 use Yarak\DB\ConnectionResolver;
@@ -121,11 +122,13 @@ class All extends \Codeception\Module
     /**
      * Get an instance of DirectoryCreator.
      *
+     * @param Logger $logger
+     *
      * @return DirectoryCreator
      */
-    public function getDirectoryCreator()
+    public function getDirectoryCreator(Logger $logger)
     {
-        return new DirectoryCreator($this->getConfig());
+        return new DirectoryCreator($this->getConfig(), $logger);
     }
 
     /**

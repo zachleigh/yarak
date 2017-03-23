@@ -2,6 +2,8 @@
 
 namespace Yarak\tests\unit;
 
+use Yarak\Output\Logger;
+
 class DirectoryCreatorTest extends \Codeception\Test\Unit
 {
     /**
@@ -23,7 +25,11 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
 
         $migrationsDir = $this->tester->getConfig()->getMigrationDirectory();
 
-        $this->assertDirectoryCreatorCreatesPath($migrationsDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath($migrationsDir);
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created migrations directory.</info>')
+        );
     }
 
     /**
@@ -35,7 +41,11 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
 
         $seedsDir = $this->tester->getConfig()->getSeedDirectory();
 
-        $this->assertDirectoryCreatorCreatesPath($seedsDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath($seedsDir);
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created seeds directory.</info>')
+        );
     }
 
     /**
@@ -47,7 +57,11 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
 
         $factoryDir = $this->tester->getConfig()->getFactoryDirectory();
 
-        $this->assertDirectoryCreatorCreatesPath($factoryDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath($factoryDir);
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created factories directory.</info>')
+        );
     }
 
     /**
@@ -61,7 +75,11 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
 
         $this->tester->getFilesystem()->remove($fileDir);
 
-        $this->assertDirectoryCreatorCreatesPath($fileDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath($fileDir);
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created ModelFactory file.</info>')
+        );
     }
 
     /**
@@ -75,7 +93,11 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
 
         $this->tester->getFilesystem()->remove($fileDir);
 
-        $this->assertDirectoryCreatorCreatesPath($fileDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath($fileDir);
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created DatabaseSeeder file.</info>')
+        );
     }
 
     /**
@@ -87,8 +109,12 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
     {
         $this->assertFileNotExists($path);
 
-        $this->tester->getDirectoryCreator()->create();
+        $logger = new Logger();
+
+        $this->tester->getDirectoryCreator($logger)->create();
 
         $this->assertFileExists($path);
+
+        return $logger;
     }
 }

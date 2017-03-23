@@ -3,12 +3,12 @@
 namespace Yarak\DB;
 
 use Yarak\Config\Config;
-use Yarak\Helpers\Loggable;
+use Yarak\Output\Output;
 use Yarak\Helpers\Filesystem;
 
 class DirectoryCreator
 {
-    use Filesystem, Loggable;
+    use Filesystem;
 
     /**
      * Yarak config.
@@ -18,13 +18,22 @@ class DirectoryCreator
     protected $config;
 
     /**
+     * Output strategy.
+     *
+     * @var Output
+     */
+    protected $output;
+
+    /**
      * Construct.
      *
      * @param Config $config
+     * @param Output $output
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, Output $output)
     {
         $this->config = $config;
+        $this->output = $output;
     }
 
     /**
@@ -48,7 +57,11 @@ class DirectoryCreator
             $this->config->getAllDatabaseDirectories()
         );
 
-        $this->log('<info>Created all directories.</info>');
+        $this->output->writeInfo('Created migrations directory.');
+
+        $this->output->writeInfo('Created seeds directory.');
+
+        $this->output->writeInfo('Created factories directory.');
     }
 
     /**
@@ -63,7 +76,7 @@ class DirectoryCreator
             $stub
         );
 
-        $this->log('<info>Created ModelFactory file.</info>');
+        $this->output->writeInfo('Created ModelFactory file.');
     }
 
     /**
@@ -78,6 +91,6 @@ class DirectoryCreator
             $stub
         );
 
-        $this->log('<info>Created DatabaseSeeder file.</info>');
+        $this->output->writeInfo('Created DatabaseSeeder file.');
     }
 }

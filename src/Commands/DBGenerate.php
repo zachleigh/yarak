@@ -4,6 +4,7 @@ namespace Yarak\Commands;
 
 use Yarak\Config\Config;
 use Yarak\DB\DirectoryCreator;
+use Yarak\Output\SymfonyOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,7 +32,9 @@ class DBGenerate extends YarakCommand
     {
         $config = Config::getInstance($this->configArray);
 
-        $creator = new DirectoryCreator($config);
+        $symfonyOutput = new SymfonyOutput($output);
+
+        $creator = new DirectoryCreator($config, $symfonyOutput);
 
         $creator->create();
 
