@@ -2,6 +2,8 @@
 
 namespace Yarak\tests\unit;
 
+use Yarak\Output\Logger;
+
 class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
 {
     /**
@@ -98,5 +100,23 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
         $this->assertContains("'test',", $data);
 
         $this->assertContains("\$connection->dropTable('test');", $data);
+    }
+
+    /**
+     * @test
+     */
+    public function it_outputs_success_message()
+    {
+        $logger = new Logger();
+
+        $path = $this->tester
+            ->getMigrationCreator('fileDate', $logger)
+            ->create('create_test_table', 'test');
+
+        $this->assertCount(1, $logger->getLog());
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Successfully created migration create_test_table.</info>')
+        );
     }
 }

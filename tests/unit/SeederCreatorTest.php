@@ -2,6 +2,8 @@
 
 namespace Yarak\tests\unit;
 
+use Yarak\Output\Logger;
+
 class SeederCreatorTest extends \Codeception\Test\Unit
 {
     /**
@@ -38,11 +40,29 @@ class SeederCreatorTest extends \Codeception\Test\Unit
     public function it_inserts_correct_class_name()
     {
         $path = $this->tester
-            ->getMigrationCreator()
+            ->getSeederCreator()
             ->create('UserTableSeeder');
 
         $data = file_get_contents($path);
 
         $this->assertContains('UserTableSeeder', $data);
+    }
+
+    /**
+     * @test
+     */
+    public function it_outputs_success_message()
+    {
+        $logger = new Logger();
+
+        $path = $this->tester
+            ->getSeederCreator($logger)
+            ->create('UserTableSeeder');
+
+        $this->assertCount(1, $logger->getLog());
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Successfully created seeder UserTableSeeder.</info>')
+        );
     }
 }

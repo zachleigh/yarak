@@ -3,6 +3,7 @@
 namespace Yarak\DB\Seeders;
 
 use Yarak\Config\Config;
+use Yarak\Output\Output;
 use Yarak\Helpers\Filesystem;
 
 class SeederCreator
@@ -17,13 +18,22 @@ class SeederCreator
     protected $config;
 
     /**
+     * Output strategy.
+     *
+     * @var Output
+     */
+    protected $output;
+
+    /**
      * Construct.
      *
      * @param Config $config
+     * @param Output $output
      */
-    public function __construct(Config $config)
+    public function __construct(Config $config, Output $output)
     {
         $this->config = $config;
+        $this->output = $output;
     }
 
     /**
@@ -46,6 +56,8 @@ class SeederCreator
             $path = $seedDir.$name.'.php',
             $this->getStub($name)
         );
+
+        $this->output->writeInfo("Successfully created seeder {$name}.");
 
         return $path;
     }

@@ -156,6 +156,9 @@ class All extends \Codeception\Module
     /**
      * Get the migrator.
      *
+     * @param string $type Type of migrator.
+     * @param Logger $logger
+     *
      * @return Yarak\Migrations\Migrator
      */
     public function getMigrator($type = 'fileDate', Logger $logger = null)
@@ -177,23 +180,36 @@ class All extends \Codeception\Module
     /**
      * Get an instance of the migration creator.
      *
+     * @param string $type Type of migration creator.
+     * @param Logger $logger
+     *
      * @return Yarak\Migrations\MigrationCreator
      */
-    public function getMigrationCreator($type = 'fileDate')
+    public function getMigrationCreator($type = 'fileDate', Logger $logger = null)
     {
+        if (!$logger) {
+            $logger = new Logger();
+        }
+        
         if (ucfirst($type) === 'FileDate') {
-            return new FileDateMigrationCreator($this->getConfig());
+            return new FileDateMigrationCreator($this->getConfig(), $logger);
         }
     }
 
     /**
      * Get an instance of the seeder creator.
      *
+     * @param Logger $logger
+     *
      * @return SeederCreator
      */
-    public function getSeederCreator()
+    public function getSeederCreator(Logger $logger = null)
     {
-        return new SeederCreator($this->getConfig());
+        if (!$logger) {
+            $logger = new Logger();
+        }
+
+        return new SeederCreator($this->getConfig(), $logger);
     }
 
     /**

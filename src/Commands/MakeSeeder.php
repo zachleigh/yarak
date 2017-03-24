@@ -3,6 +3,7 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
+use Yarak\Output\SymfonyOutput;
 use Yarak\DB\Seeders\SeederCreator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,10 +37,10 @@ class MakeSeeder extends YarakCommand
 
         $config = Config::getInstance($this->configArray);
 
-        $creator = new SeederCreator($config);
+        $symfonyOutput = new SymfonyOutput($output);
+
+        $creator = new SeederCreator($config, $symfonyOutput);
 
         $creator->create($name);
-
-        $output->writeln("<info>Successfully created seeder {$name}.</info>");
     }
 }

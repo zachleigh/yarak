@@ -3,6 +3,7 @@
 namespace Yarak\Migrations;
 
 use Yarak\Config\Config;
+use Yarak\Output\Output;
 
 interface MigrationCreator
 {
@@ -10,8 +11,9 @@ interface MigrationCreator
      * Construct.
      *
      * @param Config $config
+     * @param Output $output
      */
-    public function __construct(Config $config);
+    public function __construct(Config $config, Output $output);
 
     /**
      * Create a migration file.
