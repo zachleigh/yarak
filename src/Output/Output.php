@@ -9,7 +9,7 @@ abstract class Output
      *
      * @param string $message
      */
-    public abstract function write($message);
+    abstract public function write($message);
 
     /**
      * Write an info message.

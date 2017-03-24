@@ -135,7 +135,7 @@ class Migrate extends YarakCommand
     /**
      * Get an instance of the migrator.
      *
-     * @param SymfonyOutput $output
+     * @param SymfonyOutput $symfonyOutput
      *
      * @return Migrator
      */

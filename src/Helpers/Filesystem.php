@@ -2,7 +2,6 @@
 
 namespace Yarak\Helpers;
 
-use Yarak\Output\Output;
 use Yarak\Exceptions\WriteError;
 
 trait Filesystem
