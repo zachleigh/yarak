@@ -4,6 +4,7 @@ namespace Yarak\tests\unit;
 
 use Phalcon\DI;
 use Yarak\Yarak;
+use Yarak\Output\Logger;
 
 class FileDateMigratorTest extends \Codeception\Test\Unit
 {
@@ -40,15 +41,15 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_logs_message_if_no_pending_migrations()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
 
-        $migrator->run();
+        $this->tester->getMigrator('fileDate', $logger)->run();
 
-        $log = $migrator->getLog();
+        $this->assertCount(1, $logger->getLog());
 
-        $this->assertCount(1, $log);
-
-        $this->assertContains('<info>No pending migrations to run.</info>', $log);
+        $this->assertTrue(
+            $logger->hasMessage('<info>No pending migrations to run.</info>')
+        );
     }
 
     /**
@@ -101,17 +102,14 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
     {
         $this->tester->createMigration();
 
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
 
-        $migrator->run();
+        $this->tester->getMigrator('fileDate', $logger)->run();
 
-        $log = $migrator->getLog();
+        $this->assertCount(1, $logger->getLog());
 
-        $this->assertCount(1, $log);
-
-        $this->assertContains(
-            '<info>Migrated 2017_01_01_000001_create_users_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Migrated 2017_01_01_000001_create_users_table.</info>')
         );
     }
 
@@ -122,28 +120,24 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
     {
         $this->tester->createMigration();
 
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $migrator->run();
 
-        $log = $migrator->getLog();
+        $this->assertCount(1, $logger->getLog());
 
-        $this->assertCount(1, $log);
-
-        $this->assertContains(
-            '<info>Migrated 2017_01_01_000001_create_users_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Migrated 2017_01_01_000001_create_users_table.</info>')
         );
 
         $migrator->run();
 
-        $log = $migrator->getLog();
+        $this->assertCount(2, $logger->getLog());
 
-        $this->assertCount(2, $log);
-
-        $this->assertContains(
-            '<info>No pending migrations to run.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>No pending migrations to run.</info>')
         );
     }
 
@@ -152,7 +146,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_runs_multiple_migrations()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createSingleStep($migrator);
 
@@ -160,18 +156,14 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableExists('posts');
 
-        $log = $migrator->getLog();
+        $this->assertCount(2, $logger->getLog());
 
-        $this->assertCount(2, $log);
-
-        $this->assertContains(
-            '<info>Migrated 2017_01_01_000001_create_users_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Migrated 2017_01_01_000001_create_users_table.</info>')
         );
 
-        $this->assertContains(
-            '<info>Migrated 2017_01_01_000002_create_posts_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Migrated 2017_01_01_000002_create_posts_table.</info>')
         );
     }
 
@@ -216,20 +208,20 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_inserts_migration_repository_records_in_order()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createSingleStep($migrator);
 
-        $log = $migrator->getLog();
-
         $this->assertEquals(
             '<info>Migrated 2017_01_01_000001_create_users_table.</info>',
-            $log[0]
+            $logger->getLog(0)
         );
 
         $this->assertEquals(
             '<info>Migrated 2017_01_01_000002_create_posts_table.</info>',
-            $log[1]
+            $logger->getLog(1)
         );
     }
 
@@ -238,15 +230,15 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_logs_message_if_nothing_to_rollback()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
 
-        $migrator->rollback();
+        $migrator = $this->tester->getMigrator('fileDate', $logger)->rollback();
 
-        $log = $migrator->getLog();
+        $this->assertCount(1, $logger->getLog());
 
-        $this->assertCount(1, $log);
-
-        $this->assertContains('<info>Nothing to rollback.</info>', $log);
+        $this->assertTrue(
+            $logger->hasMessage('<info>Nothing to rollback.</info>')
+        );
     }
 
     /**
@@ -256,7 +248,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
     {
         $this->tester->createMigration();
 
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $migrator->run();
 
@@ -266,13 +260,10 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableDoesntExist('users');
 
-        $log = $migrator->getLog();
+        $this->assertCount(2, $logger->getLog());
 
-        $this->assertCount(2, $log);
-
-        $this->assertContains(
-            '<info>Rolled back 2017_01_01_000001_create_users_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Rolled back 2017_01_01_000001_create_users_table.</info>')
         );
     }
 
@@ -281,7 +272,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_rollsback_multiple_migrations_in_single_step()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createSingleStep($migrator);
 
@@ -295,18 +288,14 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableDoesntExist('posts');
 
-        $log = $migrator->getLog();
+        $this->assertCount(4, $logger->getLog());
 
-        $this->assertCount(4, $log);
-
-        $this->assertContains(
-            '<info>Rolled back 2017_01_01_000002_create_posts_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Rolled back 2017_01_01_000002_create_posts_table.</info>')
         );
 
-        $this->assertContains(
-            '<info>Rolled back 2017_01_01_000001_create_users_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Rolled back 2017_01_01_000001_create_users_table.</info>')
         );
     }
 
@@ -315,11 +304,13 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_removes_filename_record_when_migration_is_rolledback()
     {
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
+
         $path = $this->tester->createMigration();
 
         $fileName = $this->tester->getFileNameFromPath($path);
-
-        $migrator = $this->tester->getMigrator();
 
         $migrator->run();
 
@@ -339,7 +330,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_rolls_back_a_single_step_by_default()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createTwoSteps($migrator);
 
@@ -351,13 +344,10 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableDoesntExist('posts');
 
-        $log = $migrator->getLog();
+        $this->assertCount(3, $logger->getLog());
 
-        $this->assertCount(3, $log);
-
-        $this->assertContains(
-            '<info>Rolled back 2017_01_01_000002_create_posts_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Rolled back 2017_01_01_000002_create_posts_table.</info>')
         );
     }
 
@@ -366,7 +356,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_rolls_back_multiple_steps()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createTwoSteps($migrator);
 
@@ -376,18 +368,14 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableDoesntExist('posts');
 
-        $log = $migrator->getLog();
+        $this->assertCount(4, $logger->getLog());
 
-        $this->assertCount(4, $log);
-
-        $this->assertContains(
-            '<info>Rolled back 2017_01_01_000002_create_posts_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Rolled back 2017_01_01_000002_create_posts_table.</info>')
         );
 
-        $this->assertContains(
-            '<info>Rolled back 2017_01_01_000001_create_users_table.</info>',
-            $log
+        $this->assertTrue(
+            $logger->hasMessage('<info>Rolled back 2017_01_01_000001_create_users_table.</info>')
         );
     }
 
@@ -396,22 +384,22 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_rolls_back_migrations_in_reverse_order()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createSingleStep($migrator);
 
         $migrator->rollback();
 
-        $log = $migrator->getLog();
-
         $this->assertEquals(
             '<info>Rolled back 2017_01_01_000002_create_posts_table.</info>',
-            $log[2]
+            $logger->getLog(2)
         );
 
         $this->assertEquals(
             '<info>Rolled back 2017_01_01_000001_create_users_table.</info>',
-            $log[3]
+            $logger->getLog(3)
         );
     }
 
@@ -420,7 +408,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_only_removes_rolled_back_migrations_from_migrations_table()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createTwoSteps($migrator);
 
@@ -448,7 +438,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_resets_the_database()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createTwoSteps($migrator);
 
@@ -462,9 +454,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableDoesntExist('posts');
 
-        $log = $migrator->getLog();
-
-        $this->assertCount(4, $log);
+        $this->assertCount(4, $logger->getLog());
     }
 
     /**
@@ -472,7 +462,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_refreshes_the_database_when_nothing_to_rollback()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createSingleStep($migrator);
 
@@ -494,7 +486,9 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
      */
     public function it_refreshes_the_database()
     {
-        $migrator = $this->tester->getMigrator();
+        $logger = new Logger();
+
+        $migrator = $this->tester->getMigrator('fileDate', $logger);
 
         $this->tester->createTwoSteps($migrator);
 
@@ -508,9 +502,7 @@ class FileDateMigratorTest extends \Codeception\Test\Unit
 
         $this->tester->seeTableExists('posts');
 
-        $log = $migrator->getLog();
-
-        $this->assertCount(6, $log);
+        $this->assertCount(6, $logger->getLog());
     }
 
     /**

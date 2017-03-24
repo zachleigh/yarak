@@ -24,11 +24,17 @@ class Logger extends Output
     /**
      * Return the log array.
      *
+     * @param int $index
+     *
      * @return array
      */
-    public function getLog()
+    public function getLog($index = null)
     {
-        return $this->log;
+        if (is_null($index)) {
+            return $this->log;
+        }
+        
+        return $this->log[$index];
     }
 
     /**

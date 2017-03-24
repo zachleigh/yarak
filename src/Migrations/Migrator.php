@@ -3,6 +3,7 @@
 namespace Yarak\Migrations;
 
 use Yarak\Config\Config;
+use Yarak\Output\Output;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Migrations\Repositories\MigrationRepository;
 
@@ -14,11 +15,13 @@ interface Migrator
      * @param Config              $config
      * @param ConnectionResolver  $resolver
      * @param MigrationRepository $repository
+     * @param Output              $output
      */
     public function __construct(
         Config $config,
         ConnectionResolver $resolver,
-        MigrationRepository $repository
+        MigrationRepository $repository,
+        Output $output
     );
 
     /**
@@ -64,11 +67,4 @@ interface Migrator
      * @return \Phalcon\Db\Adapter\Pdo
      */
     public function getConnection();
-
-    /**
-     * Return the object log.
-     *
-     * @return array
-     */
-    public function getLog();
 }

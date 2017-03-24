@@ -4,7 +4,7 @@ namespace Yarak\Migrations\FileDate;
 
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
-use Yarak\Helpers\Loggable;
+use Yarak\Output\Output;
 use Yarak\Helpers\Filesystem;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
@@ -13,7 +13,7 @@ use Yarak\Migrations\Repositories\MigrationRepository;
 
 class FileDateMigrator implements Migrator
 {
-    use Filesystem, Loggable;
+    use Filesystem;
 
     /**
      * Yarak config.
@@ -44,20 +44,30 @@ class FileDateMigrator implements Migrator
     protected $connection = null;
 
     /**
+     * Output strategy.
+     *
+     * @var Output
+     */
+    protected $output;
+
+    /**
      * Construct.
      *
      * @param Config              $config
      * @param ConnectionResolver  $resolver
      * @param MigrationRepository $repository
+     * @param Output              $output
      */
     public function __construct(
         Config $config,
         ConnectionResolver $resolver,
-        MigrationRepository $repository
+        MigrationRepository $repository,
+        Output $output
     ) {
         $this->config = $config;
         $this->resolver = $resolver;
         $this->repository = $repository;
+        $this->output = $output;
     }
 
     /**
@@ -117,7 +127,7 @@ class FileDateMigrator implements Migrator
     protected function runPending(array $migrations)
     {
         if (count($migrations) === 0) {
-            $this->log('<info>No pending migrations to run.</info>');
+            $this->output->writeInfo('No pending migrations to run.');
 
             return [];
         }
@@ -144,7 +154,7 @@ class FileDateMigrator implements Migrator
     protected function runUp($migration, $batch)
     {
         if ($this->performRun($migration, 'up') === true) {
-            $this->log("<info>Migrated {$migration}.</info>");
+            $this->output->writeInfo("Migrated {$migration}.");
 
             $this->repository->insertRecord($migration, $batch);
         }
@@ -167,7 +177,7 @@ class FileDateMigrator implements Migrator
 
             return true;
         } catch (\Exception $e) {
-            $this->log("<error>{$e->getMessage()}</error>");
+            $this->output->writeError($e->getMessage());
 
             return false;
         }
@@ -223,7 +233,7 @@ class FileDateMigrator implements Migrator
     protected function runRollback(array $migrations)
     {
         if (count($migrations) === 0) {
-            $this->log('<info>Nothing to rollback.</info>');
+            $this->output->writeInfo('Nothing to rollback.');
 
             return [];
         }
@@ -247,7 +257,7 @@ class FileDateMigrator implements Migrator
     protected function runDown($migration)
     {
         if ($this->performRun($migration, 'down') === true) {
-            $this->log("<info>Rolled back {$migration}.</info>");
+            $this->output->writeInfo("Rolled back {$migration}.");
 
             $this->repository->deleteRecord($migration);
         }

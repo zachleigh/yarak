@@ -158,13 +158,18 @@ class All extends \Codeception\Module
      *
      * @return Yarak\Migrations\Migrator
      */
-    public function getMigrator($type = 'fileDate')
+    public function getMigrator($type = 'fileDate', Logger $logger = null)
     {
+        if (!$logger) {
+            $logger = new Logger();
+        }
+
         if (ucfirst($type) === 'FileDate') {
             return new FileDateMigrator(
                 $this->getConfig(),
                 new ConnectionResolver(),
-                new DatabaseMigrationRepository()
+                new DatabaseMigrationRepository(),
+                $logger
             );
         }
     }

@@ -4,6 +4,7 @@ namespace Yarak\Commands;
 
 use Yarak\Config\Config;
 use Yarak\Migrations\Migrator;
+use Yarak\Output\SymfonyOutput;
 use Yarak\DB\ConnectionResolver;
 use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputOption;
@@ -94,6 +95,9 @@ class Migrate extends YarakCommand
         );
     }
 
+    /**
+     * Add seed class option.
+     */
     protected function addSeedClass()
     {
         return $this->addOption(
@@ -113,29 +117,29 @@ class Migrate extends YarakCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $migrator = $this->getMigrator();
+        $symfonyOutput = new SymfonyOutput($output);
+
+        $migrator = $this->getMigrator($symfonyOutput);
 
         if ($input->getOption('rollback')) {
             $migrator->rollback($input->getOption('steps'));
         } elseif ($input->getOption('reset')) {
             $migrator->reset();
         } elseif ($input->getOption('refresh')) {
-            $this->preformRefresh($migrator, $input, $output);
+            $this->preformRefresh($migrator, $input, $symfonyOutput);
         } else {
             $migrator->run();
-        }
-
-        foreach ($migrator->getLog() as $message) {
-            $output->writeln($message);
         }
     }
 
     /**
      * Get an instance of the migrator.
      *
+     * @param SymfonyOutput $output
+     *
      * @return Migrator
      */
-    protected function getMigrator()
+    protected function getMigrator(SymfonyOutput $symfonyOutput)
     {
         $config = Config::getInstance($this->configArray);
 
@@ -144,7 +148,8 @@ class Migrate extends YarakCommand
         return new $migratorClassName(
             $config,
             new ConnectionResolver(),
-            $this->getRepository($config)
+            $this->getRepository($config),
+            $symfonyOutput
         );
     }
 
@@ -183,25 +188,21 @@ class Migrate extends YarakCommand
     /**
      * Perform the database refresh.
      *
-     * @param Migrator        $migrator
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param Migrator       $migrator
+     * @param InputInterface $input
+     * @param Output         $symfonyOutput
      */
     protected function preformRefresh(
         Migrator $migrator,
         InputInterface $input,
-        OutputInterface $output
+        SymfonyOutput $symfonyOutput
     ) {
         $migrator->refresh();
 
         if ($input->getOption('seed')) {
-            $seedRunner = new SeedRunner();
+            $seedRunner = new SeedRunner($symfonyOutput);
 
             $seedRunner->run($input->getOption('class'));
-
-            foreach ($seedRunner->getLog() as $message) {
-                $output->writeln($message);
-            }
         }
     }
 }

@@ -39,9 +39,5 @@ class DBSeed extends YarakCommand
         $seedRunner = new SeedRunner($symfonyOutput);
 
         $seedRunner->run($input->getArgument('class'));
-
-        foreach ($seedRunner->getLog() as $message) {
-            $output->writeln($message);
-        }
     }
 }
