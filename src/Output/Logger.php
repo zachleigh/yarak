@@ -33,16 +33,16 @@ class Logger extends Output
         if (is_null($index)) {
             return $this->log;
         }
-        
+
         return $this->log[$index];
     }
 
     /**
      * Return true if log contains message.
      *
-     * @param  string  $message
+     * @param string $message
      *
-     * @return boolean
+     * @return bool
      */
     public function hasMessage($message)
     {
