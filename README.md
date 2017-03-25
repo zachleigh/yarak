@@ -1,5 +1,5 @@
 # Yarak   
-[![Latest Stable Version](https://poser.pugx.org/zachleigh/yarak/v/stable)](https://packagist.org/packages/spatie/laravel-backup)
+[![Latest Stable Version](https://poser.pugx.org/zachleigh/yarak/v/stable)](https://packagist.org/packages/zachleigh/yarak)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/yarak)
 [![Build Status](https://img.shields.io/travis/zachleigh/yarak/master.svg)](https://travis-ci.org/zachleigh/yarak)
 [![Quality Score](https://img.shields.io/scrutinizer/g/zachleigh/yarak.svg)](https://scrutinizer-ci.com/g/zachleigh/yarak/)
