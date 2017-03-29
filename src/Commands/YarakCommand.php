@@ -28,7 +28,6 @@ class YarakCommand extends Command
         $this->configArray = $configArray;
     }
 
-
     /**
      * Get an instance of the migrator.
      *
