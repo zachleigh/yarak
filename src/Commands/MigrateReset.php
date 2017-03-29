@@ -2,23 +2,20 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Migrations\Migrator;
 use Yarak\Output\SymfonyOutput;
-use Yarak\DB\Seeders\SeedRunner;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Migrate extends YarakCommand
+class MigrateReset extends YarakCommand
 {
     /**
      * Configure the command.
      */
     protected function configure()
     {
-        $this->setName('migrate')
-            ->setDescription('Run the database migrations.')
-            ->setHelp('This command allows you to run migrations.');
+        $this->setName('migrate:reset')
+            ->setDescription('Rollback all migrations.')
+            ->setHelp('This command allows you to rollback all database migrations.');
     }
 
     /**
@@ -29,6 +26,6 @@ class Migrate extends YarakCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getMigrator(new SymfonyOutput($output))->run();
+        $this->getMigrator(new SymfonyOutput($output))->reset();
     }
 }

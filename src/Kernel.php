@@ -6,8 +6,11 @@ use Yarak\Commands\DBSeed;
 use Yarak\Commands\Migrate;
 use Yarak\Commands\DBGenerate;
 use Yarak\Commands\MakeSeeder;
+use Yarak\Commands\MigrateReset;
 use Yarak\Commands\MakeMigration;
+use Yarak\Commands\MigrateRefresh;
 use Yarak\Exceptions\InvalidInput;
+use Yarak\Commands\MigrateRollback;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -62,6 +65,9 @@ class Kernel
         $application->add(new MakeMigration($this->config));
         $application->add(new MakeSeeder($this->config));
         $application->add(new Migrate($this->config));
+        $application->add(new MigrateRefresh($this->config));
+        $application->add(new MigrateReset($this->config));
+        $application->add(new MigrateRollback($this->config));
     }
 
     /**

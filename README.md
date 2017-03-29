@@ -705,23 +705,23 @@ This will run all migrations that have not yet been run. Migrations that are run
 #### Rolling Back Migrations
 :exclamation:**Before rolling back, be aware that all data in the tables you rollback will be lost.**   
 
-To rollback the last batch of migrations, call `migrate` with the `--rollback` flag:
+To rollback the last batch of migrations, call `migrate:rollback`:
 ```
-php yarak migrate --rollback
+php yarak migrate:rollback
 ```
 
-Use `--rollback` with the optional `--steps` flag to rollback more than one batch.
+Use `migrate:rollback` with the optional `--steps` flag to rollback more than one batch.
 ```
-php yarak migrate --rollback --steps=2
+php yarak migrate:rollback --steps=2
 ```
 This will rollback the last two batches of migrations.
 
 #### Resetting The Database
-Using the `--reset` flag will rollback all migrations.   
+Using the `migrate:reset` command will rollback all migrations.   
 
 :exclamation:**Resetting the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
 ```
-php yarak migrate --reset
+php yarak migrate:reset
 ```
 
 #### Refreshing The Database
@@ -729,22 +729,21 @@ Refreshing the database will rollback all migrations and then re-run them all in
 
 :exclamation:**Refreshing the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
 ```
-php yarak migrate --refresh
+php yarak migrate:refresh
 ```
 
-When using the `--refresh` flag, you may also use the `--seed` flag to run all your [database seeders](#database-seeding) after the database has been refreshed. See [Using Database Seeders](#using-database-seeders) for more information.
+When using the `migrate:refresh` command, you may also use the `--seed` flag to run all your [database seeders](#database-seeding) after the database has been refreshed. See [Using Database Seeders](#using-database-seeders) for more information.
 
 ### Calling Yarak In Code
 To call a Yarak command from your codebase, use the Yarak::call static method.
 ```php
 public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = [])
 ```
-For example, to call `migrate --rollback --steps=2`:
+For example, to call `migrate:rollback --steps=2`:
 ```php
 use Yarak\Yarak;
 
-Yarak::call('migrate', [
-    '--rollback' => true,
+Yarak::call('migrate:rollback', [
     '--steps'    => 2,
 ]);
 ```
@@ -756,8 +755,7 @@ use Yarak\Yarak;
 
 $di = DI::getDefault();
 
-Yarak::call('migrate', [
-    '--rollback' => true,
+Yarak::call('migrate:rollback', [
     '--steps'    => 2,
 ], $di);
 ```
