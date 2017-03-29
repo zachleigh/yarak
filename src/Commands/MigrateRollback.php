@@ -34,7 +34,7 @@ class MigrateRollback extends YarakCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $migrator = $this->getMigrator(new SymfonyOutput($output))
+        $this->getMigrator(new SymfonyOutput($output))
             ->rollback($input->getOption('steps'));
     }
 }
