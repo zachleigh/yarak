@@ -37,6 +37,8 @@
     - [Rolling Back Migrations](#rolling-back-migrations)
     - [Resetting The Database](#resetting-the-database)
     - [Refreshing The Database](#refreshing-the-database)
+  - [Custom Commands](#custom-commands)
+    - [Generating Commands](#generating-commands)
   - [Calling Yarak In Code](#calling-yarak-in-code)
   - [Contributing](#contributing)
 
@@ -53,7 +55,7 @@ $di->setShared('yarak',function () {
     return new \Yarak\Kernel(
         [
             'application' => [
-                'databaseDir' => 'path/to/database/directory/',
+                'databaseDir' => 'path/to/database/directory/'
             ],
             'database' => [
                 'adapter'  => $config->database->adapter,
@@ -67,6 +69,7 @@ $di->setShared('yarak',function () {
     }
 );
 ```
+
 ##### Create a yarak file
 In the project root, create a file called `yarak`. This file needs to do the following:
   - Autoload all project files and vendor directory files
@@ -765,6 +768,31 @@ If you are running PHP 5.6 or lower, using the static call method may result in 
 Cannot bind an instance to a static closure
 ```
 To avoid this error, pass the $di as the third variable to Yarak::call as shown above.
+
+### Custom Commands
+Yarak can also be extended and used as a general command line task runner.
+  - [Generating Commands](#generating-commands)
+
+#### Generating Commands
+Before generating a custom command, register a commands directory with the Yarak service:
+```php
+$di->setShared('yarak', function () {
+    $config = $this->getConfig();
+
+    return new Kernel([
+        'application' => [
+            //
+            'commandsDir' => APP_PATH.'/commands/'
+        ],
+        //
+    ]);
+});
+```
+
+Once `commandsDir` is registered, use the `make:command` command to generate a custom command.
+```
+php yarak make:command CommandName
+```
 
 ### Contributing
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/yarak/issues).

@@ -24,7 +24,7 @@ class Config
      * @var array
      */
     const DEFAULTS = [
-        'migratorType'        => 'fileDate',
+        'migratorType' => 'fileDate',
         'migrationRepository' => 'database',
     ];
 
@@ -170,13 +170,15 @@ class Config
     /**
      * Get the commands directory path.
      *
-     * @param  string $path
+     * @param string $path
      *
      * @return string
      */
     public function getCommandsDirectory($path = '')
     {
-        return $this->addFinalSlash($this->get(['application', 'commandsDir']));
+        return $this->addFinalSlash(
+            $this->get(['application', 'commandsDir'])
+        ).$path;
     }
 
     /**

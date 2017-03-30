@@ -11,9 +11,10 @@ use Codeception\Actor;
 use Yarak\Config\Config;
 use Phalcon\Di\FactoryDefault;
 use Yarak\DB\DirectoryCreator;
-use Yarak\DB\ConnectionResolver;
 use Yarak\Console\Output\Logger;
+use Yarak\DB\ConnectionResolver;
 use Yarak\Exceptions\WriteError;
+use Yarak\Console\CommandCreator;
 use Yarak\DB\Seeders\SeederCreator;
 use Yarak\DB\Factories\ModelFactory;
 use Symfony\Component\Filesystem\Filesystem;
@@ -107,6 +108,14 @@ class All extends \Codeception\Module
     public function removeFactoryDirectory()
     {
         $this->filesystem->remove(Config::getInstance()->getFactoryDirectory());
+    }
+
+    /**
+     * Remove test app commands directory.
+     */
+    public function removeCommandsDirectory()
+    {
+        $this->filesystem->remove(Config::getInstance()->getCommandsDirectory());
     }
 
     /**
@@ -210,6 +219,22 @@ class All extends \Codeception\Module
         }
 
         return new SeederCreator($this->getConfig(), $logger);
+    }
+
+    /**
+     * Get an instance of the command creator.
+     *
+     * @param Logger $logger
+     *
+     * @return CommandCreator
+     */
+    public function getCommandCreator(Logger $logger = null)
+    {
+        if (!$logger) {
+            $logger = new Logger();
+        }
+
+        return new CommandCreator($this->getConfig(), $logger);
     }
 
     /**

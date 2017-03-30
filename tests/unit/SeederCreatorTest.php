@@ -37,7 +37,7 @@ class SeederCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_inserts_correct_class_name()
+    public function seeder_creator_inserts_correct_class_name()
     {
         $path = $this->tester
             ->getSeederCreator()
@@ -51,7 +51,7 @@ class SeederCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_outputs_success_message()
+    public function seeder_creator_outputs_success_message()
     {
         $logger = new Logger();
 

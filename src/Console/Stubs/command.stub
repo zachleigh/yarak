@@ -1,0 +1,22 @@
+<?php
+
+use Yarak\Console\Command;
+
+class CLASSNAME extends Command
+{
+    /**
+     * Configure the command.
+     */
+    protected function configure()
+    {
+        // configure your command here
+    }
+
+    /**
+     * Handle the command.
+     */
+    protected function handle()
+    {
+        // handle your command here
+    }
+}

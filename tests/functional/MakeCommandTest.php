@@ -5,7 +5,7 @@ namespace Yarak\tests\functional;
 use Phalcon\DI;
 use Yarak\Yarak;
 
-class MakeSeederTest extends \Codeception\Test\Unit
+class MakeCommandTest extends \Codeception\Test\Unit
 {
     /**
      * Setup the class.
@@ -24,16 +24,16 @@ class MakeSeederTest extends \Codeception\Test\Unit
     {
         $config = $this->tester->getConfig();
 
-        Yarak::call('make:seeder', [
-            'name' => 'PostsTableSeeder'
+        Yarak::call('make:command', [
+            'name' => 'DoSomethingGreat'
         ], DI::getDefault());
 
-        $path = $config->getSeedDirectory('PostsTableSeeder.php');
+        $path = $config->getCommandsDirectory('DoSomethingGreat.php');
 
         $this->assertFileExists($path);
 
         $contents = file_get_contents($path);
 
-        $this->assertContains('class PostsTableSeeder', $contents);
+        $this->assertContains('class DoSomethingGreat', $contents);
     }
 }
