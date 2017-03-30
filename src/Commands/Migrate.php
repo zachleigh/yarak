@@ -2,10 +2,6 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Output\SymfonyOutput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 class Migrate extends YarakCommand
 {
     /**
@@ -19,13 +15,10 @@ class Migrate extends YarakCommand
     }
 
     /**
-     * Execute the command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Handle the command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle()
     {
-        $this->getMigrator(new SymfonyOutput($output))->run();
+        $this->getMigrator($this->getOutput())->run();
     }
 }

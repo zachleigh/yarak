@@ -2,10 +2,7 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Output\SymfonyOutput;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateRollback extends YarakCommand
 {
@@ -27,14 +24,11 @@ class MigrateRollback extends YarakCommand
     }
 
     /**
-     * Execute the command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Handle the command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle()
     {
-        $this->getMigrator(new SymfonyOutput($output))
-            ->rollback($input->getOption('steps'));
+        $this->getMigrator($this->getOutput())
+            ->rollback($this->option('steps'));
     }
 }

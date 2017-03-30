@@ -2,11 +2,8 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Output\SymfonyOutput;
 use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class DBSeed extends YarakCommand
 {
@@ -27,17 +24,12 @@ class DBSeed extends YarakCommand
     }
 
     /**
-     * Execute the command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Handle the command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle()
     {
-        $symfonyOutput = new SymfonyOutput($output);
+        $seedRunner = new SeedRunner($this->getOutput());
 
-        $seedRunner = new SeedRunner($symfonyOutput);
-
-        $seedRunner->run($input->getArgument('class'));
+        $seedRunner->run($this->argument('class'));
     }
 }

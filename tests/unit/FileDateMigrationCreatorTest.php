@@ -2,7 +2,7 @@
 
 namespace Yarak\tests\unit;
 
-use Yarak\Output\Logger;
+use Yarak\Console\Output\Logger;
 
 class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
 {

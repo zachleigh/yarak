@@ -2,11 +2,8 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Output\SymfonyOutput;
 use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateRefresh extends YarakCommand
 {
@@ -52,21 +49,16 @@ class MigrateRefresh extends YarakCommand
     }
 
     /**
-     * Execute the command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Handle the command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle()
     {
-        $symfonyOutput = new SymfonyOutput($output);
+        $this->getMigrator($this->getOutput())->refresh();
 
-        $this->getMigrator($symfonyOutput)->refresh();
+        if ($this->option('seed')) {
+            $seedRunner = new SeedRunner($this->getOutput());
 
-        if ($input->getOption('seed')) {
-            $seedRunner = new SeedRunner($symfonyOutput);
-
-            $seedRunner->run($input->getOption('class'));
+            $seedRunner->run($this->option('class'));
         }
     }
 }

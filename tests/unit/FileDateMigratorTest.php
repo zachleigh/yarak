@@ -4,7 +4,7 @@ namespace Yarak\tests\unit;
 
 use Phalcon\DI;
 use Yarak\Yarak;
-use Yarak\Output\Logger;
+use Yarak\Console\Output\Logger;
 
 class FileDateMigratorTest extends \Codeception\Test\Unit
 {

@@ -4,8 +4,8 @@ namespace Yarak\Migrations\FileDate;
 
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
-use Yarak\Output\Output;
 use Yarak\Helpers\Filesystem;
+use Yarak\Console\Output\Output;
 use Yarak\Exceptions\WriteError;
 use Yarak\Migrations\MigrationCreator;
 

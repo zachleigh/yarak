@@ -3,8 +3,8 @@
 namespace Yarak\DB;
 
 use Yarak\Config\Config;
-use Yarak\Output\Output;
 use Yarak\Helpers\Filesystem;
+use Yarak\Console\Output\Output;
 
 class DirectoryCreator
 {

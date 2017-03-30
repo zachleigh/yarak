@@ -3,9 +3,9 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
-use Yarak\Output\SymfonyOutput;
+use Yarak\Console\Command;
 use Yarak\DB\ConnectionResolver;
-use Symfony\Component\Console\Command\Command;
+use Yarak\Console\Output\SymfonyOutput;
 
 class YarakCommand extends Command
 {
@@ -79,5 +79,9 @@ class YarakCommand extends Command
             $repositoryType.'MigrationRepository';
 
         return new $repositoryClass();
+    }
+
+    protected function handle()
+    {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Yarak\tests\unit;
 
-use Yarak\Output\Logger;
+use Yarak\Console\Output\Logger;
 use Yarak\DB\Seeders\SeedRunner;
 
 class SeederTest extends \Codeception\Test\Unit

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yarak\Output;
+namespace Yarak\Console\Output;
 
 abstract class Output
 {

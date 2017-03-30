@@ -3,7 +3,7 @@
 namespace Yarak\DB\Seeders;
 
 use Yarak\Config\Config;
-use Yarak\Output\Output;
+use Yarak\Console\Output\Output;
 use Yarak\Exceptions\FileNotFound;
 
 class SeedRunner

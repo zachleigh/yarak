@@ -3,7 +3,7 @@
 namespace Yarak\Migrations;
 
 use Yarak\Config\Config;
-use Yarak\Output\Output;
+use Yarak\Console\Output\Output;
 
 interface MigrationCreator
 {

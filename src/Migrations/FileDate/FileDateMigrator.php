@@ -4,10 +4,10 @@ namespace Yarak\Migrations\FileDate;
 
 use Yarak\Helpers\Str;
 use Yarak\Config\Config;
-use Yarak\Output\Output;
 use Yarak\Helpers\Filesystem;
 use Yarak\Migrations\Migrator;
 use Yarak\DB\ConnectionResolver;
+use Yarak\Console\Output\Output;
 use Yarak\Exceptions\FileNotFound;
 use Yarak\Migrations\Repositories\MigrationRepository;
 

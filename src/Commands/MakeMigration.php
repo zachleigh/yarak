@@ -3,11 +3,8 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
-use Yarak\Output\SymfonyOutput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class MakeMigration extends YarakCommand
 {
@@ -32,40 +29,30 @@ class MakeMigration extends YarakCommand
     }
 
     /**
-     * Execute the command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Handle the command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle()
     {
-        $name = $input->getArgument('name');
+        $creator = $this->getCreator();
 
-        $create = is_null($create = $input->getOption('create')) ? false : $create;
+        $create = is_null($create = $this->option('create')) ? false : $create;
 
-        $config = Config::getInstance($this->configArray);
-
-        $creator = $this->getCreator($config, $output);
-
-        $creator->create($name, $create);
+        $creator->create($this->argument('name'), $create);
     }
 
     /**
      * Get a the migration creator class.
      *
-     * @param Config          $config
-     * @param OutputInterface $output
-     *
      * @return Yarak\Migrations\MigrationCreator
      */
-    protected function getCreator(Config $config, OutputInterface $output)
+    protected function getCreator()
     {
-        $symfonyOutput = new SymfonyOutput($output);
+        $config = Config::getInstance($this->configArray);
 
         $migratorType = ucfirst($config->get('migratorType'));
 
         $name = "Yarak\\Migrations\\{$migratorType}\\{$migratorType}MigrationCreator";
 
-        return new $name($config, $symfonyOutput);
+        return new $name($config, $this->getOutput());
     }
 }

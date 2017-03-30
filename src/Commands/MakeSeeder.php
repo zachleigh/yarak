@@ -3,11 +3,8 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
-use Yarak\Output\SymfonyOutput;
 use Yarak\DB\Seeders\SeederCreator;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class MakeSeeder extends YarakCommand
 {
@@ -26,21 +23,15 @@ class MakeSeeder extends YarakCommand
     }
 
     /**
-     * Execute the command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Handle the command.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function handle()
     {
-        $name = $input->getArgument('name');
+        $creator = new SeederCreator(
+            Config::getInstance($this->configArray),
+            $this->getOutput()
+        );
 
-        $config = Config::getInstance($this->configArray);
-
-        $symfonyOutput = new SymfonyOutput($output);
-
-        $creator = new SeederCreator($config, $symfonyOutput);
-
-        $creator->create($name);
+        $creator->create($this->argument('name'));
     }
 }

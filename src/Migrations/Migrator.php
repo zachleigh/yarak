@@ -3,8 +3,8 @@
 namespace Yarak\Migrations;
 
 use Yarak\Config\Config;
-use Yarak\Output\Output;
 use Yarak\DB\ConnectionResolver;
+use Yarak\Console\Output\Output;
 use Yarak\Migrations\Repositories\MigrationRepository;
 
 interface Migrator
