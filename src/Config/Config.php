@@ -115,7 +115,7 @@ class Config
      */
     public function getDatabaseDirectory()
     {
-        return $this->get(['application', 'databaseDir']);
+        return $this->addFinalSlash($this->get(['application', 'databaseDir']));
     }
 
     /**
@@ -168,6 +168,18 @@ class Config
     }
 
     /**
+     * Get the commands directory path.
+     *
+     * @param  string $path
+     *
+     * @return string
+     */
+    public function getCommandsDirectory($path = '')
+    {
+        return $this->addFinalSlash($this->get(['application', 'commandsDir']));
+    }
+
+    /**
      * Return the config array.
      *
      * @return array
@@ -175,5 +187,21 @@ class Config
     public function toArray()
     {
         return $this->getAll();
+    }
+
+    /**
+     * Add a final slash to a path if it doesn't exist.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function addFinalSlash($path)
+    {
+        if (substr($path, -1) !== '/') {
+            $path .= '/';
+        }
+
+        return $path;
     }
 }

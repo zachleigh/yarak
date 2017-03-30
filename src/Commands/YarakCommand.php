@@ -80,8 +80,4 @@ class YarakCommand extends Command
 
         return new $repositoryClass();
     }
-
-    protected function handle()
-    {
-    }
 }
