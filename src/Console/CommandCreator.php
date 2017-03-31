@@ -52,7 +52,10 @@ class CommandCreator
 
         $commandsDir = $this->config->getCommandsDirectory();
 
-        $this->makeDirectoryStructure([$commandsDir]);
+        $this->makeDirectoryStructure([
+            $this->config->getConsoleDirectory(), 
+            $commandsDir
+        ]);
 
         $this->writeFile(
             $path = $commandsDir.$name.'.php',
@@ -104,7 +107,7 @@ class CommandCreator
      */
     protected function setNamespace($stub, $namespace = null)
     {
-        if ($namespace) {
+        if ($namespace !== null) {
             return str_replace(
                 'NAMESPACE',
                 "\nnamespace {$namespace};\n",

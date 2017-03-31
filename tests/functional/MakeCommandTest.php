@@ -20,7 +20,7 @@ class MakeCommandTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_a_seeder()
+    public function it_makes_a_command()
     {
         $config = $this->tester->getConfig();
 
@@ -36,6 +36,6 @@ class MakeCommandTest extends \Codeception\Test\Unit
 
         $this->assertContains('class DoSomethingGreat', $contents);
 
-        $this->assertContains('namespace App\Commands;', $contents);
+        $this->assertContains('namespace App\Console\Commands;', $contents);
     }
 }

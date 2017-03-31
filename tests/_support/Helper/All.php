@@ -111,11 +111,11 @@ class All extends \Codeception\Module
     }
 
     /**
-     * Remove test app commands directory.
+     * Remove test app console directory.
      */
-    public function removeCommandsDirectory()
+    public function removeConsoleDirectory()
     {
-        $this->filesystem->remove(Config::getInstance()->getCommandsDirectory());
+        $this->filesystem->remove(Config::getInstance()->getConsoleDirectory());
     }
 
     /**

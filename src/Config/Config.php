@@ -221,6 +221,20 @@ class Config
     }
 
     /**
+     * Get the console directory path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getConsoleDirectory($path = '')
+    {
+        return $this->addFinalSlash(
+            $this->get(['application', 'consoleDir'])
+        ).$path;
+    }
+
+    /**
      * Get the commands directory path.
      *
      * @param string $path
@@ -230,8 +244,8 @@ class Config
     public function getCommandsDirectory($path = '')
     {
         return $this->addFinalSlash(
-            $this->get(['application', 'commandsDir'])
-        ).$path;
+            $this->get(['application', 'consoleDir'])
+        ).'commands/'.$path;
     }
 
     /**

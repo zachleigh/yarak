@@ -117,7 +117,7 @@ $di->setShared('yarak', function () {
     return new Kernel([
         'application' => [
             'databaseDir' => APP_PATH.'/database/',
-            'commandsDir' => APP_PATH.'/commands/'
+            'consoleDir' => APP_PATH.'/console/'
         ],
         'database' => [
             'adapter'  => $config->database->adapter,

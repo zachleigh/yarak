@@ -21,9 +21,9 @@ class CommandCreatorTest extends \Codeception\Test\Unit
      */
     public function command_creator_creates_directory_structure_if_not_present()
     {
-        $this->tester->removeCommandsDirectory();
+        $this->tester->removeConsoleDirectory();
         
-        $commandsDir = $this->tester->getConfig()->getCommandsDirectory();
+        $commandsDir = $this->tester->getConfig()->getConsoleDirectory();
 
         $this->assertFileNotExists($commandsDir);
 
@@ -82,7 +82,7 @@ class CommandCreatorTest extends \Codeception\Test\Unit
 
         $data = file_get_contents($path);
 
-        $this->assertContains('namespace App\Commands;', $data);
+        $this->assertContains('namespace App\Console\Commands;', $data);
     }
 
     /**
