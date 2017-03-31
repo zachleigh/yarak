@@ -15,7 +15,7 @@
 ### Contents
   - [Install](#install)
   - [Database](#database)
-    - [Generating Directories And Files](#generating-directories-and-files)
+    - [Generating Database Directories And Files](#generating-database-directories-and-files)
     - [Model Factories](#model-factories)
       - [Defining Factories](#defining-factories)
       - [Using The Factory Helper](#using-the-factory-helper)
@@ -38,6 +38,7 @@
     - [Resetting The Database](#resetting-the-database)
     - [Refreshing The Database](#refreshing-the-database)
   - [Custom Commands](#custom-commands)
+    - [Generating Console Directories And Files](#generating-console-directories-and-files)
     - [Generating Commands](#generating-commands)
   - [Calling Yarak In Code](#calling-yarak-in-code)
   - [Contributing](#contributing)
@@ -150,7 +151,7 @@ php yarak
 
 ### Database
 Yarak gives users several helpful database functionalities that make development easier.
-  - [Generating Directories And Files](#generating-directories-and-files)
+  - [Generating Database Directories And Files](#generating-database-directories-and-files)
   - [Model Factories](#model-factories)
     - [Defining Factories](#defining-factories)
     - [Using The Factory Helper](#using-the-factory-helper)
@@ -163,7 +164,7 @@ Yarak gives users several helpful database functionalities that make development
     - [Writing Database Seeders](#writing-database-seeders)
     - [Using Database Seeders](#using-database-seeders)
 
-#### Generating Directories And Files
+#### Generating Database Directories And Files
 All database and migration functionalites require a standardized file hierarchy. To generate this hirearchy, use the `db:generate` command:
 ```
 php yarak db:generate
@@ -771,7 +772,15 @@ To avoid this error, pass the $di as the third variable to Yarak::call as shown 
 
 ### Custom Commands
 Yarak can also be extended and used as a general command line task runner.
+  - [Generating Console Directories And Files](#generating-console-directories-and-files)
   - [Generating Commands](#generating-commands)
+
+#### Generating Console Directories And Files
+To generate all the directories and files necessary for the console component to work, use the `console:generate` command:
+```
+php yarak console:generate
+```
+This will create a console directory, a commands directory and a Kernel.php file where you can register your custom commands. If no `consoleNamespace` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `consoleNamespace` as shown below.  
 
 #### Generating Commands
 Before generating a custom command, register a console directory with the Yarak service. You may also register a commands namespace.

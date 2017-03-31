@@ -11,6 +11,7 @@ use Yarak\Commands\MigrateReset;
 use Yarak\Commands\MakeMigration;
 use Yarak\Commands\MigrateRefresh;
 use Yarak\Exceptions\InvalidInput;
+use Yarak\Commands\ConsoleGenerate;
 use Yarak\Commands\MigrateRollback;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,6 +62,7 @@ class Kernel
      */
     protected function registerCommands(Application $application)
     {
+        $application->add(new ConsoleGenerate($this->config));
         $application->add(new DBGenerate($this->config));
         $application->add(new DBSeed($this->config));
         $application->add(new MakeCommand($this->config));

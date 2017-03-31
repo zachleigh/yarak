@@ -4,7 +4,7 @@ namespace Yarak\tests\unit;
 
 use Yarak\Console\Output\Logger;
 
-class DirectoryCreatorTest extends \Codeception\Test\Unit
+class DBDirectoryCreatorTest extends \Codeception\Test\Unit
 {
     /**
      * Setup the class.
@@ -111,7 +111,7 @@ class DirectoryCreatorTest extends \Codeception\Test\Unit
 
         $logger = new Logger();
 
-        $this->tester->getDirectoryCreator($logger)->create();
+        $this->tester->getDBDirectoryCreator($logger)->create();
 
         $this->assertFileExists($path);
 

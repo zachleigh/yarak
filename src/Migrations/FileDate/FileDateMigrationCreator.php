@@ -3,42 +3,12 @@
 namespace Yarak\Migrations\FileDate;
 
 use Yarak\Helpers\Str;
-use Yarak\Config\Config;
-use Yarak\Helpers\Filesystem;
-use Yarak\Console\Output\Output;
+use Yarak\Helpers\Creator;
 use Yarak\Exceptions\WriteError;
 use Yarak\Migrations\MigrationCreator;
 
-class FileDateMigrationCreator implements MigrationCreator
+class FileDateMigrationCreator extends Creator implements MigrationCreator
 {
-    use Filesystem;
-
-    /**
-     * Yarak config.
-     *
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * Output strategy.
-     *
-     * @var Output
-     */
-    protected $output;
-
-    /**
-     * Construct.
-     *
-     * @param Config $config
-     * @param Output $output
-     */
-    public function __construct(Config $config, Output $output)
-    {
-        $this->config = $config;
-        $this->output = $output;
-    }
-
     /**
      * Create a migration file.
      *

@@ -32,6 +32,10 @@ class CommandCreatorTest extends \Codeception\Test\Unit
             ->create('DoSomething');
 
         $this->assertFileExists($path);
+
+        $this->assertFileExists(
+            $this->tester->getConfig()->getConsoleDirectory('Kernel.php')
+        );
     }
 
     /**
@@ -88,15 +92,13 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function seeder_creator_outputs_success_message()
+    public function command_creator_outputs_success_message()
     {
         $logger = new Logger();
 
         $path = $this->tester
             ->getCommandCreator($logger)
             ->create('DoSomething');
-
-        $this->assertCount(1, $logger->getLog());
 
         $this->assertTrue(
             $logger->hasMessage('<info>Successfully created command DoSomething.</info>')

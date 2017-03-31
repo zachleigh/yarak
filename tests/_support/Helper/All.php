@@ -10,7 +10,6 @@ use App\Models\Users;
 use Codeception\Actor;
 use Yarak\Config\Config;
 use Phalcon\Di\FactoryDefault;
-use Yarak\DB\DirectoryCreator;
 use Yarak\Console\Output\Logger;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Exceptions\WriteError;
@@ -19,7 +18,9 @@ use Yarak\DB\Seeders\SeederCreator;
 use Yarak\DB\Factories\ModelFactory;
 use Symfony\Component\Filesystem\Filesystem;
 use Yarak\Migrations\FileDate\FileDateMigrator;
+use Yarak\DB\DirectoryCreator as DBDirectoryCreator;
 use Yarak\Migrations\FileDate\FileDateMigrationCreator;
+use Yarak\Console\DirectoryCreator as ConsoleDirectoryCreator;
 use Yarak\Migrations\Repositories\DatabaseMigrationRepository;
 
 class All extends \Codeception\Module
@@ -129,15 +130,35 @@ class All extends \Codeception\Module
     }
 
     /**
-     * Get an instance of DirectoryCreator.
+     * Get an instance of DB DirectoryCreator.
      *
      * @param Logger $logger
      *
-     * @return DirectoryCreator
+     * @return DBDirectoryCreator
      */
-    public function getDirectoryCreator(Logger $logger)
+    public function getDBDirectoryCreator(Logger $logger = null)
     {
-        return new DirectoryCreator($this->getConfig(), $logger);
+        if (!$logger) {
+            $logger = new Logger();
+        }
+
+        return new DBDirectoryCreator($this->getConfig(), $logger);
+    }
+
+    /**
+     * Get an instance of console DirectoryCreator.
+     *
+     * @param Logger $logger
+     *
+     * @return ConsoleDirectoryCreator
+     */
+    public function getConsoleDirectoryCreator(Logger $logger = null)
+    {
+        if (!$logger) {
+            $logger = new Logger();
+        }
+
+        return new ConsoleDirectoryCreator($this->getConfig(), $logger);
     }
 
     /**

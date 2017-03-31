@@ -2,40 +2,10 @@
 
 namespace Yarak\DB\Seeders;
 
-use Yarak\Config\Config;
-use Yarak\Helpers\Filesystem;
-use Yarak\Console\Output\Output;
+use Yarak\Helpers\Creator;
 
-class SeederCreator
+class SeederCreator extends Creator
 {
-    use Filesystem;
-
-    /**
-     * Yarak config.
-     *
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * Output strategy.
-     *
-     * @var Output
-     */
-    protected $output;
-
-    /**
-     * Construct.
-     *
-     * @param Config $config
-     * @param Output $output
-     */
-    public function __construct(Config $config, Output $output)
-    {
-        $this->config = $config;
-        $this->output = $output;
-    }
-
     /**
      * Create a seeder file with the given name.
      *
