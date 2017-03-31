@@ -2,9 +2,6 @@
 
 namespace Yarak\Migrations;
 
-use Yarak\Config\Config;
-use Yarak\Console\Output\Output;
-
 interface MigrationCreator
 {
     /**
