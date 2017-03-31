@@ -67,9 +67,7 @@ class Config
      */
     public function get($value)
     {
-        if (!is_array($value)) {
-            $value = [$value];
-        }
+        $value = $this->makeArray($value);
 
         $current = $this->configArray;
 
@@ -82,6 +80,22 @@ class Config
         }
 
         return $current;
+    }
+
+    /**
+     * Return true if config array has given value.
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function has($value)
+    {
+        if ($this->get($value) === null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -106,6 +120,45 @@ class Config
     public function getAll()
     {
         return $this->configArray;
+    }
+
+    /**
+     * Set an item in the config.
+     *
+     * @param mixed $keys
+     * @param mixed $value
+     */
+    public function set($keys, $value)
+    {
+        $keys = $this->makeArray($keys);
+
+        $temp = &$this->configArray;
+
+        foreach ($keys as $key) {
+            $temp = &$temp[$key];
+        }
+
+        $temp = $value;
+    }
+
+    /**
+     * Remove an item from the config.
+     *
+     * @param mixed $keys
+     */
+    public function remove($keys)
+    {
+        $keys = $this->makeArray($keys);
+
+        $temp = &$this->configArray;
+
+        foreach ($keys as $key) {
+            if ($key === $keys[count($keys) - 1]) {
+                unset($temp[$key]);
+            } else {
+                $temp = &$temp[$key];
+            }
+        }
     }
 
     /**
@@ -205,5 +258,21 @@ class Config
         }
 
         return $path;
+    }
+
+    /**
+     * Make a variable an array if not one already.
+     *
+     * @param mixed $value
+     *
+     * @return array
+     */
+    protected function makeArray($value)
+    {
+        if (!is_array($value)) {
+            $value = [$value];
+        }
+
+        return $value;
     }
 }

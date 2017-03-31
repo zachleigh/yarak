@@ -774,7 +774,7 @@ Yarak can also be extended and used as a general command line task runner.
   - [Generating Commands](#generating-commands)
 
 #### Generating Commands
-Before generating a custom command, register a commands directory with the Yarak service:
+Before generating a custom command, register a commands directory with the Yarak service. You may also register a command namespace.
 ```php
 $di->setShared('yarak', function () {
     $config = $this->getConfig();
@@ -784,10 +784,15 @@ $di->setShared('yarak', function () {
             //
             'commandsDir' => APP_PATH.'/commands/'
         ],
+        'namespaces' => [
+            //
+            'commandsNamespace' => 'App\Console\Commands'
+        ],
         //
     ]);
 });
 ```
+If `commandsNamespace` is not set, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `commandsNamespace` as shown above.
 
 Once `commandsDir` is registered, use the `make:command` command to generate a custom command.
 ```

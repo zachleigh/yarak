@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Commands;
+
 use Yarak\Console\Command;
 
 class DoSomething extends Command

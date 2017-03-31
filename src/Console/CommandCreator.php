@@ -37,6 +37,13 @@ class CommandCreator
         $this->output = $output;
     }
 
+    /**
+     * Create a new command with given name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
     public function create($name)
     {
         if (class_exists($name)) {
@@ -60,7 +67,7 @@ class CommandCreator
     /**
      * Get the stub file and insert name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -68,6 +75,43 @@ class CommandCreator
     {
         $stub = file_get_contents(__DIR__.'/Stubs/command.stub');
 
-        return str_replace('CLASSNAME', $name, $stub);
+        $stub = str_replace('CLASSNAME', $name, $stub);
+
+        return $this->setNamespace($stub, $this->resolveNamespace());
+    }
+
+    /**
+     * Resolve the command namespace.
+     *
+     * @return string
+     */
+    protected function resolveNamespace()
+    {
+        if ($this->config->has(['namespaces', 'commandsNamespace'])) {
+            return $this->config->get(['namespaces', 'commandsNamespace']);
+        }
+        
+        return $this->guessNamespace($this->config->getCommandsDirectory());
+    }
+
+    /**
+     * Set the namespace in the command stub.
+     *
+     * @param string $stub
+     * @param string $namespace
+     *
+     * @return string
+     */
+    protected function setNamespace($stub, $namespace = null)
+    {
+        if ($namespace) {
+            return str_replace(
+                'NAMESPACE',
+                "\nnamespace {$namespace};\n",
+                $stub
+            );
+        }
+
+        return str_replace('NAMESPACE', '', $stub);
     }
 }

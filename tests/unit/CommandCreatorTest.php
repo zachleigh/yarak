@@ -51,6 +51,43 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
+    public function command_creator_inserts_set_namespace()
+    {
+        $this->tester->getConfig()->set(
+            ['namespaces', 'commandsNamespace'],
+            'App\Console\Commands'
+        );
+
+        $path = $this->tester
+            ->getCommandCreator()
+            ->create('DoSomething');
+
+        $data = file_get_contents($path);
+
+        $this->assertContains('namespace App\Console\Commands;', $data);
+
+        $this->tester->getConfig()->remove('namespaces');
+    }
+
+    /**
+     * @test
+     */
+    public function command_creator_inserts_guessed_namespace()
+    {
+        $this->tester->getConfig()->remove('namespaces');
+
+        $path = $this->tester
+            ->getCommandCreator()
+            ->create('DoSomething');
+
+        $data = file_get_contents($path);
+
+        $this->assertContains('namespace App\Commands;', $data);
+    }
+
+    /**
+     * @test
+     */
     public function seeder_creator_outputs_success_message()
     {
         $logger = new Logger();

@@ -35,5 +35,7 @@ class MakeCommandTest extends \Codeception\Test\Unit
         $contents = file_get_contents($path);
 
         $this->assertContains('class DoSomethingGreat', $contents);
+
+        $this->assertContains('namespace App\Commands;', $contents);
     }
 }

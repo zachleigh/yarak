@@ -1,5 +1,5 @@
 <?php
-
+NAMESPACE
 use Yarak\Console\Command;
 
 class CLASSNAME extends Command
