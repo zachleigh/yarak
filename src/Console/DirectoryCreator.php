@@ -24,8 +24,8 @@ class DirectoryCreator extends Creator
         $commandsDir = $this->config->getCommandsDirectory();
 
         $this->makeDirectoryStructure([
-            $this->config->getConsoleDirectory(), 
-            $commandsDir
+            $this->config->getConsoleDirectory(),
+            $commandsDir,
         ]);
 
         $this->output->writeInfo('Created console directory.');
@@ -68,7 +68,7 @@ class DirectoryCreator extends Creator
         if ($this->config->has(['namespaces', 'consoleNamespace'])) {
             return $this->config->get(['namespaces', 'consoleNamespace']);
         }
-        
+
         return $this->guessNamespace($this->config->getConsoleDirectory());
     }
 }

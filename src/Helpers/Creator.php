@@ -3,7 +3,6 @@
 namespace Yarak\Helpers;
 
 use Yarak\Config\Config;
-use Yarak\Helpers\Filesystem;
 use Yarak\Console\Output\Output;
 
 abstract class Creator
@@ -56,8 +55,6 @@ abstract class Creator
 
             return implode('\\', $relativePath);
         }
-
-        return null;
     }
 
     /**
