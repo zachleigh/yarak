@@ -90,8 +90,10 @@ class CommandCreator
      */
     protected function resolveNamespace()
     {
-        if ($this->config->has(['namespaces', 'commandsNamespace'])) {
-            return $this->config->get(['namespaces', 'commandsNamespace']);
+        if ($this->config->has(['namespaces', 'consoleNamespace'])) {
+            return $this->config->get(
+                ['namespaces', 'consoleNamespace']
+            ).'\Commands';
         }
         
         return $this->guessNamespace($this->config->getCommandsDirectory());

@@ -54,8 +54,8 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     public function command_creator_inserts_set_namespace()
     {
         $this->tester->getConfig()->set(
-            ['namespaces', 'commandsNamespace'],
-            'App\Console\Commands'
+            ['namespaces', 'consoleNamespace'],
+            'App\Console'
         );
 
         $path = $this->tester
