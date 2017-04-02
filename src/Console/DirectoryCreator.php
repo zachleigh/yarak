@@ -11,13 +11,17 @@ class DirectoryCreator extends Creator
      */
     public function create()
     {
-        $this->createAllDirectories();
+        $createdDirs = $this->createAllDirectories();
 
-        $this->createKernel();
+        $createdKernel = $this->createKernel();
+
+        $this->outputNothingCreated([$createdDirs, $createdKernel]);
     }
 
     /**
-     * Create cosnole directory structure.
+     * Create console directory structure.
+     *
+     * @return bool
      */
     protected function createAllDirectories()
     {
@@ -31,10 +35,14 @@ class DirectoryCreator extends Creator
         foreach ($created as $key => $value) {
             $this->output->writeInfo("Created {$key} directory.");
         }
+
+        return (bool) count($created);
     }
 
     /**
      * Create the kernel file.
+     *
+     * @return bool
      */
     protected function createKernel()
     {
@@ -47,7 +55,11 @@ class DirectoryCreator extends Creator
             );
 
             $this->output->writeInfo('Created kernel file.');
+
+            return true;
         }
+
+        return false;
     }
 
     /**

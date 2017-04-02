@@ -129,7 +129,11 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
 
         $this->tester->getDBDirectoryCreator($logger)->create();
 
-        $this->assertCount(0, $logger->getLog());
+        $this->assertCount(1, $logger->getLog());
+
+        $this->assertTrue($logger->hasMessage(
+            '<comment>Nothing created. All directories and files already exist.</comment>'
+        ));
     }
 
     /**

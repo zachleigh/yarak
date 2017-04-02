@@ -77,4 +77,22 @@ abstract class Creator
 
         return str_replace('NAMESPACE', '', $stub);
     }
+
+    /**
+     * Output nothing created message if no all bools are false.
+     *
+     * @param array $bools
+     */
+    protected function outputNothingCreated(array $bools)
+    {
+        foreach ($bools as $bool) {
+            if ($bool) {
+                return;
+            }
+        }
+
+        $this->output->writeComment(
+            'Nothing created. All directories and files already exist.'
+        );
+    }
 }

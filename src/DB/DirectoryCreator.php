@@ -11,15 +11,21 @@ class DirectoryCreator extends Creator
      */
     public function create()
     {
-        $this->createAllDirectories();
+        $createdDirs = $this->createAllDirectories();
 
-        $this->createFactoriesFile();
+        $createdFactories = $this->createFactoriesFile();
 
-        $this->createSeederFile();
+        $createdSeeder = $this->createSeederFile();
+
+        $this->outputNothingCreated(
+            [$createdDirs, $createdFactories, $createdSeeder]
+        );
     }
 
     /**
      * Create all needed directories.
+     *
+     * @return bool
      */
     protected function createAllDirectories()
     {
@@ -30,6 +36,8 @@ class DirectoryCreator extends Creator
         foreach ($created as $key => $value) {
             $this->output->writeInfo("Created {$key} directory.");
         }
+
+        return (bool) count($created);
     }
 
     /**
@@ -48,7 +56,11 @@ class DirectoryCreator extends Creator
             );
 
             $this->output->writeInfo('Created ModelFactory file.');
+
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -67,6 +79,10 @@ class DirectoryCreator extends Creator
             );
 
             $this->output->writeInfo('Created DatabaseSeeder file.');
+
+            return true;
         }
+
+        return false;
     }
 }
