@@ -62,16 +62,33 @@ class Kernel
      */
     protected function registerCommands(Application $application)
     {
-        $application->add(new ConsoleGenerate($this->config));
-        $application->add(new DBGenerate($this->config));
-        $application->add(new DBSeed($this->config));
-        $application->add(new MakeCommand($this->config));
-        $application->add(new MakeMigration($this->config));
-        $application->add(new MakeSeeder($this->config));
-        $application->add(new Migrate($this->config));
-        $application->add(new MigrateRefresh($this->config));
-        $application->add(new MigrateReset($this->config));
-        $application->add(new MigrateRollback($this->config));
+        $applicationCommands = $this->getApplicationCommands();
+
+        foreach ($applicationCommands as $command) {
+            $application->add(new $command($this->config));
+        }
+    }
+
+    /**
+     * Get array of all Yarak commands.
+     *
+     * @return array
+     */
+    protected function getApplicationCommands()
+    {
+        $dir = new \DirectoryIterator(__DIR__.'/Commands');
+
+        $commands = [];
+
+        foreach ($dir as $fileinfo) {
+            if (!$fileinfo->isDot()) {
+                $className = str_replace('.php', '', $fileinfo->getFilename());
+
+                $commands[] = 'Yarak\\Commands\\'.$className;
+            }
+        }
+
+        return $commands;
     }
 
     /**

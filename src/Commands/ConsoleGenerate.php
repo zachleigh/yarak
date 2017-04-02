@@ -3,6 +3,7 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
+use Yarak\Console\YarakCommand;
 use Yarak\Console\DirectoryCreator;
 
 class ConsoleGenerate extends YarakCommand

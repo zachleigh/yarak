@@ -2,6 +2,7 @@
 
 namespace Yarak\Commands;
 
+use Yarak\Console\YarakCommand;
 use Yarak\DB\Seeders\SeedRunner;
 use Symfony\Component\Console\Input\InputOption;
 

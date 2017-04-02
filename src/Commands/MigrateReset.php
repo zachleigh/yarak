@@ -2,6 +2,8 @@
 
 namespace Yarak\Commands;
 
+use Yarak\Console\YarakCommand;
+
 class MigrateReset extends YarakCommand
 {
     /**

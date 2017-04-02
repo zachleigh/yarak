@@ -3,6 +3,7 @@
 namespace Yarak\Commands;
 
 use Yarak\Config\Config;
+use Yarak\Console\YarakCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 

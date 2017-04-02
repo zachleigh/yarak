@@ -1,9 +1,8 @@
 <?php
 
-namespace Yarak\Commands;
+namespace Yarak\Console;
 
 use Yarak\Config\Config;
-use Yarak\Console\Command;
 use Yarak\DB\ConnectionResolver;
 use Yarak\Console\Output\SymfonyOutput;
 

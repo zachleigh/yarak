@@ -4,6 +4,7 @@ namespace Yarak\Commands;
 
 use Yarak\Config\Config;
 use Yarak\DB\DirectoryCreator;
+use Yarak\Console\YarakCommand;
 
 class DBGenerate extends YarakCommand
 {
