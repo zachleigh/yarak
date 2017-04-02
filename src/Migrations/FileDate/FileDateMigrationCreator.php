@@ -22,7 +22,10 @@ class FileDateMigrationCreator extends Creator implements MigrationCreator
         $className = $this->getClassName($name);
 
         if (!class_exists($className)) {
-            $this->createDirectories();
+            $this->makeDirectoryStructure([
+                'database'   => $this->config->getDatabaseDirectory(),
+                'migrations' => $this->config->getMigrationDirectory(),
+            ], $this->output);
 
             $this->writeFile(
                 $path = $this->getSavePath($name),
@@ -47,21 +50,6 @@ class FileDateMigrationCreator extends Creator implements MigrationCreator
     protected function getClassName($name)
     {
         return Str::studly($name);
-    }
-
-    /**
-     * Create necessary directories for migrations.
-     */
-    protected function createDirectories()
-    {
-        $created = $this->makeDirectoryStructure([
-            'database'   => $this->config->getDatabaseDirectory(),
-            'migrations' => $this->config->getMigrationDirectory(),
-        ]);
-
-        foreach ($created as $key => $value) {
-            $this->output->writeInfo("Created {$key} directory.");
-        }
     }
 
     /**

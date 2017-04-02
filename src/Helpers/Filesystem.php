@@ -2,6 +2,7 @@
 
 namespace Yarak\Helpers;
 
+use Yarak\Console\Output\Output;
 use Yarak\Exceptions\WriteError;
 
 trait Filesystem
@@ -9,23 +10,20 @@ trait Filesystem
     /**
      * Create all directories listed in directories array.
      *
-     * @param array $directories
-     *
-     * @return array
+     * @param array  $directories
+     * @param Output $output
      */
-    protected function makeDirectoryStructure(array $directories)
+    protected function makeDirectoryStructure(array $directories, Output $output = null)
     {
-        $created = [];
-
         foreach ($directories as $key => $directory) {
             if (!file_exists($directory)) {
                 mkdir($directory);
 
-                $created[$key] = $directory;
+                if ($output) {
+                    $output->writeInfo("Created {$key} directory.");
+                }
             }
         }
-
-        return $created;
     }
 
     /**

@@ -11,32 +11,14 @@ class DirectoryCreator extends Creator
      */
     public function create()
     {
-        $createdDirs = $this->createAllDirectories();
+        $createdDirs = (bool) count($this->makeDirectoryStructure([
+            'console'  => $this->config->getConsoleDirectory(),
+            'commands' => $this->config->getCommandsDirectory(),
+        ], $this->output));
 
         $createdKernel = $this->createKernel();
 
         $this->outputNothingCreated([$createdDirs, $createdKernel]);
-    }
-
-    /**
-     * Create console directory structure.
-     *
-     * @return bool
-     */
-    protected function createAllDirectories()
-    {
-        $commandsDir = $this->config->getCommandsDirectory();
-
-        $created = $this->makeDirectoryStructure([
-            'console'  => $this->config->getConsoleDirectory(),
-            'commands' => $commandsDir,
-        ]);
-
-        foreach ($created as $key => $value) {
-            $this->output->writeInfo("Created {$key} directory.");
-        }
-
-        return (bool) count($created);
     }
 
     /**

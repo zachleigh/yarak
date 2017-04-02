@@ -21,7 +21,10 @@ class SeederCreator extends Creator
         $path = $this->config->getSeedDirectory($name.'.php');
 
         if (!file_exists($path)) {
-            $this->createDirectories();
+            $this->makeDirectoryStructure([
+                'database' => $this->config->getDatabaseDirectory(),
+                'seeds'    => $this->config->getSeedDirectory(),
+            ], $this->output);
 
             $this->writeFile($path, $this->getStub($name));
 
@@ -31,23 +34,6 @@ class SeederCreator extends Creator
         }
 
         throw WriteError::commandExists($name);
-    }
-
-    /**
-     * Create necessary directory structure.
-     */
-    protected function createDirectories()
-    {
-        $seedDir = $this->config->getSeedDirectory();
-
-        $created = $this->makeDirectoryStructure([
-            'database' => $this->config->getDatabaseDirectory(),
-            'seeds'    => $seedDir,
-        ]);
-
-        foreach ($created as $key => $value) {
-            $this->output->writeInfo("Created {$key} directory.");
-        }
     }
 
     /**
