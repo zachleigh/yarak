@@ -55,7 +55,7 @@ class Config
             if (empty($configArray)) {
                 $configArray = DI::getDefault()
                     ->getShared('yarak')
-                    ->getConfig();
+                    ->getConfigArray();
             }
 
             self::$instance = new self($configArray);

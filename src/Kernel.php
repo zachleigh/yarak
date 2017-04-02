@@ -2,17 +2,8 @@
 
 namespace Yarak;
 
-use Yarak\Commands\DBSeed;
-use Yarak\Commands\Migrate;
-use Yarak\Commands\DBGenerate;
-use Yarak\Commands\MakeSeeder;
-use Yarak\Commands\MakeCommand;
-use Yarak\Commands\MigrateReset;
-use Yarak\Commands\MakeMigration;
-use Yarak\Commands\MigrateRefresh;
+use Yarak\Config\Config;
 use Yarak\Exceptions\InvalidInput;
-use Yarak\Commands\ConsoleGenerate;
-use Yarak\Commands\MigrateRollback;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -23,16 +14,16 @@ class Kernel
      *
      * @var array
      */
-    private $config;
+    private $configArray;
 
     /**
      * Construct.
      *
-     * @param array $config
+     * @param array $configArray
      */
-    public function __construct(array $config = [])
+    public function __construct(array $configArray = [])
     {
-        $this->config = $config;
+        $this->configArray = $configArray;
     }
 
     /**
@@ -65,7 +56,7 @@ class Kernel
         $applicationCommands = $this->getApplicationCommands();
 
         foreach ($applicationCommands as $command) {
-            $application->add(new $command($this->config));
+            $application->add(new $command());
         }
     }
 
@@ -113,8 +104,8 @@ class Kernel
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfigArray()
     {
-        return $this->config;
+        return $this->configArray;
     }
 }

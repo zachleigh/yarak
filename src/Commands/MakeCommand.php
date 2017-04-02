@@ -2,7 +2,6 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Config\Config;
 use Yarak\Console\YarakCommand;
 use Yarak\Console\CommandCreator;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,7 +28,6 @@ class MakeCommand extends YarakCommand
     protected function handle()
     {
         $creator = new CommandCreator(
-            Config::getInstance($this->configArray),
             $this->getOutput()
         );
 

@@ -21,7 +21,7 @@ class CommandCreator extends Creator
         $path = $this->config->getCommandsDirectory($name.'.php');
 
         if (!file_exists($path)) {
-            $creator = new DirectoryCreator($this->config, $this->output);
+            $creator = new DirectoryCreator($this->output);
 
             $creator->create();
 

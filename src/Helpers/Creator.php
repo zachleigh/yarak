@@ -26,13 +26,13 @@ abstract class Creator
     /**
      * Construct.
      *
-     * @param Config $config
      * @param Output $output
      */
-    public function __construct(Config $config, Output $output)
+    public function __construct(Output $output)
     {
-        $this->config = $config;
         $this->output = $output;
+
+        $this->config = Config::getInstance();
     }
 
     /**

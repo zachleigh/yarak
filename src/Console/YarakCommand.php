@@ -11,20 +11,18 @@ class YarakCommand extends Command
     /**
      * Application config.
      *
-     * @var array
+     * @var Config
      */
-    protected $configArray;
+    protected $config;
 
     /**
      * Construct.
-     *
-     * @param array $configArray
      */
-    public function __construct(array $configArray)
+    public function __construct()
     {
         parent::__construct();
 
-        $this->configArray = $configArray;
+        $this->config = Config::getInstance();
     }
 
     /**
@@ -36,14 +34,11 @@ class YarakCommand extends Command
      */
     protected function getMigrator(SymfonyOutput $symfonyOutput)
     {
-        $config = Config::getInstance($this->configArray);
-
-        $migratorClassName = $this->getMigratorClassName($config);
+        $migratorClassName = $this->getMigratorClassName($this->config);
 
         return new $migratorClassName(
-            $config,
             new ConnectionResolver(),
-            $this->getRepository($config),
+            $this->getRepository(),
             $symfonyOutput
         );
     }
@@ -51,13 +46,11 @@ class YarakCommand extends Command
     /**
      * Get the name of the migrator class.
      *
-     * @param Config $config
-     *
      * @return string
      */
-    protected function getMigratorClassName(Config $config)
+    protected function getMigratorClassName()
     {
-        $migratorType = ucfirst($config->get('migratorType'));
+        $migratorType = ucfirst($this->config->get('migratorType'));
 
         return "Yarak\\Migrations\\$migratorType\\".
             $migratorType.'Migrator';
@@ -66,13 +59,11 @@ class YarakCommand extends Command
     /**
      * Get an instance of MigrationRepository.
      *
-     * @param Config $config
-     *
      * @return Yarak\Migrations\MigrationRepository
      */
-    protected function getRepository(Config $config)
+    protected function getRepository()
     {
-        $repositoryType = ucfirst($config->get('migrationRepository'));
+        $repositoryType = ucfirst($this->config->get('migrationRepository'));
 
         $repositoryClass = 'Yarak\\Migrations\\Repositories\\'.
             $repositoryType.'MigrationRepository';

@@ -2,7 +2,6 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Config\Config;
 use Yarak\DB\DirectoryCreator;
 use Yarak\Console\YarakCommand;
 
@@ -26,7 +25,6 @@ class DBGenerate extends YarakCommand
     protected function handle()
     {
         $creator = new DirectoryCreator(
-            Config::getInstance($this->configArray),
             $this->getOutput()
         );
 

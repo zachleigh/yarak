@@ -39,7 +39,6 @@ class Builder extends \Codeception\Module
     {
         if (ucfirst($type) === 'FileDate') {
             return new FileDateMigrator(
-                Config::getInstance(),
                 new ConnectionResolver(),
                 new DatabaseMigrationRepository(),
                 $this->getLogger($logger)
@@ -59,7 +58,6 @@ class Builder extends \Codeception\Module
     {
         if (ucfirst($type) === 'FileDate') {
             return new FileDateMigrationCreator(
-                Config::getInstance(),
                 $this->getLogger($logger)
             );
         }
@@ -75,7 +73,6 @@ class Builder extends \Codeception\Module
     public function getSeederCreator(Logger $logger = null)
     {
         return new SeederCreator(
-            Config::getInstance(),
             $this->getLogger($logger)
         );
     }
@@ -90,7 +87,6 @@ class Builder extends \Codeception\Module
     public function getCommandCreator(Logger $logger = null)
     {
         return new CommandCreator(
-            Config::getInstance(),
             $this->getLogger($logger)
         );
     }
@@ -105,7 +101,6 @@ class Builder extends \Codeception\Module
     public function getDBDirectoryCreator(Logger $logger = null)
     {
         return new DBDirectoryCreator(
-            Config::getInstance(),
             $this->getLogger($logger)
         );
     }
@@ -120,7 +115,6 @@ class Builder extends \Codeception\Module
     public function getConsoleDirectoryCreator(Logger $logger = null)
     {
         return new ConsoleDirectoryCreator(
-            Config::getInstance(),
             $this->getLogger($logger)
         );
     }

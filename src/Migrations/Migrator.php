@@ -12,13 +12,11 @@ interface Migrator
     /**
      * Construct.
      *
-     * @param Config              $config
      * @param ConnectionResolver  $resolver
      * @param MigrationRepository $repository
      * @param Output              $output
      */
     public function __construct(
-        Config $config,
         ConnectionResolver $resolver,
         MigrationRepository $repository,
         Output $output

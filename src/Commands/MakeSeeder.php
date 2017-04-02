@@ -2,7 +2,6 @@
 
 namespace Yarak\Commands;
 
-use Yarak\Config\Config;
 use Yarak\Console\YarakCommand;
 use Yarak\DB\Seeders\SeederCreator;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,7 +28,6 @@ class MakeSeeder extends YarakCommand
     protected function handle()
     {
         $creator = new SeederCreator(
-            Config::getInstance($this->configArray),
             $this->getOutput()
         );
 

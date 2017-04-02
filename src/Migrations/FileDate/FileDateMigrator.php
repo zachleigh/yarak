@@ -53,21 +53,20 @@ class FileDateMigrator implements Migrator
     /**
      * Construct.
      *
-     * @param Config              $config
      * @param ConnectionResolver  $resolver
      * @param MigrationRepository $repository
      * @param Output              $output
      */
     public function __construct(
-        Config $config,
         ConnectionResolver $resolver,
         MigrationRepository $repository,
         Output $output
     ) {
-        $this->config = $config;
         $this->resolver = $resolver;
         $this->repository = $repository;
         $this->output = $output;
+
+        $this->config = Config::getInstance();
     }
 
     /**
