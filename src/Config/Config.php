@@ -2,8 +2,12 @@
 
 namespace Yarak\Config;
 
+use Phalcon\DI;
+
 class Config
 {
+    use PathHelpers;
+
     /**
      * Instance of self.
      *
@@ -30,6 +34,8 @@ class Config
 
     /**
      * Private constructor.
+     *
+     * @param array $configArray
      */
     private function __construct(array $configArray)
     {
@@ -47,9 +53,9 @@ class Config
     {
         if (empty(self::$instance)) {
             if (empty($configArray)) {
-                $di = \Phalcon\DI::getDefault();
-
-                $configArray = $di->getShared('yarak')->getConfig();
+                $configArray = DI::getDefault()
+                    ->getShared('yarak')
+                    ->getConfig();
             }
 
             self::$instance = new self($configArray);
@@ -67,16 +73,14 @@ class Config
      */
     public function get($value)
     {
-        $value = $this->makeArray($value);
-
         $current = $this->configArray;
 
-        foreach ($value as $configItem) {
+        foreach ($this->makeArray($value) as $configItem) {
             if (!isset($current[$configItem])) {
                 return $this->getDefault($configItem);
-            } else {
-                $current = $current[$configItem];
             }
+            
+            $current = $current[$configItem];
         }
 
         return $current;
@@ -91,11 +95,7 @@ class Config
      */
     public function has($value)
     {
-        if ($this->get($value) === null) {
-            return false;
-        }
-
-        return true;
+        return ! ($this->get($value) === null);
     }
 
     /**
@@ -113,16 +113,6 @@ class Config
     }
 
     /**
-     * Return config array.
-     *
-     * @return array
-     */
-    public function getAll()
-    {
-        return $this->configArray;
-    }
-
-    /**
      * Set an item in the config.
      *
      * @param mixed $keys
@@ -130,11 +120,9 @@ class Config
      */
     public function set($keys, $value)
     {
-        $keys = $this->makeArray($keys);
-
         $temp = &$this->configArray;
 
-        foreach ($keys as $key) {
+        foreach ($this->makeArray($keys) as $key) {
             $temp = &$temp[$key];
         }
 
@@ -162,116 +150,13 @@ class Config
     }
 
     /**
-     * Return the database directory path.
-     *
-     * @return string
-     */
-    public function getDatabaseDirectory()
-    {
-        return $this->addFinalSlash($this->get(['application', 'databaseDir']));
-    }
-
-    /**
-     * Return the migration directory path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function getMigrationDirectory($path = '')
-    {
-        return $this->getDatabaseDirectory().'migrations/'.$path;
-    }
-
-    /**
-     * Return the factory directory path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function getFactoryDirectory($path = '')
-    {
-        return $this->getDatabaseDirectory().'factories/'.$path;
-    }
-
-    /**
-     * Return the seeds directory path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function getSeedDirectory($path = '')
-    {
-        return $this->getDatabaseDirectory().'seeds/'.$path;
-    }
-
-    /**
-     * Make database directory structure if it doesn't exist.
-     */
-    public function getAllDatabaseDirectories()
-    {
-        return [
-            'database'   => $this->getDatabaseDirectory(),
-            'migrations' => $this->getMigrationDirectory(),
-            'factories'  => $this->getFactoryDirectory(),
-            'seeds'      => $this->getSeedDirectory(),
-        ];
-    }
-
-    /**
-     * Get the console directory path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function getConsoleDirectory($path = '')
-    {
-        return $this->addFinalSlash(
-            $this->get(['application', 'consoleDir'])
-        ).$path;
-    }
-
-    /**
-     * Get the commands directory path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function getCommandsDirectory($path = '')
-    {
-        return $this->addFinalSlash(
-            $this->get(['application', 'consoleDir'])
-        ).'commands/'.$path;
-    }
-
-    /**
      * Return the config array.
      *
      * @return array
      */
     public function toArray()
     {
-        return $this->getAll();
-    }
-
-    /**
-     * Add a final slash to a path if it doesn't exist.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function addFinalSlash($path)
-    {
-        if (substr($path, -1) !== '/') {
-            $path .= '/';
-        }
-
-        return $path;
+        return $this->configArray;
     }
 
     /**
@@ -284,7 +169,7 @@ class Config
     protected function makeArray($value)
     {
         if (!is_array($value)) {
-            $value = [$value];
+            return [$value];
         }
 
         return $value;
