@@ -74,6 +74,8 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
             'MyApp\Console'
         );
 
+        $this->tester->removeConsoleDirectory();
+
         $this->tester->getConsoleDirectoryCreator()->create();
 
         $data = file_get_contents(
@@ -92,6 +94,8 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
     {
         $this->tester->getConfig()->remove('namespaces');
 
+        $this->tester->removeConsoleDirectory();
+
         $this->tester->getConsoleDirectoryCreator()->create();
 
         $data = file_get_contents(
@@ -99,6 +103,22 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
         );
 
         $this->assertContains('namespace App\Console;', $data);
+    }
+
+    /**
+     * @test
+     */
+    public function it_doesnt_create_directories_if_they_already_exists()
+    {
+        $logger = new Logger();
+
+        $this->tester->getConsoleDirectoryCreator($logger)->create();
+
+        $logger->clearLog();
+
+        $this->tester->getConsoleDirectoryCreator($logger)->create();
+
+        $this->assertCount(0, $logger->getLog());
     }
 
     /**

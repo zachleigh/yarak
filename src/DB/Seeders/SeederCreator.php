@@ -3,6 +3,7 @@
 namespace Yarak\DB\Seeders;
 
 use Yarak\Helpers\Creator;
+use Yarak\Exceptions\WriteError;
 
 class SeederCreator extends Creator
 {
@@ -11,25 +12,42 @@ class SeederCreator extends Creator
      *
      * @param string $name
      *
+     * @throws WriteError
+     *
      * @return string
      */
     public function create($name)
     {
+        $path = $this->config->getSeedDirectory($name.'.php');
+
+        if (!file_exists($path)) {
+            $this->createDirectories();
+
+            $this->writeFile($path, $this->getStub($name));
+
+            $this->output->writeInfo("Created seeder {$name}.");
+
+            return $path;
+        }
+
+        throw WriteError::commandExists($name);
+    }
+
+    /**
+     * Create necessary directory structure.
+     */
+    protected function createDirectories()
+    {
         $seedDir = $this->config->getSeedDirectory();
 
-        $this->makeDirectoryStructure([
-            $this->config->getDatabaseDirectory(),
-            $seedDir,
+        $created = $this->makeDirectoryStructure([
+            'database' => $this->config->getDatabaseDirectory(),
+            'seeds'    => $seedDir,
         ]);
 
-        $this->writeFile(
-            $path = $seedDir.$name.'.php',
-            $this->getStub($name)
-        );
-
-        $this->output->writeInfo("Successfully created seeder {$name}.");
-
-        return $path;
+        foreach ($created as $key => $value) {
+            $this->output->writeInfo("Created {$key} directory.");
+        }
     }
 
     /**

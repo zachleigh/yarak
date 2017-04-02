@@ -21,21 +21,20 @@ class FileDateMigrationCreator extends Creator implements MigrationCreator
     {
         $className = $this->getClassName($name);
 
-        $this->failIfClassExists($className);
+        if (!class_exists($className)) {
+            $this->createDirectories();
 
-        $this->makeDirectoryStructure([
-            $this->config->getDatabaseDirectory(),
-            $this->config->getMigrationDirectory(),
-        ]);
+            $this->writeFile(
+                $path = $this->getSavePath($name),
+                $this->getStub($className, $create)
+            );
 
-        $this->writeFile(
-            $path = $this->getSavePath($name),
-            $this->getStub($className, $create)
-        );
+            $this->output->writeInfo("Created migration {$name}.");
 
-        $this->output->writeInfo("Successfully created migration {$name}.");
+            return $path;
+        }
 
-        return $path;
+        throw WriteError::classExists($className);
     }
 
     /**
@@ -51,17 +50,17 @@ class FileDateMigrationCreator extends Creator implements MigrationCreator
     }
 
     /**
-     * If class name already exists, throw exception. Prone to failure due to
-     * autoloading strategy.
-     *
-     * @param string $className
-     *
-     * @throws WriteError
+     * Create necessary directories for migrations.
      */
-    protected function failIfClassExists($className)
+    protected function createDirectories()
     {
-        if (class_exists($className)) {
-            throw WriteError::classExists($className);
+        $created = $this->makeDirectoryStructure([
+            'database'   => $this->config->getDatabaseDirectory(),
+            'migrations' => $this->config->getMigrationDirectory(),
+        ]);
+
+        foreach ($created as $key => $value) {
+            $this->output->writeInfo("Created {$key} directory.");
         }
     }
 

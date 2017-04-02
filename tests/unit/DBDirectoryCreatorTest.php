@@ -19,6 +19,22 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
+    public function it_creates_the_database_directory()
+    {
+        $this->tester->removeMigrationDirectory();
+
+        $databaseDir = $this->tester->getConfig()->getDatabaseDirectory();
+
+        $logger = $this->assertDirectoryCreatorCreatesPath($databaseDir);
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created database directory.</info>')
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_creates_the_migrations_directory()
     {
         $this->tester->removeMigrationDirectory();
@@ -98,6 +114,22 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
         $this->assertTrue(
             $logger->hasMessage('<info>Created DatabaseSeeder file.</info>')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_doesnt_create_when_files_already_exist()
+    {
+        $logger = new Logger();
+
+        $this->tester->getDBDirectoryCreator($logger)->create();
+
+        $logger->clearLog();
+
+        $this->tester->getDBDirectoryCreator($logger)->create();
+
+        $this->assertCount(0, $logger->getLog());
     }
 
     /**

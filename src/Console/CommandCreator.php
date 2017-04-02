@@ -12,28 +12,27 @@ class CommandCreator extends Creator
      *
      * @param string $name
      *
+     * @throws WriteError
+     *
      * @return string
      */
     public function create($name)
     {
-        if (class_exists($name)) {
-            throw WriteError::classExists($name);
+        $path = $this->config->getCommandsDirectory($name.'.php');
+
+        if (!file_exists($path)) {
+            $creator = new DirectoryCreator($this->config, $this->output);
+
+            $creator->create();
+
+            $this->writeFile($path, $this->getStub($name));
+
+            $this->output->writeInfo("Created command {$name}.");
+
+            return $path;
         }
 
-        $directoryCreator = new DirectoryCreator($this->config, $this->output);
-
-        $directoryCreator->create();
-
-        $commandsDir = $this->config->getCommandsDirectory();
-
-        $this->writeFile(
-            $path = $commandsDir.$name.'.php',
-            $this->getStub($name)
-        );
-
-        $this->output->writeInfo("Successfully created command {$name}.");
-
-        return $path;
+        throw WriteError::commandExists($name);
     }
 
     /**

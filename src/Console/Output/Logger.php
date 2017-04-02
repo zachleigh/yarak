@@ -48,4 +48,12 @@ class Logger extends Output
     {
         return in_array($message, $this->getLog());
     }
+
+    /**
+     * Clear the log.
+     */
+    public function clearLog()
+    {
+        $this->log = [];
+    }
 }

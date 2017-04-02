@@ -59,10 +59,35 @@ class SeederCreatorTest extends \Codeception\Test\Unit
             ->getSeederCreator($logger)
             ->create('UserTableSeeder');
 
-        $this->assertCount(1, $logger->getLog());
+        $this->assertCount(3, $logger->getLog());
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Successfully created seeder UserTableSeeder.</info>')
+            $logger->hasMessage('<info>Created seeder UserTableSeeder.</info>')
         );
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created database directory.</info>')
+        );
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created seeds directory.</info>')
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException Yarak\Exceptions\WriteError
+     * @expectedExceptionMessage Could not create command UserTableSeeder. Command with name UserTableSeeder already exists.
+     */
+    public function seeder_creator_doesnt_create_directories_if_they_already_exists()
+    {
+        $logger = new Logger();
+
+        $this->tester->getSeederCreator($logger)->create('UserTableSeeder');
+
+        $logger->clearLog();
+
+        $this->tester->getSeederCreator($logger)->create('UserTableSeeder');
     }
 }

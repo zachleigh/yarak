@@ -23,14 +23,14 @@ class DirectoryCreator extends Creator
     {
         $commandsDir = $this->config->getCommandsDirectory();
 
-        $this->makeDirectoryStructure([
-            $this->config->getConsoleDirectory(),
-            $commandsDir,
+        $created = $this->makeDirectoryStructure([
+            'console'  => $this->config->getConsoleDirectory(),
+            'commands' => $commandsDir,
         ]);
 
-        $this->output->writeInfo('Created console directory.');
-
-        $this->output->writeInfo('Created commands directory.');
+        foreach ($created as $key => $value) {
+            $this->output->writeInfo("Created {$key} directory.");
+        }
     }
 
     /**
@@ -38,12 +38,16 @@ class DirectoryCreator extends Creator
      */
     protected function createKernel()
     {
-        $this->writeFile(
-            $this->config->getConsoleDirectory('Kernel.php'),
-            $this->getKernelStub()
-        );
+        $path = $this->config->getConsoleDirectory('Kernel.php');
 
-        $this->output->writeInfo('Created kernel file.');
+        if (!file_exists($path)) {
+            $this->writeFile(
+                $path,
+                $this->getKernelStub()
+            );
+
+            $this->output->writeInfo('Created kernel file.');
+        }
     }
 
     /**

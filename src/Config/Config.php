@@ -213,10 +213,10 @@ class Config
     public function getAllDatabaseDirectories()
     {
         return [
-            $this->getDatabaseDirectory(),
-            $this->getMigrationDirectory(),
-            $this->getFactoryDirectory(),
-            $this->getSeedDirectory(),
+            'database'   => $this->getDatabaseDirectory(),
+            'migrations' => $this->getMigrationDirectory(),
+            'factories'  => $this->getFactoryDirectory(),
+            'seeds'      => $this->getSeedDirectory(),
         ];
     }
 

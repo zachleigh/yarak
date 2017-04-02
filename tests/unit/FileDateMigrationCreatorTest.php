@@ -113,10 +113,18 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
             ->getMigrationCreator('fileDate', $logger)
             ->create('create_test_table', 'test');
 
-        $this->assertCount(1, $logger->getLog());
+        $this->assertCount(3, $logger->getLog());
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Successfully created migration create_test_table.</info>')
+            $logger->hasMessage('<info>Created migration create_test_table.</info>')
+        );
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created database directory.</info>')
+        );
+
+        $this->assertTrue(
+            $logger->hasMessage('<info>Created migrations directory.</info>')
         );
     }
 }

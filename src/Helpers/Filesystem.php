@@ -10,14 +10,22 @@ trait Filesystem
      * Create all directories listed in directories array.
      *
      * @param array $directories
+     *
+     * @return array
      */
     protected function makeDirectoryStructure(array $directories)
     {
-        foreach ($directories as $directory) {
+        $created = [];
+
+        foreach ($directories as $key => $directory) {
             if (!file_exists($directory)) {
                 mkdir($directory);
+
+                $created[$key] = $directory;
             }
         }
+
+        return $created;
     }
 
     /**

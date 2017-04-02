@@ -31,4 +31,34 @@ class WriteError extends Exception
     {
         return new static("Class {$class} already exists.");
     }
+
+    /**
+     * A command with the given name already exists.
+     *
+     * @param string $name
+     *
+     * @return static
+     */
+    public static function commandExists($name)
+    {
+        return new static(
+            "Could not create command {$name}. ".
+            "Command with name {$name} already exists."
+        );
+    }
+
+    /**
+     * A seeder with the given name already exists.
+     *
+     * @param string $name
+     *
+     * @return static
+     */
+    public static function seederExists($name)
+    {
+        return new static(
+            "Could not create seeder {$name}. ".
+            "Seeder with name {$name} already exists."
+        );
+    }
 }

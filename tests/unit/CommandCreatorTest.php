@@ -14,15 +14,15 @@ class CommandCreatorTest extends \Codeception\Test\Unit
         parent::setUp();
 
         $this->tester->setUp();
+
+        $this->tester->removeConsoleDirectory();
     }
 
     /**
      * @test
      */
     public function command_creator_creates_directory_structure_if_not_present()
-    {
-        $this->tester->removeConsoleDirectory();
-        
+    {        
         $commandsDir = $this->tester->getConfig()->getConsoleDirectory();
 
         $this->assertFileNotExists($commandsDir);
@@ -101,7 +101,28 @@ class CommandCreatorTest extends \Codeception\Test\Unit
             ->create('DoSomething');
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Successfully created command DoSomething.</info>')
+            $logger->hasMessage('<info>Created command DoSomething.</info>')
         );
+    }
+
+    /**
+     * @test
+     *
+     * @expectedException Yarak\Exceptions\WriteError
+     * @expectedExceptionMessage Could not create command DoSomething. Command with name DoSomething already exists. 
+     */
+    public function command_creator_throws_exception_if_command_already_exists()
+    {
+        $logger = new Logger();
+
+        $path = $this->tester
+            ->getCommandCreator($logger)
+            ->create('DoSomething');
+
+        $logger->clearLog();
+
+        $path = $this->tester
+            ->getCommandCreator($logger)
+            ->create('DoSomething');
     }
 }

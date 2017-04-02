@@ -23,15 +23,13 @@ class DirectoryCreator extends Creator
      */
     protected function createAllDirectories()
     {
-        $this->makeDirectoryStructure(
+        $created = $this->makeDirectoryStructure(
             $this->config->getAllDatabaseDirectories()
         );
 
-        $this->output->writeInfo('Created migrations directory.');
-
-        $this->output->writeInfo('Created seeds directory.');
-
-        $this->output->writeInfo('Created factories directory.');
+        foreach ($created as $key => $value) {
+            $this->output->writeInfo("Created {$key} directory.");
+        }
     }
 
     /**
@@ -39,14 +37,18 @@ class DirectoryCreator extends Creator
      */
     protected function createFactoriesFile()
     {
-        $stub = file_get_contents(__DIR__.'/Stubs/factory.stub');
+        $path = $this->config->getFactoryDirectory('ModelFactory.php');
 
-        $this->writeFile(
-            $this->config->getFactoryDirectory('ModelFactory.php'),
-            $stub
-        );
+        if (!file_exists($path)) {
+            $stub = file_get_contents(__DIR__.'/Stubs/factory.stub');
 
-        $this->output->writeInfo('Created ModelFactory file.');
+            $this->writeFile(
+                $path,
+                $stub
+            );
+
+            $this->output->writeInfo('Created ModelFactory file.');
+        }
     }
 
     /**
@@ -54,13 +56,17 @@ class DirectoryCreator extends Creator
      */
     protected function createSeederFile()
     {
-        $stub = file_get_contents(__DIR__.'/Stubs/seeder.stub');
+        $path = $this->config->getSeedDirectory('DatabaseSeeder.php');
 
-        $this->writeFile(
-            $this->config->getSeedDirectory('DatabaseSeeder.php'),
-            $stub
-        );
+        if (!file_exists($path)) {
+            $stub = file_get_contents(__DIR__.'/Stubs/seeder.stub');
 
-        $this->output->writeInfo('Created DatabaseSeeder file.');
+            $this->writeFile(
+                $this->config->getSeedDirectory('DatabaseSeeder.php'),
+                $stub
+            );
+
+            $this->output->writeInfo('Created DatabaseSeeder file.');
+        }
     }
 }
