@@ -1,9 +1,12 @@
 class_name: FunctionalTester
 modules:
     enabled:
-        - \Helper\Functional
-        - \Helper\All
         - Asserts
-        - Phalcon
         - Db
-        
+        - Phalcon
+        - \Helper\Functional
+        - \Helper\Assertations
+        - \Helper\Builder
+        - \Helper\Database
+        - \Helper\Filesystem
+        - \Helper\Main
