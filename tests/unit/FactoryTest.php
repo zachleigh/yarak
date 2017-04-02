@@ -20,33 +20,29 @@ class FactoryTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_a_single_model_instance()
+    public function factory_makes_a_single_model_instance()
     {
         $factory = $this->tester->getModelFactory();
 
-        $user = $factory->make(Users::class);
-
-        $this->tester->assertUserInstanceMade($user);
+        $this->tester->assertUserInstanceMade($factory->make(Users::class));
     }
 
     /**
      * @test
      */
-    public function it_doesnt_save_models_when_making_them()
+    public function factory_doesnt_save_models_when_making_them()
     {
         $factory = $this->tester->getModelFactory();
 
-        $user = $factory->make(Users::class);
-
         $this->tester->dontSeeRecord(Users::class, [
-            'username' => $user->username,
+            'username' => $factory->make(Users::class)->username,
         ]);
     }
 
     /**
      * @test
      */
-    public function it_uses_user_defined_attributes_when_making_model()
+    public function factory_uses_user_defined_attributes_when_making_model()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -55,15 +51,16 @@ class FactoryTest extends \Codeception\Test\Unit
             'email'    => 'bobsmsith@example.com',
         ];
 
-        $user = $factory->make(Users::class, $attributes);
-
-        $this->tester->assertUserHasAttributes($user, $attributes);
+        $this->tester->assertUserHasAttributes(
+            $factory->make(Users::class, $attributes),
+            $attributes
+        );
     }
 
     /**
      * @test
      */
-    public function it_makes_multiple_instances_of_models()
+    public function factory_makes_multiple_instances_of_models()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -79,7 +76,7 @@ class FactoryTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_classes_with_a_given_name()
+    public function factory_makes_classes_with_a_given_name()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -93,19 +90,20 @@ class FactoryTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_a_single_model_instance()
+    public function factory_creates_a_single_model_instance()
     {
         $factory = $this->tester->getModelFactory();
 
-        $user = $factory->create(Users::class);
-
-        $this->tester->assertUserInstanceCreated($user, $this->tester);
+        $this->tester->assertUserInstanceCreated(
+            $factory->create(Users::class),
+            $this->tester
+        );
     }
 
     /**
      * @test
      */
-    public function it_uses_user_defined_attributes_when_creating_model()
+    public function factory_uses_user_defined_attributes_when_creating_model()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -114,9 +112,10 @@ class FactoryTest extends \Codeception\Test\Unit
             'email'    => 'bobsmsith@example.com',
         ];
 
-        $user = $factory->create(Users::class, $attributes);
-
-        $this->assertInstanceOf(Users::class, $user);
+        $this->assertInstanceOf(
+            Users::class,
+            $factory->create(Users::class, $attributes)
+        );
 
         $this->tester->seeRecord(Users::class, $attributes);
     }
@@ -124,7 +123,7 @@ class FactoryTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_multiple_instances_of_models()
+    public function factory_creates_multiple_instances_of_models()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -140,7 +139,7 @@ class FactoryTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_classes_with_a_given_name()
+    public function factory_creates_classes_with_a_given_name()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -157,7 +156,7 @@ class FactoryTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_handles_relationship_closures()
+    public function factory_handles_relationship_closures()
     {
         $factory = $this->tester->getModelFactory();
 
@@ -174,11 +173,9 @@ class FactoryTest extends \Codeception\Test\Unit
      * @expectedException Yarak\Exceptions\FactoryNotFound
      * @expectedExceptionMessage Definition for class App\Models\Posts with name invalid does not exist.
      */
-    public function it_throws_exception_for_invalid_factory()
+    public function factory_throws_exception_for_invalid_factory()
     {
-        $factory = $this->tester->getModelFactory();
-
-        $post = $factory->createAs(Posts::class, 'invalid');
+        $this->tester->getModelFactory()->createAs(Posts::class, 'invalid');
     }
 
     /**
@@ -187,14 +184,12 @@ class FactoryTest extends \Codeception\Test\Unit
      * @expectedException Yarak\Exceptions\FactoryNotFound
      * @expectedExceptionMessage No factory definitions found.
      */
-    public function it_throws_exception_when_no_factories_found()
+    public function factory_throws_exception_when_no_factories_found()
     {
-        $factoryDir = $this->tester->getConfig()->getFactoryDirectory();
+        $this->tester->getFilesystem()->remove(
+            $this->tester->getConfig()->getFactoryDirectory()
+        );
 
-        $this->tester->getFilesystem()->remove($factoryDir);
-
-        $factory = $this->tester->getModelFactory();
-
-        $user = $factory->make(Users::class);
+        $this->tester->getModelFactory()->make(Users::class);
     }
 }

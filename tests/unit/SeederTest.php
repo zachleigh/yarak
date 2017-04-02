@@ -20,13 +20,11 @@ class SeederTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function run_method_runs_seeder_run_method()
+    public function seeder_runner_run_method_runs_seeder_run_method()
     {
-        $seedRunner = $this->getSeedRunner();
-
         $this->tester->assertTablesEmpty();
 
-        $seedRunner->run('UsersTableSeeder');
+        $this->getSeedRunner()->run('UsersTableSeeder');
 
         $this->tester->assertTablesCount(5, 25);
     }
@@ -36,11 +34,9 @@ class SeederTest extends \Codeception\Test\Unit
      */
     public function seeder_call_method_calls_run_method_on_given_class()
     {
-        $seedRunner = $this->getSeedRunner();
-
         $this->tester->assertTablesEmpty();
 
-        $seedRunner->run('DatabaseSeeder');
+        $this->getSeedRunner()->run('DatabaseSeeder');
 
         $this->tester->assertTablesCount(5, 50);
     }
@@ -48,24 +44,25 @@ class SeederTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_logs_seeding_messages()
+    public function seeder_outputs_seeding_messages()
     {
-        $logger = new Logger();
-
-        $seedRunner = new SeedRunner($logger);
+        $seedRunner = new SeedRunner($logger = new Logger());
 
         $seedRunner->run('DatabaseSeeder');
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Running seeder class DatabaseSeeder.</info>')
+            $logger->hasMessage('<info>Running seeder class DatabaseSeeder.</info>'),
+            'Failed asserting that seeder outputs primary seeder success message.'
         );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Running seeder class UsersTableSeeder.</info>')
+            $logger->hasMessage('<info>Running seeder class UsersTableSeeder.</info>'),
+            'Failed asserting that seeder outputs seeder success message.'
         );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Running seeder class PostsTableSeeder.</info>')
+            $logger->hasMessage('<info>Running seeder class PostsTableSeeder.</info>'),
+            'Failed asserting that seeder outputs seeder success message.'
         );
     }
 
@@ -75,11 +72,9 @@ class SeederTest extends \Codeception\Test\Unit
      * @expectedException Yarak\Exceptions\FileNotFound
      * @expectedExceptionMessage The seeder file InvalidSeeder could not be found in 
      */
-    public function it_throws_exception_for_seeder_file_not_found()
+    public function seeder_throws_exception_for_seeder_file_not_found()
     {
-        $seedRunner = $this->getSeedRunner();
-
-        $seedRunner->run('InvalidSeeder');
+        $this->getSeedRunner()->run('InvalidSeeder');
     }
 
     /**
@@ -89,8 +84,6 @@ class SeederTest extends \Codeception\Test\Unit
      */
     protected function getSeedRunner()
     {
-        $logger = new Logger();
-
-        return new SeedRunner($logger);
+        return new SeedRunner(new Logger());
     }
 }

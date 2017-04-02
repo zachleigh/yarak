@@ -20,7 +20,7 @@ class MakeCommandTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_a_command()
+    public function make_command_command_makes_a_command()
     {
         $config = $this->tester->getConfig();
 

@@ -22,14 +22,12 @@ class SeederCreatorTest extends \Codeception\Test\Unit
     public function seeder_creator_creates_directory_structure_if_not_present()
     {
         $this->tester->removeDatabaseDirectory();
-        
-        $databaseDir = $this->tester->getConfig()->getDatabaseDirectory();
 
-        $this->assertFileNotExists($databaseDir);
+        $this->assertFileNotExists(
+            $this->tester->getConfig()->getDatabaseDirectory()
+        );
 
-        $path = $this->tester
-            ->getSeederCreator()
-            ->create('UserTableSeeder');
+        $path = $this->tester->getSeederCreator()->create('UserTableSeeder');
 
         $this->assertFileExists($path);
     }
@@ -39,13 +37,9 @@ class SeederCreatorTest extends \Codeception\Test\Unit
      */
     public function seeder_creator_inserts_correct_class_name()
     {
-        $path = $this->tester
-            ->getSeederCreator()
-            ->create('UserTableSeeder');
+        $path = $this->tester->getSeederCreator()->create('UserTableSeeder');
 
-        $data = file_get_contents($path);
-
-        $this->assertContains('UserTableSeeder', $data);
+        $this->assertContains('UserTableSeeder', file_get_contents($path));
     }
 
     /**
@@ -55,22 +49,23 @@ class SeederCreatorTest extends \Codeception\Test\Unit
     {
         $logger = new Logger();
 
-        $path = $this->tester
-            ->getSeederCreator($logger)
-            ->create('UserTableSeeder');
+        $path = $this->tester->getSeederCreator($logger)->create('UserTableSeeder');
 
         $this->assertCount(3, $logger->getLog());
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created seeder UserTableSeeder.</info>')
+            $logger->hasMessage('<info>Created seeder UserTableSeeder.</info>'),
+            'Failed asserting that SeederCreator outputs success message when creating seeder.'
         );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created database directory.</info>')
+            $logger->hasMessage('<info>Created database directory.</info>'),
+            'Failed asserting that SeederCreator outputs success message when creating database director.'
         );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created seeds directory.</info>')
+            $logger->hasMessage('<info>Created seeds directory.</info>'),
+            'Failed asserting that SeederCreator outputs success message when creating seeds director.'
         );
     }
 

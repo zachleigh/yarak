@@ -20,7 +20,7 @@ class MakeSeederTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_a_seeder()
+    public function make_seeder_command_makes_a_seeder()
     {
         $config = $this->tester->getConfig();
 
@@ -32,8 +32,6 @@ class MakeSeederTest extends \Codeception\Test\Unit
 
         $this->assertFileExists($path);
 
-        $contents = file_get_contents($path);
-
-        $this->assertContains('class PostsTableSeeder', $contents);
+        $this->assertContains('class PostsTableSeeder', file_get_contents($path));
     }
 }

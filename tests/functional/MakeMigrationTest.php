@@ -20,7 +20,7 @@ class MakeMigrationTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_basic_migration()
+    public function make_migration_command_makes_basic_migration()
     {
         $config = $this->tester->getConfig();
 
@@ -34,15 +34,16 @@ class MakeMigrationTest extends \Codeception\Test\Unit
 
         $migrationPath = $config->getMigrationDirectory().$files[2];
 
-        $migrationContents = file_get_contents($migrationPath);
-
-        $this->assertContains('class CreateNewTable', $migrationContents);
+        $this->assertContains(
+            'class CreateNewTable',
+            file_get_contents($migrationPath)
+        );
     }
 
     /**
      * @test
      */
-    public function it_makes_create_migration()
+    public function make_migration_command_makes_create_migration()
     {      
         $config = $this->tester->getConfig();
 

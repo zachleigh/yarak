@@ -20,7 +20,7 @@ class MigrateRollbackTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_rollsback_single_step()
+    public function migrate_rollback_command_rollsback_single_step()
     {
         $this->tester->createSingleStep();
 
@@ -54,7 +54,7 @@ class MigrateRollbackTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_rollsback_mutliple_steps()
+    public function migrate_rollback_command_rollsback_mutliple_steps()
     {
         $this->tester->createTwoSteps();
 
@@ -90,7 +90,7 @@ class MigrateRollbackTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_rollsback_last_step()
+    public function migrate_rollback_command_rollsback_last_step()
     {
         $this->tester->createTwoSteps();
 

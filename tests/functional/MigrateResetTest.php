@@ -20,7 +20,7 @@ class MigrateResetTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_resets_the_database()
+    public function migrate_reset_command_resets_the_database()
     {
         $this->tester->createTwoSteps();
 

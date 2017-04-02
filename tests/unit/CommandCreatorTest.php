@@ -22,14 +22,12 @@ class CommandCreatorTest extends \Codeception\Test\Unit
      * @test
      */
     public function command_creator_creates_directory_structure_if_not_present()
-    {        
-        $commandsDir = $this->tester->getConfig()->getConsoleDirectory();
+    {
+        $this->assertFileNotExists(
+            $this->tester->getConfig()->getConsoleDirectory()
+        );
 
-        $this->assertFileNotExists($commandsDir);
-
-        $path = $this->tester
-            ->getCommandCreator()
-            ->create('DoSomething');
+        $path = $this->tester->getCommandCreator()->create('DoSomething');
 
         $this->assertFileExists($path);
 
@@ -43,13 +41,9 @@ class CommandCreatorTest extends \Codeception\Test\Unit
      */
     public function command_creator_inserts_correct_class_name()
     {
-        $path = $this->tester
-            ->getCommandCreator()
-            ->create('DoSomething');
+        $path = $this->tester->getCommandCreator()->create('DoSomething');
 
-        $data = file_get_contents($path);
-
-        $this->assertContains('DoSomething', $data);
+        $this->assertContains('DoSomething', file_get_contents($path));
     }
 
     /**
@@ -62,13 +56,12 @@ class CommandCreatorTest extends \Codeception\Test\Unit
             'App\Console'
         );
 
-        $path = $this->tester
-            ->getCommandCreator()
-            ->create('DoSomething');
+        $path = $this->tester->getCommandCreator()->create('DoSomething');
 
-        $data = file_get_contents($path);
-
-        $this->assertContains('namespace App\Console\Commands;', $data);
+        $this->assertContains(
+            'namespace App\Console\Commands;',
+            file_get_contents($path)
+        );
 
         $this->tester->getConfig()->remove('namespaces');
     }
@@ -80,13 +73,12 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     {
         $this->tester->getConfig()->remove('namespaces');
 
-        $path = $this->tester
-            ->getCommandCreator()
-            ->create('DoSomething');
+        $path = $this->tester->getCommandCreator()->create('DoSomething');
 
-        $data = file_get_contents($path);
-
-        $this->assertContains('namespace App\Console\Commands;', $data);
+        $this->assertContains(
+            'namespace App\Console\Commands;',
+            file_get_contents($path)
+        );
     }
 
     /**
@@ -96,12 +88,11 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     {
         $logger = new Logger();
 
-        $path = $this->tester
-            ->getCommandCreator($logger)
-            ->create('DoSomething');
+        $path = $this->tester->getCommandCreator($logger)->create('DoSomething');
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created command DoSomething.</info>')
+            $logger->hasMessage('<info>Created command DoSomething.</info>'),
+            'Failed asserting that CommandCreator outputs success message.'
         );
     }
 
@@ -115,14 +106,10 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     {
         $logger = new Logger();
 
-        $path = $this->tester
-            ->getCommandCreator($logger)
-            ->create('DoSomething');
+        $this->tester->getCommandCreator($logger)->create('DoSomething');
 
         $logger->clearLog();
 
-        $path = $this->tester
-            ->getCommandCreator($logger)
-            ->create('DoSomething');
+        $this->tester->getCommandCreator($logger)->create('DoSomething');
     }
 }

@@ -8,13 +8,6 @@ use Yarak\Yarak;
 class DBGenerateTest extends \Codeception\Test\Unit
 {
     /**
-     * Array of paths that should be created.
-     *
-     * @var array
-     */
-    protected $paths = [];
-
-    /**
      * Setup the class.
      */
     public function setUp()
@@ -27,52 +20,32 @@ class DBGenerateTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_all_directories_and_files()
+    public function db_generate_command_makes_all_directories_and_files()
     {
         $this->tester->removeDatabaseDirectory();
 
-        $this->setPaths();
+        $paths = $this->getPaths();
 
-        $this->assertAllPathsDontExist();
+        $this->tester->assertAllPathsDontExist($paths);
 
         Yarak::call('db:generate', [], DI::getDefault());
 
-        $this->assertAllPathsExist();
+        $this->tester->assertAllPathsExist($paths);
     }
 
     /**
      * Set all paths to be created.
      */
-    protected function setPaths()
+    protected function getPaths()
     {
         $config = $this->tester->getConfig();
 
-        $this->paths = [
+        return [
             $config->getMigrationDirectory(),
             $config->getSeedDirectory(),
             $config->getFactoryDirectory(),
             $config->getFactoryDirectory('ModelFactory.php'),
             $config->getSeedDirectory('DatabaseSeeder.php'),
         ];
-    }
-
-    /**
-     * Assert all paths in this->paths don't exist.
-     */
-    protected function assertAllPathsDontExist()
-    {
-        foreach ($this->paths as $path) {
-            $this->assertFileNotExists($path);
-        }
-    }
-
-    /**
-     * Assert all paths in this->paths exist.
-     */
-    protected function assertAllPathsExist()
-    {
-        foreach ($this->paths as $path) {
-            $this->assertFileExists($path);
-        }
     }
 }

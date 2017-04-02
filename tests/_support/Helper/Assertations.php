@@ -136,4 +136,28 @@ class Assertations extends \Codeception\Module
 
         return $this;
     }
+
+    /**
+     * Assert all paths in this->paths don't exist.
+     *
+     * @param array $paths
+     */
+    public function assertAllPathsDontExist(array $paths)
+    {
+        foreach ($paths as $path) {
+            $this->assertFileNotExists($path);
+        }
+    }
+
+    /**
+     * Assert all paths in this->paths exist.
+     *
+     * @param array $paths
+     */
+    public function assertAllPathsExist(array $paths)
+    {
+        foreach ($paths as $path) {
+            $this->assertFileExists($path);
+        }
+    }
 }

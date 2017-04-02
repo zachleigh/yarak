@@ -20,7 +20,7 @@ class DBSeedTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_seeds_the_database_with_simple_seeder()
+    public function db_seed_command_seeds_the_database_with_simple_seeder()
     {
         $this->tester->assertTablesEmpty();
 
@@ -34,7 +34,7 @@ class DBSeedTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_seeds_the_database_using_call_method()
+    public function db_seed_command_seeds_the_database_using_call_method()
     {
         $this->tester->assertTablesEmpty();
 

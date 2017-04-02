@@ -19,71 +19,75 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_the_database_directory()
+    public function db_directory_creator_creates_the_database_directory()
     {
         $this->tester->removeMigrationDirectory();
 
-        $databaseDir = $this->tester->getConfig()->getDatabaseDirectory();
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($databaseDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getDatabaseDirectory()
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created database directory.</info>')
+            $logger->hasMessage('<info>Created database directory.</info>'),
+            'Failed asserting that DirectoryCreator outputs message when creating database directory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_the_migrations_directory()
+    public function db_directory_creator_creates_the_migrations_directory()
     {
         $this->tester->removeMigrationDirectory();
 
-        $migrationsDir = $this->tester->getConfig()->getMigrationDirectory();
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($migrationsDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getMigrationDirectory()
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created migrations directory.</info>')
+            $logger->hasMessage('<info>Created migrations directory.</info>'),
+            'Failed asserting that DirectoryCreator outputs message when creating migrations directory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_the_seeds_directory()
+    public function db_directory_creator_creates_the_seeds_directory()
     {
         $this->tester->removeSeedDirectory();
 
-        $seedsDir = $this->tester->getConfig()->getSeedDirectory();
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($seedsDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getSeedDirectory()
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created seeds directory.</info>')
+            $logger->hasMessage('<info>Created seeds directory.</info>'),
+            'Failed asserting that DirectoryCreator outputs message when creating seeds directory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_the_factories_directory()
+    public function db_directory_creator_creates_the_factories_directory()
     {
         $this->tester->removeFactoryDirectory();
 
-        $factoryDir = $this->tester->getConfig()->getFactoryDirectory();
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($factoryDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getFactoryDirectory()
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created factories directory.</info>')
+            $logger->hasMessage('<info>Created factories directory.</info>'),
+            'Failed asserting that DirectoryCreator outputs message when creating factories directory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_model_factory_file()
+    public function db_directory_creator_creates_model_factory_file()
     {
         $fileDir = $this->tester
             ->getConfig()
@@ -94,14 +98,15 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
         $logger = $this->assertDirectoryCreatorCreatesPath($fileDir);
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created ModelFactory file.</info>')
+            $logger->hasMessage('<info>Created ModelFactory file.</info>'),
+            'Failed asserting that DirectoryCreator outputs message when creating ModelFactory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_database_seeder_file()
+    public function db_directory_creator_creates_database_seeder_file()
     {
         $fileDir = $this->tester
             ->getConfig()
@@ -112,14 +117,15 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
         $logger = $this->assertDirectoryCreatorCreatesPath($fileDir);
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created DatabaseSeeder file.</info>')
+            $logger->hasMessage('<info>Created DatabaseSeeder file.</info>'),
+            'Failed asserting that DirectoryCreator outputs message when creating DatabaseSeeder.'
         );
     }
 
     /**
      * @test
      */
-    public function it_doesnt_create_when_files_already_exist()
+    public function db_directory_creator_doesnt_create_when_files_already_exist()
     {
         $logger = new Logger();
 
@@ -132,7 +138,8 @@ class DBDirectoryCreatorTest extends \Codeception\Test\Unit
         $this->assertCount(1, $logger->getLog());
 
         $this->assertTrue($logger->hasMessage(
-            '<comment>Nothing created. All directories and files already exist.</comment>'
+            '<comment>Nothing created. All directories and files already exist.</comment>',
+            'Failed asserting that DirectoryCreator outputs message when nothing created.'
         ));
     }
 

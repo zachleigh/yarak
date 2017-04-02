@@ -17,49 +17,51 @@ class ConfigTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_gets_default_values()
+    public function config_gets_default_values()
     {
-        $default = $this->tester
-            ->getConfig()
-            ->getDefault('migrationRepository');
-
-        $this->assertEquals('database', $default);
+        $this->assertEquals(
+            'database',
+            $this->tester->getConfig()->getDefault('migrationRepository')
+        );
     }
 
     /**
      * @test
      */
-    public function it_gets_default_values_through_get()
+    public function config_gets_default_values_through_get()
     {
-        $default = $this->tester->getConfig()->get('migrationRepository');
-
-        $this->assertEquals('database', $default);
+        $this->assertEquals(
+            'database',
+            $this->tester->getConfig()->get('migrationRepository')
+        );
     }
 
     /**
      * @test
      */
-    public function has_returns_true_if_item_exists()
+    public function config_has_method_returns_true_if_item_exists()
     {
         $this->assertTrue(
-            $this->tester->getConfig()->has(['application', 'databaseDir'])
+            $this->tester->getConfig()->has(['application', 'databaseDir']),
+            'Failed asserting that Config::has returns true when config item exists.'
         );
     }
 
     /**
      * @test
      */
-    public function has_returns_false_if_item_doesnt_exist()
+    public function config_has_method_returns_false_if_item_doesnt_exist()
     {
         $this->assertFalse(
-            $this->tester->getConfig()->has(['application', 'notReal'])
+            $this->tester->getConfig()->has(['application', 'notReal']),
+            'Failed asserting that Config::has returns false when config items does not exist.'
         );
     }
 
     /**
      * @test
      */
-    public function it_sets_new_config_items()
+    public function config_sets_new_config_items()
     {
         $this->assertNull(
             $this->tester->getConfig()->get(['not', 'real', 'path'])
@@ -76,7 +78,7 @@ class ConfigTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_updates_config_items()
+    public function config_updates_config_items()
     {
         $this->tester->getConfig()->set(['not', 'real', 'path'], 'value');
 
@@ -96,7 +98,7 @@ class ConfigTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_removes_config_items()
+    public function config_removes_config_items()
     {
         $this->tester->getConfig()->set(['not', 'real', 'path'], 'value');
 

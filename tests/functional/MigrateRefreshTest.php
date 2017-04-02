@@ -20,7 +20,7 @@ class MigrateRefreshTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_refreshes_the_database()
+    public function migrate_refresh_command_refreshes_the_database()
     {
         $this->tester->createTwoSteps();
 
@@ -58,7 +58,7 @@ class MigrateRefreshTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_seeds_the_database_after_refresh()
+    public function migrate_refresh_command_seeds_the_database_after_refresh()
     {
         $this->tester->seederSetUp();
 
@@ -78,7 +78,7 @@ class MigrateRefreshTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_seeds_the_database_with_specified_class()
+    public function migrate_refresh_command_seeds_the_database_with_specified_class()
     {
         $this->tester->seederSetUp();
 

@@ -22,9 +22,7 @@ class FactoryHelperTest extends \Codeception\Test\Unit
      */
     public function factory_helper_makes_a_simple_model_instance()
     {
-        $user = factory(Users::class)->make();
-
-        $this->tester->assertUserInstanceMade($user);
+        $this->tester->assertUserInstanceMade(factory(Users::class)->make());
     }
 
     /**
@@ -109,7 +107,7 @@ class FactoryHelperTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_uses_user_defined_attributes_when_creating_model()
+    public function factory_helper_uses_user_defined_attributes_when_creating_model()
     {
         $attributes = [
             'username' => 'bobsmith',
@@ -126,7 +124,7 @@ class FactoryHelperTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_multiple_instances_of_models()
+    public function factory_helper_creates_multiple_instances_of_models()
     {
         $users = factory(Users::class, 3)->create();
 
@@ -140,7 +138,7 @@ class FactoryHelperTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_classes_with_a_given_name()
+    public function factory_helper_creates_classes_with_a_given_name()
     {
         $user = factory(Users::class, 'myUser')->create();
 
@@ -155,7 +153,7 @@ class FactoryHelperTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function can_create_single_relationship_with_foreach_loop()
+    public function factory_helper_can_use_single_relationship_with_foreach_loop()
     {
         $users = factory(Users::class, 3)->create();
 
@@ -171,7 +169,7 @@ class FactoryHelperTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function can_create_multiple_relationships_with_foreach_loop()
+    public function factory_helper_can_create_multiple_relationships_with_foreach_loop()
     {
         $users = factory(Users::class, 3)->create();
 

@@ -20,7 +20,7 @@ class MigrateTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_runs_migrations()
+    public function migrate_command_runs_migrations()
     {
         $this->tester->seeTableDoesntExist('users');
 

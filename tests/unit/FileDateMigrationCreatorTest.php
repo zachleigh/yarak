@@ -19,17 +19,15 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function migration_creator_creates_directory_structure_if_not_present()
+    public function file_date_migration_creator_creates_directory_structure_if_not_present()
     {
         $this->tester->removeDatabaseDirectory();
-        
-        $databaseDir = $this->tester->getConfig()->getDatabaseDirectory();
 
-        $this->assertFileNotExists($databaseDir);
+        $this->assertFileNotExists(
+            $this->tester->getConfig()->getDatabaseDirectory()
+        );
 
-        $path = $this->tester
-            ->getMigrationCreator()
-            ->create('create_test_table');
+        $path = $this->tester->getMigrationCreator()->create('create_test_table');
 
         $this->assertFileExists($path);
     }
@@ -37,11 +35,9 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_makes_an_empty_migration()
+    public function file_date_migration_creator_makes_an_empty_migration()
     {
-        $path = $this->tester
-            ->getMigrationCreator()
-            ->create('create_test_table');
+        $path = $this->tester->getMigrationCreator()->create('create_test_table');
 
         $this->assertFileExists($path);
     }
@@ -49,25 +45,19 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_sets_empty_migration_class_name()
+    public function file_date_migration_creator_sets_empty_migration_class_name()
     {
-        $path = $this->tester
-            ->getMigrationCreator()
-            ->create('create_test_table');
+        $path = $this->tester->getMigrationCreator()->create('create_test_table');
 
-        $data = file_get_contents($path);
-
-        $this->assertContains('class CreateTestTable', $data);
+        $this->assertContains('class CreateTestTable', file_get_contents($path));
     }
 
     /**
      * @test
      */
-    public function it_makes_create_table_migration()
+    public function file_date_migration_creator_makes_create_table_migration()
     {
-        $path = $this->tester
-            ->getMigrationCreator()
-            ->create('create_test_table');
+        $path = $this->tester->getMigrationCreator()->create('create_test_table');
 
         $this->assertFileExists($path);
     }
@@ -75,21 +65,19 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_sets_create_migration_class_name()
+    public function file_date_migration_creator_sets_create_migration_class_name()
     {
         $path = $this->tester
             ->getMigrationCreator()
             ->create('create_test_table', 'test');
 
-        $data = file_get_contents($path);
-
-        $this->assertContains('class CreateTestTable', $data);
+        $this->assertContains('class CreateTestTable', file_get_contents($path));
     }
 
     /**
      * @test
      */
-    public function it_sets_create_migration_table_name()
+    public function file_date_migration_creator_sets_create_migration_table_name()
     {
         $path = $this->tester
             ->getMigrationCreator()
@@ -105,7 +93,7 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_outputs_success_message()
+    public function file_date_migration_creator_outputs_success_message()
     {
         $logger = new Logger();
 
@@ -116,15 +104,18 @@ class FileDateMigrationCreatorTest extends \Codeception\Test\Unit
         $this->assertCount(3, $logger->getLog());
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created migration create_test_table.</info>')
+            $logger->hasMessage('<info>Created migration create_test_table.</info>'),
+            'Failed asserting that FileDateMigrationCreator outputs success messaage when creating migration.'
         );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created database directory.</info>')
+            $logger->hasMessage('<info>Created database directory.</info>'),
+            'Failed asserting that FileDateMigrationCreator outputs success messaage when creating database directory.'
         );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created migrations directory.</info>')
+            $logger->hasMessage('<info>Created migrations directory.</info>'),
+            'Failed asserting that FileDateMigrationCreator outputs success messaage when creating migrations directory.'
         );
     }
 }

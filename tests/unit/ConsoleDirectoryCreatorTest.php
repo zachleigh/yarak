@@ -19,55 +19,58 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_creates_the_console_directory()
+    public function console_directory_creator_creates_the_console_directory()
     {
         $this->tester->removeConsoleDirectory();
 
-        $consoleDir = $this->tester->getConfig()->getConsoleDirectory();
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($consoleDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getConsoleDirectory()
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created console directory.</info>')
+            $logger->hasMessage('<info>Created console directory.</info>'),
+            'Failed asserting that DirectoryCreator outputs success message when creating console directory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_the_commands_directory()
+    public function console_directory_creator_creates_the_commands_directory()
     {
         $this->tester->removeConsoleDirectory();
 
-        $commandsDir = $this->tester->getConfig()->getCommandsDirectory();
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($commandsDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getCommandsDirectory()
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created commands directory.</info>')
+            $logger->hasMessage('<info>Created commands directory.</info>'),
+            'Failed asserting that DirectoryCreator outputs success message when creating command directory.'
         );
     }
 
     /**
      * @test
      */
-    public function it_creates_the_kernel_file()
+    public function console_directory_creator_creates_the_kernel_file()
     {
         $this->tester->removeConsoleDirectory();
 
-        $commandsDir = $this->tester->getConfig()->getConsoleDirectory('Kernel.php');
-
-        $logger = $this->assertDirectoryCreatorCreatesPath($commandsDir);
+        $logger = $this->assertDirectoryCreatorCreatesPath(
+            $this->tester->getConfig()->getConsoleDirectory('Kernel.php')
+        );
 
         $this->assertTrue(
-            $logger->hasMessage('<info>Created kernel file.</info>')
+            $logger->hasMessage('<info>Created kernel file.</info>'),
+            'Failed asserting that DirectoryCreator outputs success message when creating Kernel.'
         );
     }
 
     /**
      * @test
      */
-    public function it_inserts_set_kernel_namespace()
+    public function console_directory_creator_inserts_set_kernel_namespace()
     {
         $this->tester->getConfig()->set(
             ['namespaces', 'consoleNamespace'],
@@ -90,7 +93,7 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_inserts_guessed_kernel_namespace()
+    public function console_directory_creator_inserts_guessed_kernel_namespace()
     {
         $this->tester->getConfig()->remove('namespaces');
 
@@ -108,7 +111,7 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function it_doesnt_create_directories_if_they_already_exists()
+    public function console_directory_creator_doesnt_create_directories_if_they_already_exists()
     {
         $logger = new Logger();
 
@@ -121,7 +124,8 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
         $this->assertCount(1, $logger->getLog());
 
         $this->assertTrue($logger->hasMessage(
-            '<comment>Nothing created. All directories and files already exist.</comment>'
+            '<comment>Nothing created. All directories and files already exist.</comment>',
+            'Failed asserting that DirectoryCreator outputs message when nothing created.'
         ));
     }
 
