@@ -22,6 +22,8 @@ class MakeCommandTest extends \Codeception\Test\Unit
      */
     public function make_command_command_makes_a_command()
     {
+        $this->tester->removeConsoleDirectory();
+
         $config = $this->tester->getConfig();
 
         Yarak::call('make:command', [

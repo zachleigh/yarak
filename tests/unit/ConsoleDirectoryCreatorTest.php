@@ -21,8 +21,6 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
      */
     public function console_directory_creator_creates_the_console_directory()
     {
-        $this->tester->removeConsoleDirectory();
-
         $logger = $this->assertDirectoryCreatorCreatesPath(
             $this->tester->getConfig()->getConsoleDirectory()
         );
@@ -73,7 +71,7 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
     public function console_directory_creator_inserts_set_kernel_namespace()
     {
         $this->tester->getConfig()->set(
-            ['namespaces', 'consoleNamespace'],
+            ['namespaces', 'console'],
             'MyApp\Console'
         );
 

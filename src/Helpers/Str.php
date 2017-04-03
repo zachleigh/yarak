@@ -4,11 +4,6 @@ namespace Yarak\Helpers;
 
 class Str
 {
-    /*
-    | This class is adapted from Laravel's Str class:
-    | https://github.com/illuminate/support/blob/master/Str.php
-    */
-
     /**
      * The cache of studly-cased words.
      *
@@ -36,5 +31,22 @@ class Str
         $value = ucwords(str_replace(['-', '_'], ' ', $value));
 
         return $studlyCache[$key] = str_replace(' ', '', $value);
+    }
+
+    /**
+     * Append a character to a string if it doesn't already exist.
+     *
+     * @param string $value
+     * @param string $char
+     *
+     * @return string
+     */
+    public static function append($value, $char)
+    {
+        if (substr($value, -1) !== $char) {
+            $value .= $char;
+        }
+
+        return $value;
     }
 }

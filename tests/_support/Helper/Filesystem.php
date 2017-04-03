@@ -3,6 +3,7 @@
 namespace Helper;
 
 use Yarak\Config\Config;
+use Yarak\Exceptions\WriteError;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class Filesystem extends \Codeception\Module
@@ -88,7 +89,7 @@ class Filesystem extends \Codeception\Module
     }
 
     /**
-     * Create all paths necessary for seeding.
+     * Create all paths necessary for database.
      *
      * @param Config $config
      */
@@ -155,7 +156,7 @@ class Filesystem extends \Codeception\Module
 
         $this->copyModelStub('postsModel', 'Posts');
 
-        $this->getModule('\Helper\Filesystem')->writeFile(
+        $this->writeFile(
             $config->getFactoryDirectory('ModelFactory.php'),
             file_get_contents(__DIR__.'/../../_data/Stubs/factory.stub')
         );
@@ -169,7 +170,7 @@ class Filesystem extends \Codeception\Module
      */
     public function copyModelStub($stubName, $fileName)
     {
-        $this->getModule('\Helper\Filesystem')->writeFile(
+        $this->writeFile(
             __DIR__."/../../../app/models/{$fileName}.php",
             file_get_contents(__DIR__."/../../_data/Stubs/{$stubName}.stub")
         );
@@ -184,9 +185,35 @@ class Filesystem extends \Codeception\Module
     {
         $fileName = ucfirst($stubName);
 
-        $this->getModule('\Helper\Filesystem')->writeFile(
+        $this->writeFile(
             __DIR__."/../../../app/database/seeds/{$fileName}.php",
             file_get_contents(__DIR__."/../../_data/Stubs/{$stubName}.stub")
+        );
+    }
+
+    /**
+     * Copy the console kernel stub to the console directory.
+     */
+    public function copyKernelStub()
+    {
+        $config = Config::getInstance();
+
+        $this->writeFile(
+            $config->getConsoleDirectory('Kernel.php'),
+            file_get_contents(__DIR__."/../../_data/Stubs/kernel.stub")
+        );
+    }
+
+    /**
+     * Copy commands to console/commands directory.
+     */
+    public function copyCommands()
+    {
+        $config = Config::getInstance();
+
+        $this->writeFile(
+            $config->getConsoleDirectory('commands/TestCommand.php'),
+            file_get_contents(__DIR__."/../../_data/Stubs/testCommand.stub")
         );
     }
 }

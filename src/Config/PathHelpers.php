@@ -2,6 +2,8 @@
 
 namespace Yarak\Config;
 
+use Yarak\Helpers\Str;
+
 trait PathHelpers
 {
     /**
@@ -20,7 +22,7 @@ trait PathHelpers
      */
     public function getDatabaseDirectory()
     {
-        return $this->addFinalSlash($this->get(['application', 'databaseDir']));
+        return Str::append($this->get(['application', 'databaseDir']), '/');
     }
 
     /**
@@ -81,8 +83,9 @@ trait PathHelpers
      */
     public function getConsoleDirectory($path = '')
     {
-        return $this->addFinalSlash(
-            $this->get(['application', 'consoleDir'])
+        return Str::append(
+            $this->get(['application', 'consoleDir']),
+            '/'
         ).$path;
     }
 
@@ -95,24 +98,9 @@ trait PathHelpers
      */
     public function getCommandsDirectory($path = '')
     {
-        return $this->addFinalSlash(
-            $this->get(['application', 'consoleDir'])
+        return Str::append(
+            $this->get(['application', 'consoleDir']),
+            '/'
         ).'commands/'.$path;
-    }
-
-    /**
-     * Add a final slash to a path if it doesn't exist.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function addFinalSlash($path)
-    {
-        if (substr($path, -1) !== '/') {
-            $path .= '/';
-        }
-
-        return $path;
     }
 }

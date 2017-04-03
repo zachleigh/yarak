@@ -49,4 +49,18 @@ class FileNotFound extends Exception
             "The seeder file {$seeder} could not be found in {$path}."
         );
     }
+
+    /**
+     * The command file can not be found.
+     *
+     * @param string $command
+     *
+     * @return static
+     */
+    public static function commandNotFound($command)
+    {
+        return new static(
+            "The command {$command} could not be found."
+        );
+    }
 }

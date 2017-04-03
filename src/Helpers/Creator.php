@@ -36,28 +36,6 @@ abstract class Creator
     }
 
     /**
-     * Guess a namespace based on a path.
-     *
-     * @param string $path
-     *
-     * @return string|null
-     */
-    protected function guessNamespace($path)
-    {
-        if (defined('APP_PATH')) {
-            $appPathArray = explode('/', APP_PATH);
-
-            $relativePath = array_diff(explode('/', $path), $appPathArray);
-
-            array_unshift($relativePath, array_pop($appPathArray));
-
-            $relativePath = array_map('ucfirst', $relativePath);
-
-            return implode('\\', $relativePath);
-        }
-    }
-
-    /**
      * Set the namespace in the command stub.
      *
      * @param string $stub

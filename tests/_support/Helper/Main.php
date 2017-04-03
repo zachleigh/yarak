@@ -26,6 +26,8 @@ class Main extends \Codeception\Module
 
         $this->getModule('\Helper\Filesystem')->setFilesystem();
 
+        $this->getModule('\Helper\Filesystem')->removeConsoleDirectory();
+
         $this->getModule('\Helper\Database')->resetDatabase();
     }
 

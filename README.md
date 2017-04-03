@@ -780,7 +780,7 @@ To generate all the directories and files necessary for the console component to
 ```
 php yarak console:generate
 ```
-This will create a console directory, a commands directory and a Kernel.php file where you can register your custom commands. If no `consoleNamespace` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `consoleNamespace` as shown below.  
+This will create a console directory, a commands directory and a Kernel.php file where you can register your custom commands. If no `namespaces:console` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `namespaces:console` as shown below.  
 
 #### Generating Commands
 Before generating a custom command, register a console directory with the Yarak service. You may also register a commands namespace.
@@ -795,13 +795,13 @@ $di->setShared('yarak', function () {
         ],
         'namespaces' => [
             //
-            'consoleNamespace' => 'App\Console\Commands'
+            'console' => 'App\Console\Commands'
         ],
         //
     ]);
 });
 ```
-If `consoleNamespace` is not set, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `consoleNamespace` as shown above.
+If `console` is not set, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `namespaces:console` as shown above.
 
 Once `consoleDir` is registered, use the `make:command` command to generate a custom command stub.
 ```

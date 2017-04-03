@@ -1,6 +1,16 @@
 <?php
 NAMESPACE
-class Kernel
+use Yarak\Console\ConsoleKernel;
+use App\Console\Commands\ExampleCommand;
+
+class Kernel extends ConsoleKernel
 {
-    
+    /**
+     * Your custom Yarak commands.
+     *
+     * @var array
+     */
+    protected $commands = [
+        ExampleCommand::class
+    ];
 }

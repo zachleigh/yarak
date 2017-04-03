@@ -7,6 +7,7 @@ use Phalcon\Di\FactoryDefault;
 use Yarak\Exceptions\FileNotFound;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class Yarak
 {
@@ -16,14 +17,27 @@ class Yarak
      * @param string         $command
      * @param array          $arguments Argument array.
      * @param FactoryDefault $di        DI, may be necessary for php 5.6.
+     * @param bool           $debug     If true, use and return buffered output.
      */
-    public static function call($command, array $arguments = [], DiInterface $di = null)
-    {
+    public static function call(
+        $command,
+        array $arguments = [],
+        DiInterface $di = null,
+        $debug = false
+    ) {
         $kernel = self::getKernel($di);
 
         $arguments = ['command' => $command] + $arguments;
 
         $input = new ArrayInput($arguments);
+
+        if ($debug) {
+            $output = new BufferedOutput();
+
+            $kernel->handle($input, $output);
+
+            return $output;
+        }
 
         $output = new NullOutput();
 

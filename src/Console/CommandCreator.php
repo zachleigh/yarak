@@ -4,6 +4,7 @@ namespace Yarak\Console;
 
 use Yarak\Helpers\Creator;
 use Yarak\Exceptions\WriteError;
+use Yarak\Helpers\NamespaceResolver;
 
 class CommandCreator extends Creator
 {
@@ -23,7 +24,7 @@ class CommandCreator extends Creator
         if (!file_exists($path)) {
             $creator = new DirectoryCreator($this->output);
 
-            $creator->create();
+            $creator->create(false);
 
             $this->writeFile($path, $this->getStub($name));
 
@@ -48,7 +49,10 @@ class CommandCreator extends Creator
 
         $stub = str_replace('CLASSNAME', $name, $stub);
 
-        return $this->setNamespace($stub, $this->resolveCommandNamespace());
+        return $this->setNamespace(
+            $stub,
+            NamespaceResolver::resolve('console', 'Commands')
+        );
     }
 
     /**
@@ -58,9 +62,9 @@ class CommandCreator extends Creator
      */
     protected function resolveCommandNamespace()
     {
-        if ($this->config->has(['namespaces', 'consoleNamespace'])) {
+        if ($this->config->has(['namespaces', 'console'])) {
             return $this->config->get(
-                ['namespaces', 'consoleNamespace']
+                ['namespaces', 'console']
             ).'\Commands';
         }
 

@@ -1,0 +1,72 @@
+<?php
+NAMESPACE
+use Yarak\Console\Command;
+use Yarak\Console\DirectoryCreator;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+
+class ExampleCommand extends Command
+{
+    /**
+     * Configure the command.
+     */
+    protected function configure()
+    {
+        $this->setName('example')
+            ->setDescription('Basic example command.')
+            ->setHelp(
+                'This command is meant to help you learn how to write your own commands.'
+            )
+            ->addArgument(
+                'word',
+                InputArgument::REQUIRED,
+                'A word of your choice.'
+            )
+            ->addOption(
+                'backwards',
+                null,
+                InputOption::VALUE_NONE,
+                'Spell the word backwards.'
+            );
+    }
+
+    /**
+     * Handle the command.
+     */
+    protected function handle()
+    {
+        $word = ucfirst($this->argument('word'));
+
+        if ($this->option('backwards')) {
+            $this->spellBackwards($word);
+        } else {
+            $this->spell($word);
+        }
+    }
+
+    /**
+     * Spell the word backwards.
+     *
+     * @param  string $word
+     */
+    protected function spellBackwards($word)
+    {
+        $backwards = strrev($word);
+
+        $spelling = strtolower(implode('-', str_split($backwards)));
+
+        $this->output->writeInfo("{$word} spelled backwards is {$spelling}.");
+    }
+
+    /**
+     * Spell the word.
+     *
+     * @param  string $word
+     */
+    protected function spell($word)
+    {
+        $spelling = strtolower(implode('-', str_split($word)));
+
+        $this->output->writeInfo("{$word} is spelled {$spelling}.");
+    }
+}

@@ -2,8 +2,10 @@
 
 namespace Yarak;
 
+use App\Console\Kernel as UserKernel;
 use Yarak\Config\Config;
 use Yarak\Exceptions\InvalidInput;
+use Yarak\Helpers\NamespaceResolver;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -15,6 +17,13 @@ class Kernel
      * @var array
      */
     private $configArray;
+
+    /**
+     * Array of registered commands.
+     *
+     * @var array
+     */
+    protected $commands;
 
     /**
      * Construct.
@@ -53,33 +62,47 @@ class Kernel
      */
     protected function registerCommands(Application $application)
     {
-        $applicationCommands = $this->getApplicationCommands();
+        $this->getApplicationCommands();
 
-        foreach ($applicationCommands as $command) {
+        $this->getUserCommands();
+
+        foreach ($this->commands as $command) {
             $application->add(new $command());
         }
     }
 
     /**
      * Get array of all Yarak commands.
-     *
-     * @return array
      */
     protected function getApplicationCommands()
     {
-        $dir = new \DirectoryIterator(__DIR__.'/Commands');
+        $directory = new \DirectoryIterator(__DIR__.'/Commands');
 
-        $commands = [];
+        foreach ($directory as $file) {
+            if (!$file->isDot()) {
+                $className = str_replace('.php', '', $file->getFilename());
 
-        foreach ($dir as $fileinfo) {
-            if (!$fileinfo->isDot()) {
-                $className = str_replace('.php', '', $fileinfo->getFilename());
-
-                $commands[] = 'Yarak\\Commands\\'.$className;
+                $this->commands[] = 'Yarak\\Commands\\'.$className;
             }
         }
+    }
 
-        return $commands;
+    /**
+     * Get array of all user defined commands.
+     */
+    protected function getUserCommands()
+    {
+        $kernelClass = NamespaceResolver::resolve('console', 'Kernel');
+
+        $path = Config::getInstance()->getConsoleDirectory('Kernel.php');
+
+        if (file_exists($path)) {
+            $kernelClassName = NamespaceResolver::resolve('console', 'Kernel');
+
+            $kernel = new $kernelClassName();
+
+            $this->commands = array_merge($this->commands, $kernel->getCommands());
+        }
     }
 
     /**

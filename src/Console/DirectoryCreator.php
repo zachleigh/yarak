@@ -3,13 +3,14 @@
 namespace Yarak\Console;
 
 use Yarak\Helpers\Creator;
+use Yarak\Helpers\NamespaceResolver;
 
 class DirectoryCreator extends Creator
 {
     /**
      * Create all directories and files for console.
      */
-    public function create()
+    public function create($createExample = true)
     {
         $createdDirs = (bool) count($this->makeDirectoryStructure([
             'console'  => $this->config->getConsoleDirectory(),
@@ -18,6 +19,8 @@ class DirectoryCreator extends Creator
 
         $createdKernel = $this->createKernel();
 
+        $createdExample = $createExample ? $this->createExampleCommand() : false;
+        
         $this->outputNothingCreated([$createdDirs, $createdKernel]);
     }
 
@@ -53,20 +56,36 @@ class DirectoryCreator extends Creator
     {
         $stub = file_get_contents(__DIR__.'/Stubs/kernel.stub');
 
-        return $this->setNamespace($stub, $this->resolveConsoleNamespace());
+        return $this->setNamespace($stub, NamespaceResolver::resolve('console'));
     }
 
     /**
-     * Resolve the console namespace.
+     * Create an example command.
      *
-     * @return string
+     * @return bool
      */
-    protected function resolveConsoleNamespace()
+    protected function createExampleCommand()
     {
-        if ($this->config->has(['namespaces', 'consoleNamespace'])) {
-            return $this->config->get(['namespaces', 'consoleNamespace']);
+        $path = $this->config->getCommandsDirectory('ExampleCommand.php');
+
+        if (!file_exists($path)) {
+            $this->writeFile(
+                $path,
+                $this->getExampleStub()
+            );
+
+            $this->output->writeInfo('Created example command file.');
+
+            return true;
         }
 
-        return $this->guessNamespace($this->config->getConsoleDirectory());
+        return false;
+    }
+
+    protected function getExampleStub()
+    {
+        $stub = file_get_contents(__DIR__.'/Stubs/exampleCommand.stub');
+
+        return $this->setNamespace($stub, NamespaceResolver::resolve('console', 'Commands'));
     }
 }

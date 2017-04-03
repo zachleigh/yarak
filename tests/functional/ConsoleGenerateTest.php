@@ -22,8 +22,6 @@ class ConsoleGenerateTest extends \Codeception\Test\Unit
      */
     public function console_generate_command_makes_all_directories_and_files()
     {
-        $this->tester->removeConsoleDirectory();
-
         $paths = $this->getPaths();
 
         $this->tester->assertAllPathsDontExist($paths);
@@ -31,6 +29,8 @@ class ConsoleGenerateTest extends \Codeception\Test\Unit
         Yarak::call('console:generate', [], DI::getDefault());
 
         $this->tester->assertAllPathsExist($paths);
+
+        $this->tester->removeConsoleDirectory();
     }
 
     /**
