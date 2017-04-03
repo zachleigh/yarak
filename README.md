@@ -144,6 +144,11 @@ Because migrations do not follow psr-4 naming conventions, load them with a clas
     ]
 }
 ```
+You may have to dump the composer autoload cache for the change to take affect.
+```
+composer dumpautoload
+```
+
 Test to make sure that it is working in the console:
 ```
 php yarak
