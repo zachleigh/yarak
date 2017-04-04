@@ -2,6 +2,7 @@
 
 namespace Yarak\Console\Stubs;
 
+use Yarak\Console\Input\Input;
 use Symfony\Component\Console\Command\Command;
 
 class NullCommand extends Command
@@ -67,5 +68,16 @@ class NullCommand extends Command
     public function getOptions()
     {
         return $this->options;
+    }
+
+    public function addInput(Input $input)
+    {
+        $reflection = new \ReflectionClass($input);
+
+        $method = 'add'.$reflection->getShortName();
+
+        if (method_exists($this, $method)) {
+            $this->$method(...array_values($input->getAttributes()));
+        }
     }
 }

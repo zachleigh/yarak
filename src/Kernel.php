@@ -91,8 +91,6 @@ class Kernel
      */
     protected function getUserCommands()
     {
-        $kernelClass = NamespaceResolver::resolve('console', 'Kernel');
-
         $path = Config::getInstance()->getConsoleDirectory('Kernel.php');
 
         if (file_exists($path)) {

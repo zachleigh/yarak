@@ -54,20 +54,4 @@ class CommandCreator extends Creator
             NamespaceResolver::resolve('console', 'Commands')
         );
     }
-
-    /**
-     * Resolve the command namespace.
-     *
-     * @return string
-     */
-    protected function resolveCommandNamespace()
-    {
-        if ($this->config->has(['namespaces', 'console'])) {
-            return $this->config->get(
-                ['namespaces', 'console']
-            ).'\Commands';
-        }
-
-        return $this->guessNamespace($this->config->getCommandsDirectory());
-    }
 }

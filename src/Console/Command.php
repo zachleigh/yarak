@@ -2,8 +2,9 @@
 
 namespace Yarak\Console;
 
+use Yarak\Console\Input\Input;
+use Yarak\Console\SignatureParser;
 use Yarak\Console\Output\SymfonyOutput;
-use Yarak\Console\Command\SignatureParser;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -32,11 +33,18 @@ abstract class Command extends SymfonyCommand
     protected $description;
 
     /**
+     * Command signature.
+     *
+     * @var null|string
+     */
+    protected $signature = null;
+
+    /**
      * Configure the command if signature is set.
      */
     protected function configure()
     {
-        if (isset($this->signature)) {
+        if (!is_null($this->signature)) {
             $parser = new SignatureParser($this);
 
             $parser->parse($this->signature);
@@ -126,5 +134,21 @@ abstract class Command extends SymfonyCommand
     protected function hasOption($name)
     {
         return $this->input->hasOption($name);
+    }
+
+    /**
+     * Add input to the command.
+     *
+     * @param Input $input
+     */
+    public function addInput(Input $input)
+    {
+        $reflection = new \ReflectionClass($input);
+
+        $method = 'add'.$reflection->getShortName();
+
+        if (method_exists($this, $method)) {
+            $this->$method(...array_values($input->getAttributes()));
+        }
     }
 }

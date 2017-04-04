@@ -27,21 +27,15 @@ class Yarak
     ) {
         $kernel = self::getKernel($di);
 
-        $arguments = ['command' => $command] + $arguments;
-
-        $input = new ArrayInput($arguments);
+        $input = new ArrayInput(['command' => $command] + $arguments);
 
         if ($debug) {
-            $output = new BufferedOutput();
-
-            $kernel->handle($input, $output);
+            $kernel->handle($input, $output = new BufferedOutput());
 
             return $output;
         }
 
-        $output = new NullOutput();
-
-        $kernel->handle($input, $output);
+        $kernel->handle($input, new NullOutput());
     }
 
     /**

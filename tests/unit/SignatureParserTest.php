@@ -2,7 +2,7 @@
 
 namespace Yarak\tests\unit;
 
-use Yarak\Console\Command\SignatureParser;
+use Yarak\Console\SignatureParser;
 use Yarak\Console\Stubs\NullCommand;
 
 class SignatureParserTest extends \Codeception\Test\Unit

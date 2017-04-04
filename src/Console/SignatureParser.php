@@ -1,7 +1,9 @@
 <?php
 
-namespace Yarak\Console\Command;
+namespace Yarak\Console;
 
+use Yarak\Console\Input\Option;
+use Yarak\Console\Input\Argument;
 use Symfony\Component\Console\Command\Command;
 
 class SignatureParser
@@ -36,14 +38,12 @@ class SignatureParser
 
         foreach ($argumentsOptions as $value) {
             if (substr($value, 0, 2) !== '--') {
-                $parser = new ArgumentParser($this->command);
+                $input = new Argument($value);
             } else {
-                $parser = new OptionParser($this->command);
-
-                $value = trim($value, '--');
+                $input = new Option(trim($value, '--'));
             }
 
-            $parser->handle($value);
+            $this->command->addInput($input->parse());
         }
     }
 

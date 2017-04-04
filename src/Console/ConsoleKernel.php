@@ -8,6 +8,13 @@ use Yarak\Exceptions\InvalidCommand;
 class ConsoleKernel
 {
     /**
+     * User defined commands.
+     *
+     * @var array
+     */
+    protected $commands = [];
+
+    /**
      * Get all user defined commands.
      *
      * @return array

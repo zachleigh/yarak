@@ -21,7 +21,7 @@ class DirectoryCreator extends Creator
 
         $createdExample = $createExample ? $this->createExampleCommand() : false;
 
-        $this->outputNothingCreated([$createdDirs, $createdKernel]);
+        $this->outputNothingCreated([$createdDirs, $createdKernel, $createdExample]);
     }
 
     /**
@@ -82,6 +82,11 @@ class DirectoryCreator extends Creator
         return false;
     }
 
+    /**
+     * Get the example command stub.
+     *
+     * @return string
+     */
     protected function getExampleStub()
     {
         $stub = file_get_contents(__DIR__.'/Stubs/exampleCommand.stub');
