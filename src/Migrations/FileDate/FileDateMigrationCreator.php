@@ -22,7 +22,6 @@ class FileDateMigrationCreator extends Creator implements MigrationCreator
         $className = $this->getClassName($name);
 
         if (!class_exists($className)) {
-
             $this->makeDirectoryStructure([
                 'database'   => $this->config->getDatabaseDirectory(),
                 'migrations' => $this->config->getMigrationDirectory(),

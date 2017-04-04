@@ -26,8 +26,8 @@ abstract class Parser
     /**
      * Set array modeArray value if value contains *.
      *
-     * @param  string $value
-     * @param  string $constant
+     * @param string $value
+     * @param string $constant
      *
      * @return string
      */
@@ -61,8 +61,8 @@ abstract class Parser
     /**
      * Calculate the mode score.
      *
-     * @param  array  $modeArray
-     * @param  string $class
+     * @param array  $modeArray
+     * @param string $class
      *
      * @return int
      */

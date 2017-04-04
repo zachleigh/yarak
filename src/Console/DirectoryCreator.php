@@ -20,7 +20,7 @@ class DirectoryCreator extends Creator
         $createdKernel = $this->createKernel();
 
         $createdExample = $createExample ? $this->createExampleCommand() : false;
-        
+
         $this->outputNothingCreated([$createdDirs, $createdKernel]);
     }
 
