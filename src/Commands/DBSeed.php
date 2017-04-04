@@ -4,25 +4,23 @@ namespace Yarak\Commands;
 
 use Yarak\Console\YarakCommand;
 use Yarak\DB\Seeders\SeedRunner;
-use Symfony\Component\Console\Input\InputArgument;
 
 class DBSeed extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('db:seed')
-            ->setDescription('Seed the database.')
-            ->setHelp('This command will run the given seeder class.')
-            ->addArgument(
-                'class',
-                InputArgument::OPTIONAL,
-                'The name of the seeder class to run.',
-                'DatabaseSeeder'
-            );
-    }
+    protected $signature = 'db:seed
+                            {class=DatabaseSeeder : The name of the seeder class to run.}';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Seed the database.';
 
     /**
      * Handle the command.

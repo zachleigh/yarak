@@ -3,6 +3,7 @@
 namespace Yarak\Console;
 
 use Yarak\Console\Output\SymfonyOutput;
+use Yarak\Console\Command\SignatureParser;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -22,6 +23,27 @@ abstract class Command extends SymfonyCommand
      * @var InputInterface
      */
     protected $input;
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * Configure the command if signature is set.
+     */
+    protected function configure()
+    {
+        if (isset($this->signature)) {
+            $parser = new SignatureParser($this);
+
+            $parser->parse($this->signature);
+
+            $this->setDescription($this->description);
+        }
+    }
 
     /**
      * Execute the command.

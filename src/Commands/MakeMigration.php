@@ -3,30 +3,24 @@
 namespace Yarak\Commands;
 
 use Yarak\Console\YarakCommand;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 class MakeMigration extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('make:migration')
-            ->setDescription('Create a new migration file.')
-            ->setHelp('This command allows you to make migration files.')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'The name of your migration, words separated by underscores.')
-            ->addOption(
-                'create',
-                'c',
-                InputOption::VALUE_REQUIRED,
-                'The name of the table to create.'
-            );
-    }
+    protected $signature = 'make:migration
+                            {name : The name of your migration, words separated by underscores.}
+                            {--c|create : The name of the table to create.}';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create a new migration file.';
 
     /**
      * Handle the command.

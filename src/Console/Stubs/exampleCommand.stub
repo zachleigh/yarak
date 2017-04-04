@@ -2,33 +2,24 @@
 NAMESPACE
 use Yarak\Console\Command;
 use Yarak\Console\DirectoryCreator;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 class ExampleCommand extends Command
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('example')
-            ->setDescription('Basic example command.')
-            ->setHelp(
-                'This command is meant to help you learn how to write your own commands.'
-            )
-            ->addArgument(
-                'word',
-                InputArgument::REQUIRED,
-                'A word of your choice.'
-            )
-            ->addOption(
-                'backwards',
-                null,
-                InputOption::VALUE_NONE,
-                'Spell the word backwards.'
-            );
-    }
+    protected $signature = 'example
+                            {word : A word of your choice.}
+                            {--b|backwards : Spell the word backwards}';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Basic example command.';
 
     /**
      * Handle the command.

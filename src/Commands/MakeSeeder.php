@@ -4,23 +4,23 @@ namespace Yarak\Commands;
 
 use Yarak\Console\YarakCommand;
 use Yarak\DB\Seeders\SeederCreator;
-use Symfony\Component\Console\Input\InputArgument;
 
 class MakeSeeder extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('make:seeder')
-            ->setDescription('Create a new seeder file.')
-            ->setHelp('This command will generate a new seeder file.')
-            ->addArgument(
-                'name',
-                InputArgument::REQUIRED,
-                'The name of your seeder file.');
-    }
+    protected $signature = 'make:seeder
+                            {name : The name of your seeder file.}';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create a new seeder file.';
 
     /**
      * Handle the command.

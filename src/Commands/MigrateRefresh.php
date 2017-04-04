@@ -4,50 +4,24 @@ namespace Yarak\Commands;
 
 use Yarak\Console\YarakCommand;
 use Yarak\DB\Seeders\SeedRunner;
-use Symfony\Component\Console\Input\InputOption;
 
 class MigrateRefresh extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('migrate:refresh')
-            ->setDescription('Refresh the database.')
-            ->setHelp(
-                'This command allows you to refresh the database by rolling back and re-running all migrations.'
-            )
-            ->addSeed()
-            ->addSeedClass();
-    }
+    protected $signature = 'migrate:refresh
+                            {--seed : Seed the database after refreshing.}
+                            {--class=DatabaseSeeder : The name of the seeder class to run.}';
 
     /**
-     * Add seed option.
+     * The command description.
+     *
+     * @var string
      */
-    protected function addSeed()
-    {
-        return $this->addOption(
-            'seed',
-            null,
-            InputOption::VALUE_NONE,
-            'Seed the database after refreshing.'
-        );
-    }
-
-    /**
-     * Add seed class option.
-     */
-    protected function addSeedClass()
-    {
-        return $this->addOption(
-            'class',
-            null,
-            InputOption::VALUE_OPTIONAL,
-            'The name of the seeder class to run.',
-            'DatabaseSeeder'
-        );
-    }
+    protected $description = 'Refresh the database.';
 
     /**
      * Handle the command.

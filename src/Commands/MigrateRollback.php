@@ -3,26 +3,23 @@
 namespace Yarak\Commands;
 
 use Yarak\Console\YarakCommand;
-use Symfony\Component\Console\Input\InputOption;
 
 class MigrateRollback extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('migrate:rollback')
-            ->setDescription('Rollback migrations by given number of steps.')
-            ->setHelp('This command allows you to rollback migrations.')
-            ->addOption(
-                'steps',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Number of steps to rollback.',
-                1
-            );
-    }
+    protected $signature = 'migrate:rollback
+                            {--steps=1 : Number of steps to rollback.}';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Refresh the database.';
 
     /**
      * Handle the command.

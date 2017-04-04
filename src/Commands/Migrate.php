@@ -7,14 +7,18 @@ use Yarak\Console\YarakCommand;
 class Migrate extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('migrate')
-            ->setDescription('Run the database migrations.')
-            ->setHelp('This command allows you to run migrations.');
-    }
+    protected $signature = 'migrate';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Run the database migrations.';
 
     /**
      * Handle the command.

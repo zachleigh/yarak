@@ -7,14 +7,18 @@ use Yarak\Console\YarakCommand;
 class MigrateReset extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('migrate:reset')
-            ->setDescription('Rollback all migrations.')
-            ->setHelp('This command allows you to rollback all database migrations.');
-    }
+    protected $signature = 'migrate:reset';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Rollback all migrations.';
 
     /**
      * Handle the command.

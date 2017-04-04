@@ -5,12 +5,18 @@ use Yarak\Console\Command;
 class CLASSNAME extends Command
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        // configure your command here
-    }
+    protected $signature = '';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = '';
 
     /**
      * Handle the command.

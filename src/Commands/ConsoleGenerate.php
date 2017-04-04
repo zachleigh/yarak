@@ -8,16 +8,18 @@ use Yarak\Console\DirectoryCreator;
 class ConsoleGenerate extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('console:generate')
-            ->setDescription('Generate the console directory structure.')
-            ->setHelp(
-                'This command will create all the console directories and files necessary for the Yarak console componet to run.'
-            );
-    }
+    protected $signature = 'console:generate';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Generate the console directory structure.';
 
     /**
      * Handle the command.

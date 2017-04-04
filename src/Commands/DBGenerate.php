@@ -8,16 +8,18 @@ use Yarak\Console\YarakCommand;
 class DBGenerate extends YarakCommand
 {
     /**
-     * Configure the command.
+     * The command signature.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        $this->setName('db:generate')
-            ->setDescription('Generate the database directory structure.')
-            ->setHelp(
-                'This command will create all the database directories and files necessary for yarak to run.'
-            );
-    }
+    protected $signature = 'db:generate';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Generate the database directory structure.';
 
     /**
      * Handle the command.
