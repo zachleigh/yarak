@@ -4,7 +4,6 @@ namespace Yarak\Console;
 
 use Yarak\Console\Input\Option;
 use Yarak\Console\Input\Argument;
-use Symfony\Component\Console\Command\Command;
 
 class SignatureParser
 {

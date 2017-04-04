@@ -2,8 +2,6 @@
 
 namespace Yarak\Console\Input;
 
-use Symfony\Component\Console\Command\Command;
-
 abstract class Input
 {
     /**
@@ -44,7 +42,7 @@ abstract class Input
     /**
      * Argument mode.
      *
-     * @var integer
+     * @var int
      */
     protected $mode = 0;
 

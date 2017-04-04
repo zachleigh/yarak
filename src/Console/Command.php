@@ -3,7 +3,6 @@
 namespace Yarak\Console;
 
 use Yarak\Console\Input\Input;
-use Yarak\Console\SignatureParser;
 use Yarak\Console\Output\SymfonyOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
