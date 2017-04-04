@@ -2,7 +2,6 @@
 
 namespace Yarak\Console;
 
-use Yarak\Console\Command;
 use Yarak\Exceptions\FileNotFound;
 use Yarak\Exceptions\InvalidCommand;
 
@@ -15,7 +14,7 @@ class ConsoleKernel
      */
     public function getCommands()
     {
-        if (property_exists($this, 'commands')) {   
+        if (property_exists($this, 'commands')) {
             return array_map(function ($command) {
                 $this->verifyCommand($command);
 
@@ -27,7 +26,7 @@ class ConsoleKernel
     /**
      * Verify user defined commands.
      *
-     * @param  string $command
+     * @param string $command
      *
      * @throws FileNotFound|InvalidCommand
      */

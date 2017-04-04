@@ -14,7 +14,7 @@ class NullCommand extends Command
 
     protected $arguments = [];
 
-    function __construct($name = null)
+    public function __construct($name = null)
     {
         $this->name = $name;
     }
@@ -26,10 +26,9 @@ class NullCommand extends Command
 
     public function setDescription($description)
     {
-        
     }
 
-    public function addArgument($name, $mode = NULL, $description = '', $default = NULL)
+    public function addArgument($name, $mode = null, $description = '', $default = null)
     {
         $this->arguments[] = [
             'name'        => $name,
@@ -39,7 +38,7 @@ class NullCommand extends Command
         ];
     }
 
-    public function addOption($name, $shortcut = NULL, $mode = NULL, $description = '', $default = NULL)
+    public function addOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
     {
         $this->options[] = [
             'name'        => $name,

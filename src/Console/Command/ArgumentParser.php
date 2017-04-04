@@ -2,7 +2,6 @@
 
 namespace Yarak\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
 class ArgumentParser extends Parser
@@ -38,7 +37,7 @@ class ArgumentParser extends Parser
     /**
      * Parse the given arguement string.
      *
-     * @param  string $argument
+     * @param string $argument
      */
     public function handle($argument)
     {
@@ -69,7 +68,7 @@ class ArgumentParser extends Parser
     /**
      * Parse the argument mode.
      *
-     * @param  string $argument
+     * @param string $argument
      *
      * @return string
      */

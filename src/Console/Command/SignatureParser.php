@@ -3,8 +3,6 @@
 namespace Yarak\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 class SignatureParser
 {
@@ -28,7 +26,7 @@ class SignatureParser
     /**
      * Parse the command signature.
      *
-     * @param  string $signature
+     * @param string $signature
      */
     public function parse($signature)
     {
@@ -62,7 +60,7 @@ class SignatureParser
     /**
      * Extract arguments and options from signature.
      *
-     * @param  string $signature
+     * @param string $signature
      *
      * @return array
      */

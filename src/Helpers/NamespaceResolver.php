@@ -9,8 +9,8 @@ class NamespaceResolver
     /**
      * Resolve namespace for the given root path, add additional values.
      *
-     * @param  string $root
-     * @param  string $additional
+     * @param string $root
+     * @param string $additional
      *
      * @return string|null
      */
@@ -34,14 +34,14 @@ class NamespaceResolver
     /**
      * Guess the namespace for the given root path.
      *
-     * @param  string $root
+     * @param string $root
      *
      * @return string|null
      */
     public static function guessNamespace($root)
     {
         if (!defined('APP_PATH')) {
-            return null;
+            return;
         }
 
         $method = 'get'.ucfirst($root).'Directory';

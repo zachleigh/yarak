@@ -79,7 +79,7 @@ class Config
             if (!isset($current[$configItem])) {
                 return $this->getDefault($configItem);
             }
-            
+
             $current = $current[$configItem];
         }
 
@@ -95,7 +95,7 @@ class Config
      */
     public function has($value)
     {
-        return ! ($this->get($value) === null);
+        return !($this->get($value) === null);
     }
 
     /**

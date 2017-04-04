@@ -2,7 +2,6 @@
 
 namespace Yarak;
 
-use App\Console\Kernel as UserKernel;
 use Yarak\Config\Config;
 use Yarak\Exceptions\InvalidInput;
 use Yarak\Helpers\NamespaceResolver;
