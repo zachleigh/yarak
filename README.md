@@ -39,7 +39,14 @@
     - [Refreshing The Database](#refreshing-the-database)
   - [Custom Commands](#custom-commands)
     - [Generating Console Directories And Files](#generating-console-directories-and-files)
-    - [Generating Commands](#generating-commands)
+    - [Generating Custom Commands](#generating-custom-commands)
+    - [Writing Custom Commands](#writing-custom-commands)
+      - [Command Signature](#command-signature)
+        - [Defining Command Arguments](#defining-command-arguments)
+        - [Defining Command Options](#defining-command-options)
+        - [Accessing Command Arguments And Options](#accessing-command-arguments-and-options)
+      - [Command Output](#command-output)
+    - [Using Custom Commands](#using-custom-commands)
   - [Calling Yarak In Code](#calling-yarak-in-code)
   - [Contributing](#contributing)
 
@@ -153,6 +160,8 @@ Test to make sure that it is working in the console:
 ```
 php yarak
 ```
+
+[Top](#contents)      
 
 ### Database
 Yarak gives users several helpful database functionalities that make development easier.
@@ -515,7 +524,9 @@ You may also use the `--seed` flag with the `migrate --refresh` command:
 ```
 php yarak migrate --refresh --seed --class=SeederName
 ```
-:exclamation:**Refreshing the database will remove all data from your database.** This command will drop all tables, run all the migrations again, then fill the database using the given seeder class name. The default value for the seeder name is 'DatabaseSeeder'.
+:exclamation:**Refreshing the database will remove all data from your database.** This command will drop all tables, run all the migrations again, then fill the database using the given seeder class name. The default value for the seeder name is 'DatabaseSeeder'.    
+
+[Top](#contents)     
 
 ### Migrations
 Yarak migrations provide a simple, clean way to manage your database.
@@ -773,21 +784,30 @@ If you are running PHP 5.6 or lower, using the static call method may result in 
 ```
 Cannot bind an instance to a static closure
 ```
-To avoid this error, pass the $di as the third variable to Yarak::call as shown above.
+To avoid this error, pass the $di as the third variable to Yarak::call as shown above.   
+
+[Top](#contents)    
 
 ### Custom Commands
 Yarak can also be extended and used as a general command line task runner.
   - [Generating Console Directories And Files](#generating-console-directories-and-files)
-  - [Generating Commands](#generating-commands)
+  - [Generating Custom Commands](#generating-custom-commands)
+  - [Writing Custom Commands](#writing-custom-commands)
+    - [Command Signature](#command-signature)
+      - [Defining Command Arguments](#defining-command-arguments)
+      - [Defining Command Options](#defining-command-options)
+      - [Accessing Command Arguments And Options](#accessing-command-arguments-and-options)
+    - [Command Output](#command-output)
+  - [Using Custom Commands](#using-custom-commands)
 
 #### Generating Console Directories And Files
 To generate all the directories and files necessary for the console component to work, use the `console:generate` command:
 ```
 php yarak console:generate
 ```
-This will create a console directory, a commands directory and a Kernel.php file where you can register your custom commands. If no `namespaces:console` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `namespaces:console` as shown below.  
+This will create a console directory, a commands directory, an example command, and a Kernel.php file where you can register your custom commands. If no `namespaces:console` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `namespaces:console` as shown below.  
 
-#### Generating Commands
+#### Generating Custom Commands
 Before generating a custom command, register a console directory with the Yarak service. You may also register a commands namespace.
 ```php
 $di->setShared('yarak', function () {
@@ -806,12 +826,230 @@ $di->setShared('yarak', function () {
     ]);
 });
 ```
-If `console` is not set, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `namespaces:console` as shown above.
+If `console` is not set, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `namespaces:console` as shown above. Also, do not forget to register your console namespaces with the Phalcon loader.
 
 Once `consoleDir` is registered, use the `make:command` command to generate a custom command stub.
 ```
 php yarak make:command CommandName
 ```
+
+#### Writing Custom Commands
+A command class has three components: a signature, a description, and a handle method.
+```php
+namespace App\Console\Commands;
+
+use Yarak\Console\Command;
+
+class ExampleCommand extends Command
+{
+    /**
+     * The command signature.
+     *
+     * @var string
+     */
+    protected $signature = 'namespace:name {argument} {--o|option=default}';
+
+    /**
+     * The command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command decription.';
+
+    /**
+     * Handle the command.
+     */
+    protected function handle()
+    {
+        // handle the command
+    }
+}
+```
+`signature` is where you define your command's name, arguments, and options. This is discussed in detail below. `description` is where you can set a description message for your command to be displayed when using the console. The `handle` method will be called when the command is fired and is where you should write the logic for your command.
+
+##### Command Signature
+The command signature is written in the same way that it is used in the console and consists of three parts: the command name, arguments, and options. The command name must come first in the signature and can be namespaced by prefixing the command name with a namespace followed by a colon (':'):
+```php
+protected $signature = 'namespace:name';
+```
+Arguments and options are enclosed in curly braces and follow the command name. Options are prefixed by two dashes ('--').
+
+###### Defining Command Arguments
+A standard argument consists of the argument name wrapped in curly braces:
+```php
+'namespace:name {arg} {--option}'
+```
+The argument name, `arg` in the example above, is used to access the argument value in the handle method via the [`argument` method](#accessing-command-arguments-and-options).   
+
+To make an argument optional, append a question mark ('?') to the argument name:
+```php
+'namespace:name {arg?} {--option}'
+```
+     
+To give the argument a default value, separate the argument name and the default value with an equals sign:
+```php
+'namespace:name {arg=default} {--option}'
+```
+If no value is provided for the argument, the default value will be used.   
+
+If the argument is in array form, append an asterisk ('*') to the argument name:
+```php
+'namespace:name {arg*} {--option}'
+```
+Arguments can then be passed to the command by space separating them:
+```
+php yarak namespace:name one two three
+```
+This will set the value of `arg` to `['one', 'two', 'three']`.   
+
+Argument arrays can also be set as optional:
+```php
+'namespace:name {arg?*} {--option}'
+```
+     
+It is often helpful to provide a description with an argument. To do this, add a colon (':') after the argument definition and append the description:
+```php
+'namespace:name {arg=default : Argument description} {--option}'
+```
+
+###### Defining Command Options
+A standard option consists of the option, prefixed by two dashes ('--'), wrapped in curly braces:
+```php
+'namespace:name {argument} {--opt}'
+```
+The option name, `opt`, is used to access the argument value in the handle method via the [`option` method](#accessing-command-arguments-and-options). Standard options do not take values and act as true/false flags: the presence of the option when the command is called sets its value to true and if it is not present, the value is false.  
+
+To define an option with a required value, append an equals sign ('=') to the option name:
+```php
+'namespace:name {argument} {--opt=}'
+```
+     
+To set a default value, place it after the equals sign:
+```php
+'namespace:name {argument} {--opt=default}'
+```
+    
+Options may also have shortcuts to make them easier to remember and use. To set a shortcut, prepend it to the command name and separate the two with a pipe ('|'):
+```php
+'namespace:name {argument} {--o|opt}'
+```
+Now, the option may be called inthe standard way:
+```
+php yarak namespace:name argument --opt
+```
+Or by using the shortcut:
+```
+php yarak namespace:name argument --o
+```
+
+Options may also be passed as arrays:
+```php
+'namespace:name {argument} {--opt=*}'
+```
+When passing options arrays, each value must be prefixed by the option name:
+```
+php yarak namespace:name argument --opt=one --opt=two --opt=three
+```
+The value of `opt` will be set to `['one', 'two', 'three']`.   
+
+Just like with arguments, the option description can best by appending a colon (':') and the description to the option name definiton:
+```php
+'namespace:name {argument} {--o|opt : option description.}'
+```
+
+##### Accessing Command Arguments And Options
+To access arguments in the handle method, use the `argument` method:
+```php
+protected function argument($key = null)
+```
+If an argument name is given, it will return the value of the argument:
+```php
+protected function handle()
+{
+    $arg = $this->argument('arg');
+}
+```
+If no argument name is given, it will return an array of all arguments:
+```php
+protected function handle()
+{
+    $allArguments = $this->argument();
+}
+```
+    
+The `option` method works in the exact same way:
+```php
+protected function option($key = null)
+```
+```php
+protected function handle()
+{
+    $opt = $this->option('opt');
+
+    $allOptions = $this->option();
+}
+```
+There are also `hasArgument` and `hasOption` methods on the command object:
+```
+protected function handle()
+{
+    $argExists = $this->hasArgument('exists');  // true
+
+    $optExists = $this->hasOption('doesntExist');  // false
+}
+
+##### Command Output
+Every command has an `output` variable stored on the object that has several methods to help write output to the console.   
+
+The `write` method outputs plain unformatted text, `writeInfo` outputs green text, `writeError` outputs red text, and `writeComment` outputs yellow text:
+```php
+protected function handle()
+{
+    $this->output->write('Message'); // plain text
+
+    $this->output->writeInfo('Message');  // green text
+
+    $this->output->writeError('Message');  // red text
+
+    $this->output->writeComment('Message');  // yellow text
+}
+```
+    
+The output variable is a simple wrapper around Symfony's output class. To access this class, use the `getOutput` method:
+```php
+protected function handle()
+{
+    $output = $this->output->getOutput(); // $output is instance of Symfony\Component\Console\Output\OutputInterface
+}
+```
+
+#### Using Custom Commands
+Before using your custom command, you must register it in the command Kernel `$commands` array:
+```php
+use Yarak\Console\ConsoleKernel;
+use App\Console\Commands\ExampleCommand;
+use App\Comsone\Commands\YourCustomCommand;
+
+class Kernel extends ConsoleKernel
+{
+    /**
+     * Your custom Yarak commands.
+     *
+     * @var array
+     */
+    protected $commands = [
+        ExampleCommand::class,
+        YourCustomCommand::class
+    ];
+}
+
+```
+Onces registered, the commands may be used like any other Yarak command:
+```
+php yarak namespace:name arg --opt
+```
+
+[Top](#contents)   
 
 ### Contributing
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/yarak/issues).

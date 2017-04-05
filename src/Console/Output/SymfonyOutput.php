@@ -32,4 +32,14 @@ class SymfonyOutput extends Output
     {
         $this->output->writeln($message);
     }
+
+    /**
+     * Get the Symfony output class.
+     *
+     * @return OutputInterface
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
 }

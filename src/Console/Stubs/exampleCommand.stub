@@ -1,7 +1,6 @@
 <?php
 NAMESPACE
 use Yarak\Console\Command;
-use Yarak\Console\DirectoryCreator;
 
 class ExampleCommand extends Command
 {
