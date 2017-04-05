@@ -11,6 +11,7 @@
   - Database migrations that rollback step-by-step, reset the database, and refresh the database.
   - Model factories for easy test data creation.
   - Database seeders that fill your database with a single command.
+  - Create custom commands in minutes to streamline and personalize your workflow.
 
 ### Contents
   - [Install](#install)
@@ -48,9 +49,14 @@
       - [Command Output](#command-output)
     - [Using Custom Commands](#using-custom-commands)
   - [Calling Yarak In Code](#calling-yarak-in-code)
-  - [Contributing](#contributing)
+  - [Credits and Contributing](#credits-and-contributing)
 
 ### Install
+##### Requirements
+This package assumes you have the following:
+  - Phalcon >= 3.0
+  - PHP >= 5.6.5
+
 ##### Install via composer
 ```
 composer require zachleigh/yarak
@@ -978,7 +984,7 @@ protected function handle()
 }
 ```
 There are also `hasArgument` and `hasOption` methods on the command object:
-```
+```php
 protected function handle()
 {
     $argExists = $this->hasArgument('exists');  // true
@@ -1040,5 +1046,7 @@ php yarak namespace:name arg --opt
 
 [Top](#contents)   
 
-### Contributing
+### Credits and Contributing
+This project is largely inspired by the [Laravel project](https://github.com/laravel). Some portions of code in Yarak were taken directly from the Laravel project. Many thanks to @taylorotwell and the rest of the Laravel contributors.   
+
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/yarak/issues).
