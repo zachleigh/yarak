@@ -826,7 +826,7 @@ $di->setShared('yarak', function () {
     ]);
 });
 ```
-If `console` is not set, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `namespaces:console` as shown above. Also, do not forget to register your console namespaces with the Phalcon loader.
+If `console` is not set in the `namespace` array, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `namespaces:console` as shown above. Also, do not forget to register your console namespaces with the Phalcon loader.
 
 Once `consoleDir` is registered, use the `make:command` command to generate a custom command stub.
 ```
@@ -865,10 +865,10 @@ class ExampleCommand extends Command
     }
 }
 ```
-`signature` is where you define your command's name, arguments, and options. This is discussed in detail below. `description` is where you can set a description message for your command to be displayed when using the console. The `handle` method will be called when the command is fired and is where you should write the logic for your command.
+`signature` is where you define your command's name, arguments, and options. This is discussed in detail below. `description` is where you can set a description message for your command to be displayed when using the console. The `handle` method will be called when the command is fired and is where you should write the logic for your command. It may be useful to extract the bulk of your logic to a separate service class.
 
 ##### Command Signature
-The command signature is written in the same way that it is used in the console and consists of three parts: the command name, arguments, and options. The command name must come first in the signature and can be namespaced by prefixing the command name with a namespace followed by a colon (':'):
+The command signature is written in the same way that the command will be used in the console and consists of three parts: the command name, arguments, and options. The command name must come first in the signature and can be namespaced by prefixing the command name with a namespace followed by a colon (':'):
 ```php
 protected $signature = 'namespace:name';
 ```
@@ -877,24 +877,24 @@ Arguments and options are enclosed in curly braces and follow the command name. 
 ###### Defining Command Arguments
 A standard argument consists of the argument name wrapped in curly braces:
 ```php
-'namespace:name {arg} {--option}'
+protected $signature = 'namespace:name {arg} {--option}'
 ```
-The argument name, `arg` in the example above, is used to access the argument value in the handle method via the [`argument` method](#accessing-command-arguments-and-options).   
+The argument name, `arg` in the example above, is used to access the argument value via the [`argument` method](#accessing-command-arguments-and-options).   
 
 To make an argument optional, append a question mark ('?') to the argument name:
 ```php
-'namespace:name {arg?} {--option}'
+protected $signature = 'namespace:name {arg?} {--option}'
 ```
      
-To give the argument a default value, separate the argument name and the default value with an equals sign:
+To give the argument a default value, separate the argument name and the default value with an equals sign ('='):
 ```php
-'namespace:name {arg=default} {--option}'
+protected $signature = 'namespace:name {arg=default} {--option}'
 ```
 If no value is provided for the argument, the default value will be used.   
 
 If the argument is in array form, append an asterisk ('*') to the argument name:
 ```php
-'namespace:name {arg*} {--option}'
+protected $signature = 'namespace:name {arg*} {--option}'
 ```
 Arguments can then be passed to the command by space separating them:
 ```
@@ -904,34 +904,34 @@ This will set the value of `arg` to `['one', 'two', 'three']`.
 
 Argument arrays can also be set as optional:
 ```php
-'namespace:name {arg?*} {--option}'
+protected $signature = 'namespace:name {arg?*} {--option}'
 ```
      
 It is often helpful to provide a description with an argument. To do this, add a colon (':') after the argument definition and append the description:
 ```php
-'namespace:name {arg=default : Argument description} {--option}'
+protected $signature = 'namespace:name {arg=default : Argument description} {--option}'
 ```
 
 ###### Defining Command Options
 A standard option consists of the option, prefixed by two dashes ('--'), wrapped in curly braces:
 ```php
-'namespace:name {argument} {--opt}'
+protected $signature = 'namespace:name {argument} {--opt}'
 ```
-The option name, `opt`, is used to access the argument value in the handle method via the [`option` method](#accessing-command-arguments-and-options). Standard options do not take values and act as true/false flags: the presence of the option when the command is called sets its value to true and if it is not present, the value is false.  
+The option name, `opt`, is used to access the argument value via the [`option` method](#accessing-command-arguments-and-options). Standard options do not take values and act as true/false flags: the presence of the option when the command is called sets its value to true and if it is not present, the value is false.  
 
 To define an option with a required value, append an equals sign ('=') to the option name:
 ```php
-'namespace:name {argument} {--opt=}'
+protected $signature = 'namespace:name {argument} {--opt=}'
 ```
      
 To set a default value, place it after the equals sign:
 ```php
-'namespace:name {argument} {--opt=default}'
+protected $signature = 'namespace:name {argument} {--opt=default}'
 ```
     
 Options may also have shortcuts to make them easier to remember and use. To set a shortcut, prepend it to the command name and separate the two with a pipe ('|'):
 ```php
-'namespace:name {argument} {--o|opt}'
+protected $signature = 'namespace:name {argument} {--o|opt}'
 ```
 Now, the option may be called inthe standard way:
 ```
@@ -944,7 +944,7 @@ php yarak namespace:name argument --o
 
 Options may also be passed as arrays:
 ```php
-'namespace:name {argument} {--opt=*}'
+protected $signature = 'namespace:name {argument} {--opt=*}'
 ```
 When passing options arrays, each value must be prefixed by the option name:
 ```
@@ -954,39 +954,27 @@ The value of `opt` will be set to `['one', 'two', 'three']`.
 
 Just like with arguments, the option description can best by appending a colon (':') and the description to the option name definiton:
 ```php
-'namespace:name {argument} {--o|opt : option description.}'
+protected $signature = 'namespace:name {argument} {--o|opt : option description.}'
 ```
 
 ##### Accessing Command Arguments And Options
-To access arguments in the handle method, use the `argument` method:
-```php
-protected function argument($key = null)
-```
-If an argument name is given, it will return the value of the argument:
+To access arguments in the handle method, use the `argument` method:. If an argument name is given, it will return the value of the argument and if nothing is passed, it will return an array of all arguments:
 ```php
 protected function handle()
 {
-    $arg = $this->argument('arg');
-}
-```
-If no argument name is given, it will return an array of all arguments:
-```php
-protected function handle()
-{
-    $allArguments = $this->argument();
+    $arg = $this->argument('arg'); // passed value of arg
+
+    $allArguments = $this->argument(); // array of all arguments
 }
 ```
     
 The `option` method works in the exact same way:
 ```php
-protected function option($key = null)
-```
-```php
 protected function handle()
 {
-    $opt = $this->option('opt');
+    $opt = $this->option('opt'); // passed value of opt
 
-    $allOptions = $this->option();
+    $allOptions = $this->option(); // array of all options
 }
 ```
 There are also `hasArgument` and `hasOption` methods on the command object:
@@ -997,6 +985,7 @@ protected function handle()
 
     $optExists = $this->hasOption('doesntExist');  // false
 }
+```
 
 ##### Command Output
 Every command has an `output` variable stored on the object that has several methods to help write output to the console.   

@@ -3,7 +3,6 @@
 namespace Yarak\Console\Stubs;
 
 use Yarak\Console\Command;
-use Yarak\Console\Input\Input;
 
 class NullCommand extends Command
 {
