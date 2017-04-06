@@ -2,4 +2,5 @@
 .env
 
 tests/_output/*
-tests/*/*Tester.php
+tests/_support/_generated
+tests/temp/*
