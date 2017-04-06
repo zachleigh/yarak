@@ -7,13 +7,13 @@
 
 *yarak - (Falconry) a state of prime fitness in a falcon*    
   
-##### Laravel inspired Phalcon devtools 
+#### Laravel inspired Phalcon devtools 
   - Database migrations that rollback step-by-step, reset the database, and refresh the database.
   - Model factories for easy test data creation.
   - Database seeders that fill your database with a single command.
   - Create custom commands in minutes to streamline and personalize your workflow.
 
-### Contents
+## Contents
   - [Install](#install)
   - [Database](#database)
     - [Generating Database Directories And Files](#generating-database-directories-and-files)
@@ -51,17 +51,17 @@
   - [Calling Yarak In Code](#calling-yarak-in-code)
   - [Credits and Contributing](#credits-and-contributing)
 
-### Install
-##### Requirements
+## Install
+#### Requirements
 This package assumes you have the following:
   - Phalcon >= 3.0
   - PHP >= 5.6.5
 
-##### Install via composer
+#### Install via composer
 ```
 composer require zachleigh/yarak
 ```
-##### Register the service
+#### Register the service
 ```php
 $di->setShared('yarak',function () {
     $config = $this->getConfig();
@@ -84,7 +84,7 @@ $di->setShared('yarak',function () {
 );
 ```
 
-##### Create a yarak file
+#### Create a yarak file
 In the project root, create a file called `yarak`. This file needs to do the following:
   - Autoload all project files and vendor directory files
   - Load the project services
@@ -148,7 +148,7 @@ Once the yarak file exists, make it executable:
 ```
 chomd +x yarak
 ```
-##### Add the database directory to the composer autoloader
+#### Add the database directory to the composer autoloader
 Because migrations do not follow psr-4 naming conventions, load them with a classmap.
 ```
 "autoload": {
@@ -169,7 +169,7 @@ php yarak
 
 [Top](#contents)      
 
-### Database
+## Database
 Yarak gives users several helpful database functionalities that make development easier.
   - [Generating Database Directories And Files](#generating-database-directories-and-files)
   - [Model Factories](#model-factories)
@@ -184,17 +184,17 @@ Yarak gives users several helpful database functionalities that make development
     - [Writing Database Seeders](#writing-database-seeders)
     - [Using Database Seeders](#using-database-seeders)
 
-#### Generating Database Directories And Files
+### Generating Database Directories And Files
 All database and migration functionalites require a standardized file hierarchy. To generate this hirearchy, use the `db:generate` command:
 ```
 php yarak db:generate
 ```
 This will create a database directory at the path set in the Yarak config. The database directory will contain migration, seeder, and factory directories and some file stubs to help you get started. 
 
-#### Model Factories
+### Model Factories
 Model factories provide a simple way to create testing data using the [Faker library](https://github.com/fzaninotto/Faker).
 
-##### Defining Factories
+#### Defining Factories
 Model factories are located in the `/database/factories` directory. This directory and a stub factory file can be created using the `php yarak db:generate` command.    
 
 To define a factory, use the `define` method on a variable called `$factory`. The `define` method has the following method signature:
@@ -242,7 +242,7 @@ $factory->define(Users::class, function (Faker\Generator $faker) use ($factory) 
 });
 ```
 
-##### Using The Factory Helper
+#### Using The Factory Helper
 Yarak comes with a global `factory` helper function to make creating model instances simple. The factory function returns an instance of ModelFactoryBuilder which can be used to either make or create models. Calling `make` on the returned class simply makes the model class, but does not persist the data in the database. Calling `create` creates the class and persists it in the database.   
 
 Make a user model isntance, but don't persist it:
@@ -259,7 +259,7 @@ use App\Models\Users;
 $user = factory(Users::class)->create();
 ```
 
-##### Making Multiple Model Instances
+#### Making Multiple Model Instances
 If you require multiple instances of the model class, pass an integer as the second argument to `factory`:
 ```php
 use App\Models\Users;
@@ -272,7 +272,7 @@ $users = factory(Users::class, 3)->create();
 ```
 When more than one model is made, an array of models is returned.
 
-##### Overriding The Default Attributes
+#### Overriding The Default Attributes
 To override the default attributes set in the factory definition, pass an array of overrides to `make` or `create`:
 ```php
 use App\Models\Users;
@@ -290,7 +290,7 @@ $user = factory(Users::class)->create([
 ]);
 ```
 
-##### Using Named Factories
+#### Using Named Factories
 To use a name factory, pass the name as the second argument to the `factory` function:
 ```php
 use App\Models\Users;
@@ -313,7 +313,7 @@ $users = factory(Users::class, 'myUser', 3)->make();
 $users = factory(Users::class, 'myUser', 3)->creates();
 ```
 
-##### Model Relationships
+#### Model Relationships
 When making model instances that require model relationships to also be built, you have a couple options.   
 
 First, you can manually create related models. In this example, we have Posts and Users which have a one-to-many relationship: a post can only belong to one user but a user can have many posts. The posts table contains a `users_id` column that references the `id` column on the users table. Posts table migration:
@@ -445,17 +445,17 @@ use App\Models\Posts;
 factory(Posts::class, 'withUser', 20)->create();
 ```
 
-#### Database Seeding
+### Database Seeding
 Database seeding gives you the ability to fill your database with testing data in a matter of seconds.
 
-##### Creating Database Seeders
+#### Creating Database Seeders
 To create an empty database seeder file, use the `make:seeder` command:
 ```
 php yarak make:seeder SeederName
 ```
 This will generate an empty seeder file in /database/seeds. It is recommended to create separate seeder files for individual database tables.
 
-##### Writing Database Seeders
+#### Writing Database Seeders
 All database seeders must have a `run` method where the database seeding logic is defined. In the run method, do whatever is necessary to fill the database table. Using [model factories](#model-factories) makes this process simple to acheive. An example seeder for a users tables might look like this:
 ```php
 use App\Models\Users;
@@ -519,7 +519,7 @@ class DatabaseSeeder extends Seeder
 ```
 This will run each seeder file in the order they are listed. First, we will create five users with the UsersTableSeeder, then for each of those users, we will create five posts with the PostsTableSeeder. 
 
-##### Using Database Seeders
+#### Using Database Seeders
 To run database seeder files, use the `db:seed` command:
 ```
 php yarak db:seed SeederName
@@ -534,7 +534,7 @@ php yarak migrate --refresh --seed --class=SeederName
 
 [Top](#contents)     
 
-### Migrations
+## Migrations
 Yarak migrations provide a simple, clean way to manage your database.
   - [Generating Migrations](#generating-migrations)
   - [Writing Migrations](#writing-migrations)
@@ -546,7 +546,7 @@ Yarak migrations provide a simple, clean way to manage your database.
   - [Resetting The Database](#resetting-the-database)
   - [Refreshing The Database](#refreshing-the-database)
 
-#### Generating Migrations
+### Generating Migrations
 All migrations are stored in databaseDir/migrations. The databaseDir path may be set when [registering the Yarak service](#register-the-service).     
 
 To generate migrations, use the `make:migration` command:
@@ -564,10 +564,10 @@ If you are creating a new table, using the `--create` flag plus the name of the 
 php yarak make:migration create_users_table --create=users
 ```
 
-#### Writing Migrations
+### Writing Migrations
 Yarak uses Phalcon's [Database Abstraction Layer](https://docs.phalconphp.com/en/3.0.0/reference/db.html) to interact with the database. This guide will only cover the most common operations. For more detailed information about what is possible, please see the [API Documentation](https://docs.phalconphp.com/en/3.0.1/api/Phalcon_Db_Adapter.html). Because the official Phalcon migrations also use the database abstraction layer, the [Phalcon migration documentation](https://docs.phalconphp.com/en/3.0.1/reference/migrations.html#migration-class-anatomy) may also be useful.   
 
-##### Creating Tables
+#### Creating Tables
 To create a table, use the `$connection` variable's `createTable` method.
 ```php
 public createTable (mixed $tableName, mixed $schemaName, array $definition)
@@ -629,7 +629,7 @@ The definition array must contain a `columns` array, and can also include `index
 
 For more information, see the [official documentation](https://docs.phalconphp.com/en/3.0.0/reference/db.html#creating-tables).
 
-##### Updating Tables
+#### Updating Tables
 To modify a column, use the `$connection` variable's `modifyColumn` method:
 ```php
 public modifyColumn (mixed $tableName, mixed $schemaName, Phalcon\Db\ColumnInterface $column, [Phalcon\Db\ColumnInterface $currentColumn])
@@ -685,7 +685,7 @@ public function up(Pdo $connection)
 ```
 The [official documentation](https://docs.phalconphp.com/en/3.0.0/reference/db.html#altering-tables) contains some additional examples and information which may be helpful.
 
-##### The Down Method
+#### The Down Method
 In order for migraion rollbacks to work, migrations must contain a `down` method where the process described in the `up` method is reversed. To continue our above example, when creating the users table, our down method would use the `dropTable` method:
 ```php
 public function down(Pdo $connection)
@@ -720,7 +720,7 @@ public function down(Pdo $connection)
 }
 ```
 
-#### Running Migrations
+### Running Migrations
 To run all pending migrations, simply use the Yarak `migrate` command:
 ```
 php yarak migrate
@@ -728,7 +728,7 @@ php yarak migrate
 
 This will run all migrations that have not yet been run. Migrations that are run at the same time will be in the same 'batch' and will be rolled back together.
 
-#### Rolling Back Migrations
+### Rolling Back Migrations
 :exclamation:**Before rolling back, be aware that all data in the tables you rollback will be lost.**   
 
 To rollback the last batch of migrations, call `migrate:rollback`:
@@ -742,7 +742,7 @@ php yarak migrate:rollback --steps=2
 ```
 This will rollback the last two batches of migrations.
 
-#### Resetting The Database
+### Resetting The Database
 Using the `migrate:reset` command will rollback all migrations.   
 
 :exclamation:**Resetting the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
@@ -750,7 +750,7 @@ Using the `migrate:reset` command will rollback all migrations.
 php yarak migrate:reset
 ```
 
-#### Refreshing The Database
+### Refreshing The Database
 Refreshing the database will rollback all migrations and then re-run them all in a single batch.   
 
 :exclamation:**Refreshing the database will remove all data from your database.** Be sure any data you wish to keep is backed up before proceeding.
@@ -760,7 +760,7 @@ php yarak migrate:refresh
 
 When using the `migrate:refresh` command, you may also use the `--seed` flag to run all your [database seeders](#database-seeding) after the database has been refreshed. See [Using Database Seeders](#using-database-seeders) for more information.
 
-### Calling Yarak In Code
+## Calling Yarak In Code
 To call a Yarak command from your codebase, use the Yarak::call static method.
 ```php
 public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = [])
@@ -794,7 +794,7 @@ To avoid this error, pass the $di as the third variable to Yarak::call as shown 
 
 [Top](#contents)    
 
-### Custom Commands
+## Custom Commands
 Yarak can also be extended and used as a general command line task runner.
   - [Generating Console Directories And Files](#generating-console-directories-and-files)
   - [Generating Custom Commands](#generating-custom-commands)
@@ -806,14 +806,14 @@ Yarak can also be extended and used as a general command line task runner.
     - [Command Output](#command-output)
   - [Using Custom Commands](#using-custom-commands)
 
-#### Generating Console Directories And Files
+### Generating Console Directories And Files
 To generate all the directories and files necessary for the console component to work, use the `console:generate` command:
 ```
 php yarak console:generate
 ```
 This will create a console directory, a commands directory, an example command, and a Kernel.php file where you can register your custom commands. If no `namespaces:console` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `namespaces:console` as shown below.  
 
-#### Generating Custom Commands
+### Generating Custom Commands
 Before generating a custom command, register a console directory with the Yarak service. You may also register a commands namespace.
 ```php
 $di->setShared('yarak', function () {
@@ -839,7 +839,7 @@ Once `consoleDir` is registered, use the `make:command` command to generate a cu
 php yarak make:command CommandName
 ```
 
-#### Writing Custom Commands
+### Writing Custom Commands
 A command class has three components: a signature, a description, and a handle method.
 ```php
 namespace App\Console\Commands;
@@ -873,14 +873,14 @@ class ExampleCommand extends Command
 ```
 `signature` is where you define your command's name, arguments, and options. This is discussed in detail below. `description` is where you can set a description message for your command to be displayed when using the console. The `handle` method will be called when the command is fired and is where you should write the logic for your command. It may be useful to extract the bulk of your logic to a separate service class.
 
-##### Command Signature
+#### Command Signature
 The command signature is written in the same way that the command will be used in the console and consists of three parts: the command name, arguments, and options. The command name must come first in the signature and can be namespaced by prefixing the command name with a namespace followed by a colon (':'):
 ```php
 protected $signature = 'namespace:name';
 ```
 Arguments and options are enclosed in curly braces and follow the command name. Options are prefixed by two dashes ('--').
 
-###### Defining Command Arguments
+##### Defining Command Arguments
 A standard argument consists of the argument name wrapped in curly braces:
 ```php
 protected $signature = 'namespace:name {arg} {--option}'
@@ -919,7 +919,7 @@ It is often helpful to provide a description with an argument. To do this, add a
 protected $signature = 'namespace:name {arg=default : Argument description} {--option}'
 ```
 
-###### Defining Command Options
+##### Defining Command Options
 A standard option consists of the option, prefixed by two dashes ('--'), wrapped in curly braces:
 ```php
 protected $signature = 'namespace:name {argument} {--opt}'
@@ -964,7 +964,7 @@ Just like with arguments, the option description can best by appending a colon (
 protected $signature = 'namespace:name {argument} {--o|opt : option description.}'
 ```
 
-##### Accessing Command Arguments And Options
+#### Accessing Command Arguments And Options
 To access arguments in the handle method, use the `argument` method:. If an argument name is given, it will return the value of the argument and if nothing is passed, it will return an array of all arguments:
 ```php
 protected function handle()
@@ -994,7 +994,7 @@ protected function handle()
 }
 ```
 
-##### Command Output
+#### Command Output
 Every command has an `output` variable stored on the object that has several methods to help write output to the console.   
 
 The `write` method outputs plain unformatted text, `writeInfo` outputs green text, `writeError` outputs red text, and `writeComment` outputs yellow text:
@@ -1019,7 +1019,9 @@ protected function handle()
 }
 ```
 
-#### Using Custom Commands
+Keep in mind that the Yarak command class simply wraps up the Symfony console component. All Symfony command features are available on your custom command object. See the [Symfony console component documentation](http://symfony.com/doc/current/components/console.html) for more details.
+
+### Using Custom Commands
 Before using your custom command, you must register it in the command Kernel `$commands` array:
 ```php
 use Yarak\Console\ConsoleKernel;
@@ -1047,7 +1049,7 @@ php yarak namespace:name arg --opt
 
 [Top](#contents)   
 
-### Credits and Contributing
+## Credits and Contributing
 This project is largely inspired by the [Laravel project](https://github.com/laravel). Some portions of code in Yarak were taken directly from the Laravel project. Many thanks to @taylorotwell and the rest of the Laravel contributors.   
 
 Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/yarak/issues).
