@@ -68,7 +68,7 @@ class DirectoryCreator extends Creator
         $replace = $createExample ? 'ExampleCommand::class' : '//';
 
         $stub = str_replace('COMMAND', $replace, $stub);
-        
+
         return $this->setNamespace($stub, NamespaceResolver::resolve('console'));
     }
 
