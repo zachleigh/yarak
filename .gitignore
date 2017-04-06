@@ -2,3 +2,4 @@
 .env
 
 tests/_output/*
+tests/*/*Tester.php

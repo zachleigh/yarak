@@ -34,7 +34,7 @@ class YarakCommand extends Command
      */
     protected function getMigrator(SymfonyOutput $symfonyOutput)
     {
-        $migratorClassName = $this->getMigratorClassName($this->config);
+        $migratorClassName = $this->getMigratorClassName();
 
         return new $migratorClassName(
             new ConnectionResolver(),
