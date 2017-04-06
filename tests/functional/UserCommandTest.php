@@ -4,11 +4,8 @@ namespace Yarak\tests\unit;
 
 use Phalcon\DI;
 use Yarak\Yarak;
-use Yarak\Kernel;
 use Yarak\Console\Output\Logger;
 use Yarak\Console\DirectoryCreator;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
 
 class UserCommandTest extends \Codeception\Test\Unit
 {
@@ -20,6 +17,10 @@ class UserCommandTest extends \Codeception\Test\Unit
         parent::setUp();
 
         $this->tester->setUp();
+
+        $creator = new DirectoryCreator(new Logger());
+
+        $creator->create();
     }
 
     /**
@@ -27,13 +28,9 @@ class UserCommandTest extends \Codeception\Test\Unit
      */
     public function user_defined_commands_work()
     {
-        $creator = new DirectoryCreator(new Logger());
-
-        $creator->create();
-
         $output = Yarak::call('example', [
-            'word'        => 'example',
-            '--backwards' => true
+            'word' => 'example',
+            '--backwards' => true,
         ], DI::getDefault(), true)->fetch();
 
         $this->assertEquals(

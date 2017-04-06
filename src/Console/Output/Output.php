@@ -5,6 +5,13 @@ namespace Yarak\Console\Output;
 abstract class Output
 {
     /**
+     * Output verbosity.
+     *
+     * @var boolean
+     */
+    protected $verbosity = true;
+
+    /**
      * Write a message.
      *
      * @param string $message
@@ -39,5 +46,19 @@ abstract class Output
     public function writeComment($message)
     {
         $this->write("<comment>{$message}</comment>");
+    }
+
+    /**
+     * Set the output verbosity.
+     *
+     * @param bool $verbosity
+     *
+     * @return $this
+     */
+    public function setVerbosity($verbosity)
+    {
+        $this->verbosity = $verbosity;
+
+        return $this;
     }
 }

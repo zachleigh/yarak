@@ -18,7 +18,9 @@ class Logger extends Output
      */
     public function write($message)
     {
-        $this->log[] = $message;
+        if ($this->verbosity) {
+            $this->log[] = $message;
+        }
     }
 
     /**

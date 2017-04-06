@@ -3,6 +3,7 @@
 namespace Yarak\tests\unit;
 
 use Yarak\Console\Output\Logger;
+use Yarak\Console\DirectoryCreator;
 
 class CommandCreatorTest extends \Codeception\Test\Unit
 {
@@ -109,5 +110,46 @@ class CommandCreatorTest extends \Codeception\Test\Unit
         $logger->clearLog();
 
         $this->tester->getCommandCreator($logger)->create('DoSomething');
+    }
+
+    /**
+     * @test
+     */
+    public function command_creator_does_not_output_nothing_created_message()
+    {
+        $creator = new DirectoryCreator($logger = new Logger());
+
+        $creator->create(false);
+
+        $logger->clearLog();
+
+        $this->tester->getCommandCreator($logger)->create('DoSomething');
+
+        $this->assertCount(1, $logger->getLog());
+
+        $this->assertFalse(
+            $logger->hasMessage(
+                '<comment>Nothing created. All directories and files already exist.</comment>'
+            ),
+            'Falied asserting that nothing created message was not output.'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function command_creator_does_not_create_example_command_or_have_example_command_kernel_entry()
+    {
+        $logger = new Logger();
+
+        $this->tester->getCommandCreator($logger)->create('DoSomething');
+
+        $config = $this->tester->getConfig();
+
+        $this->assertFileNotExists($config->getCommandsDirectory('ExampleCommand.php'));
+
+        $kernel = file_get_contents($config->getConsoleDirectory('Kernel.php'));
+
+        $this->assertNotContains('ExampleCommand::class', $kernel);
     }
 }

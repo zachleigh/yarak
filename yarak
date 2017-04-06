@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+use Phalcon\Di\FactoryDefault;
+
+error_reporting(E_ALL);
+
+define('BASE_PATH', __DIR__);
+define('APP_PATH', BASE_PATH . '/app');
+
+/*
+|--------------------------------------------------------------------------
+| Register The App Services
+|--------------------------------------------------------------------------
+|
+| We need to register the app services in order to spin up Yarak. Be sure you
+| have registered Yarak in the services file.
+|
+*/
+$di = new FactoryDefault();
+
+include APP_PATH . '/config/services.php';
+
+$config = $di->getConfig();
+
+/*
+|--------------------------------------------------------------------------
+| Autoload The Application
+|--------------------------------------------------------------------------
+|
+| In order to work properly, Yarak will need both your project files and the
+| vendor folder to be autoloaded.
+|
+*/
+include APP_PATH . '/config/loader.php';
+
+/*
+|--------------------------------------------------------------------------
+| Handle The Incoming Commands
+|--------------------------------------------------------------------------
+|
+| We'll get the Yarak kernel from the dependency injector and defer to it for 
+| command handling.
+|
+*/
+$kernel = $di->getYarak();
+
+$kernel->handle();

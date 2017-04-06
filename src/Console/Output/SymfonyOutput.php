@@ -30,7 +30,9 @@ class SymfonyOutput extends Output
      */
     public function write($message)
     {
-        $this->output->writeln($message);
+        if ($this->verbosity) {
+            $this->output->writeln($message);
+        }
     }
 
     /**

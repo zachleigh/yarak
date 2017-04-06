@@ -111,7 +111,7 @@ $di->set('security', function () {
      return new ModelsManager();
  });
 
-$di->setShared('yarak', function () {
+$di->set('yarak', function () {
     $config = $this->getConfig();
 
     return new Kernel([

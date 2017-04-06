@@ -10,7 +10,7 @@ class ExampleCommand extends Command
      * @var string
      */
     protected $signature = 'example
-                            {word : A word of your choice.}
+                            {word=example : A word of your choice.}
                             {--b|backwards : Spell the word backwards}';
 
     /**

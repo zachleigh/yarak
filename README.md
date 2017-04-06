@@ -912,6 +912,7 @@ Argument arrays can also be set as optional:
 ```php
 protected $signature = 'namespace:name {arg?*} {--option}'
 ```
+When accessing optional argument arrays, arguments that have not been passed equal an empty array.
      
 It is often helpful to provide a description with an argument. To do this, add a colon (':') after the argument definition and append the description:
 ```php
@@ -945,7 +946,7 @@ php yarak namespace:name argument --opt
 ```
 Or by using the shortcut:
 ```
-php yarak namespace:name argument --o
+php yarak namespace:name argument -o
 ```
 
 Options may also be passed as arrays:
@@ -1010,11 +1011,11 @@ protected function handle()
 }
 ```
     
-The output variable is a simple wrapper around Symfony's output class. To access this class, use the `getOutput` method:
+The output variable is a simple wrapper around Symfony's output class. To access this class, use the `getOutputInterface` method:
 ```php
 protected function handle()
 {
-    $output = $this->output->getOutput(); // $output is instance of Symfony\Component\Console\Output\OutputInterface
+    $output = $this->getOutputInterface(); // $output is instance of Symfony\Component\Console\Output\OutputInterface
 }
 ```
 

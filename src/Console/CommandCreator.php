@@ -24,7 +24,7 @@ class CommandCreator extends Creator
         if (!file_exists($path)) {
             $creator = new DirectoryCreator($this->output);
 
-            $creator->create(false);
+            $creator->create(false, false);
 
             $this->writeFile($path, $this->getStub($name));
 

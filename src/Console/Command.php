@@ -80,6 +80,16 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
+     * Get root symfony output implementation.
+     *
+     * @return OutputInterface
+     */
+    protected function getOutputInterface()
+    {
+        return $this->getOutput()->getOutput();
+    }
+
+    /**
      * Get the value of a command argument.
      *
      * @param string $key
