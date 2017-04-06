@@ -7,7 +7,7 @@ abstract class Output
     /**
      * Output verbosity.
      *
-     * @var boolean
+     * @var bool
      */
     protected $verbosity = true;
 
