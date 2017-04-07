@@ -71,6 +71,9 @@ $di->setShared('yarak',function () {
             'application' => [
                 'databaseDir' => 'path/to/database/directory/'
             ],
+            'namespaces' => [
+                'root' => 'App'
+            ],
             'database' => [
                 'adapter'  => $config->database->adapter,
                 'host'     => $config->database->host,
@@ -811,10 +814,10 @@ To generate all the directories and files necessary for the console component to
 ```
 php yarak console:generate
 ```
-This will create a console directory, a commands directory, an example command, and a Kernel.php file where you can register your custom commands. If no `namespaces:console` config entry is set, Yarak will attempt to resolve the Kernel file namespace automatically. If it is wrong, set `namespaces:console` as shown below.  
+This will create a console directory, a commands directory, an example command, and a Kernel.php file where you can register your custom commands. If the config value `namespaces => root` is set, Yarak will use file path information and the set root namespace to automatically generate namespaces. If you use a non-standard namespace, set `namespaces => console` as shown below.  
 
 ### Generating Custom Commands
-Before generating a custom command, register a console directory with the Yarak service. You may also register a commands namespace.
+Before generating a custom command, register a console directory with the Yarak service. You may also register a console namespace if the automatically generated namespaces are incorrect.
 ```php
 $di->setShared('yarak', function () {
     $config = $this->getConfig();
@@ -832,7 +835,7 @@ $di->setShared('yarak', function () {
     ]);
 });
 ```
-If `console` is not set in the `namespace` array, Yarak will attempt to create a namespace based on available file path information. If the generated namespace is incorrect, set `namespaces:console` as shown above. Also, do not forget to register your console namespaces with the Phalcon loader.
+Do not forget to register your console namespaces with the Phalcon loader.
 
 Once `consoleDir` is registered, use the `make:command` command to generate a custom command stub.
 ```

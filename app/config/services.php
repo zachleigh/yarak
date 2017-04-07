@@ -119,6 +119,9 @@ $di->set('yarak', function () {
             'databaseDir' => APP_PATH.'/database/',
             'consoleDir'  => APP_PATH.'/console/',
         ],
+        'namespaces' => [
+            'root' => 'App'
+        ],
         'database' => [
             'adapter'  => $config->database->adapter,
             'host'     => $config->database->host,

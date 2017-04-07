@@ -32,19 +32,21 @@ class NamespaceResolver
     }
 
     /**
-     * Guess the namespace for the given root path.
+     * Guess the namespace for the given dir path.
      *
-     * @param string $root
+     * @param string $dir
      *
      * @return string|null
      */
-    public static function guessNamespace($root)
+    public static function guessNamespace($dir)
     {
         if (!defined('APP_PATH')) {
             return;
         }
 
-        $method = 'get'.ucfirst($root).'Directory';
+        $config = Config::getInstance();
+
+        $method = 'get'.ucfirst($dir).'Directory';
 
         $path = Config::getInstance()->$method();
 
@@ -52,8 +54,12 @@ class NamespaceResolver
 
         $relativePath = array_diff(explode('/', $path), $appPathArray);
 
-        array_unshift($relativePath, array_pop($appPathArray));
-
+        if (($root =$config->get(['namespaces', 'root'])) !== null) {
+            array_unshift($relativePath, $root);
+        } else {
+            array_unshift($relativePath, array_pop($appPathArray));
+        }
+        
         return implode('\\', array_map('ucfirst', $relativePath));
     }
 }
