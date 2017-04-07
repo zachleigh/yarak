@@ -2,8 +2,8 @@
 
 namespace Yarak\tests\unit;
 
-use App\Models\Posts;
-use App\Models\Users;
+use MyApp\Models\Posts;
+use MyApp\Models\Users;
 
 class FactoryTest extends \Codeception\Test\Unit
 {
@@ -171,7 +171,7 @@ class FactoryTest extends \Codeception\Test\Unit
      * @test
      *
      * @expectedException Yarak\Exceptions\FactoryNotFound
-     * @expectedExceptionMessage Definition for class App\Models\Posts with name invalid does not exist.
+     * @expectedExceptionMessage Definition for class MyApp\Models\Posts with name invalid does not exist.
      */
     public function factory_throws_exception_for_invalid_factory()
     {

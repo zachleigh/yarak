@@ -2,8 +2,8 @@
 
 namespace Yarak\tests\functional;
 
-use App\Models\Posts;
-use App\Models\Users;
+use MyApp\Models\Posts;
+use MyApp\Models\Users;
 
 class FactoryHelperTest extends \Codeception\Test\Unit
 {

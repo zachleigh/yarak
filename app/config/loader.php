@@ -5,9 +5,9 @@ use Phalcon\Loader;
 $loader = new Loader();
 
 $loader->registerNamespaces([
-    'App\Models'           => APP_PATH.'/models',
-    'App\Console'          => APP_PATH.'/console',
-    'App\Console\Commands' => APP_PATH.'/console/commands',
+    'MyApp\Models'           => APP_PATH.'/models',
+    'MyApp\Console'          => APP_PATH.'/console',
+    'MyApp\Console\Commands' => APP_PATH.'/console/commands',
 ]);
 
 $loader->register();

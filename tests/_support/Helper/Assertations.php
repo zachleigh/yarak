@@ -2,8 +2,8 @@
 
 namespace Helper;
 
-use App\Models\Posts;
-use App\Models\Users;
+use MyApp\Models\Posts;
+use MyApp\Models\Users;
 use Codeception\Actor;
 
 class Assertations extends \Codeception\Module

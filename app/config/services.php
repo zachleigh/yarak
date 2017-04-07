@@ -120,7 +120,7 @@ $di->set('yarak', function () {
             'consoleDir'  => APP_PATH.'/console/',
         ],
         'namespaces' => [
-            'root' => 'App'
+            'root' => 'MyApp'
         ],
         'database' => [
             'adapter'  => $config->database->adapter,

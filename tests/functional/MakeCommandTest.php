@@ -38,6 +38,6 @@ class MakeCommandTest extends \Codeception\Test\Unit
 
         $this->assertContains('class DoSomethingGreat', $contents);
 
-        $this->assertContains('namespace App\Console\Commands;', $contents);
+        $this->assertContains('namespace MyApp\Console\Commands;', $contents);
     }
 }
