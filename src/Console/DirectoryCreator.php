@@ -15,6 +15,8 @@ class DirectoryCreator extends Creator
      */
     public function create($createExample = true, $verbose = true)
     {
+        $this->config->validate(['application', 'consoleDir']);
+
         $createdDirs = (bool) count($this->makeDirectoryStructure([
             'console'  => $this->config->getConsoleDirectory(),
             'commands' => $this->config->getCommandsDirectory(),

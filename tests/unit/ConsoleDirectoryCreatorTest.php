@@ -128,6 +128,19 @@ class ConsoleDirectoryCreatorTest extends \Codeception\Test\Unit
     }
 
     /**
+     * @test
+     *
+     * @expectedException Yarak\Exceptions\InvalidConfig
+     * @expectedExceptionMessage The setting 'application -> consoleDir' can not be found. Please be sure it is set.
+     */
+    public function console_directory_creator_throws_exception_if_consoleDir_path_not_set()
+    {
+        $this->tester->getConfig()->remove(['application', 'consoleDir']);
+
+        $this->tester->getConsoleDirectoryCreator(new Logger())->create();
+    }
+
+    /**
      * Assert that the directory creator creates the given path.
      *
      * @param string $path

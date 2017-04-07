@@ -24,6 +24,8 @@ class Main extends \Codeception\Module
     {
         $this->di = new FactoryDefault();
 
+        $config = Config::getInstance()->refresh();
+
         $this->getModule('\Helper\Filesystem')->setFilesystem();
 
         $this->getModule('\Helper\Filesystem')->removeConsoleDirectory();

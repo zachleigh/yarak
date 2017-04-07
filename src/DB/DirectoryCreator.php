@@ -11,6 +11,8 @@ class DirectoryCreator extends Creator
      */
     public function create()
     {
+        $this->config->validate(['application', 'databaseDir']);
+
         $createdDirs = (bool) count($this->makeDirectoryStructure(
             $this->config->getAllDatabaseDirectories(),
             $this->output

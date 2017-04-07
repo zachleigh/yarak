@@ -3,6 +3,7 @@
 namespace Yarak\Config;
 
 use Phalcon\DI;
+use Yarak\Exceptions\InvalidConfig;
 
 class Config
 {
@@ -28,7 +29,7 @@ class Config
      * @var array
      */
     const DEFAULTS = [
-        'migratorType'        => 'fileDate',
+        'migratorType' => 'fileDate',
         'migrationRepository' => 'database',
     ];
 
@@ -53,15 +54,25 @@ class Config
     {
         if (empty(self::$instance)) {
             if (empty($configArray)) {
-                $configArray = DI::getDefault()
-                    ->getShared('yarak')
-                    ->getConfigArray();
+                $configArray = self::getSetConfigArray();
             }
 
             self::$instance = new self($configArray);
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Get the set config array.
+     *
+     * @return array
+     */
+    public static function getSetConfigArray()
+    {
+        return DI::getDefault()
+            ->getShared('yarak')
+            ->getConfigArray();
     }
 
     /**
@@ -150,6 +161,14 @@ class Config
     }
 
     /**
+     * Set the config array to its original values.
+     */
+    public function refresh()
+    {
+        $this->configArray = self::getSetConfigArray();
+    }
+
+    /**
      * Return the config array.
      *
      * @return array
@@ -173,5 +192,19 @@ class Config
         }
 
         return $value;
+    }
+
+    /**
+     * Validate that a setting exists.
+     *
+     * @param array $settings
+     *
+     * @throws InvalidConfig
+     */
+    public function validate(array $settings)
+    {
+        if (!$this->has($settings)) {
+            throw InvalidConfig::configValueNotFound(implode(' -> ', $settings));
+        }
     }
 }

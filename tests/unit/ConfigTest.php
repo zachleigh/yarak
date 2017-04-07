@@ -113,4 +113,20 @@ class ConfigTest extends \Codeception\Test\Unit
             $this->tester->getConfig()->get(['not', 'real', 'path'])
         );
     }
+
+    /**
+     * @test
+     */
+    public function config_refreshes_the_config_array()
+    {
+        $config = $this->tester->getConfig();
+
+        $config->set(['namespaces', 'root'], 'Wrong');
+
+        $this->assertEquals('Wrong', $config->get(['namespaces', 'root']));
+
+        $config->refresh();
+
+        $this->assertEquals('MyApp', $config->get(['namespaces', 'root']));
+    }
 }
