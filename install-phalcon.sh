@@ -137,14 +137,11 @@ cd ${PHALCON_DIR}/ext
 # Build Phalcon.
 echo "Building Phalcon for ${PHP_VER} ..."
 
-# Temporarilly using zephir for all builds. Once https://github.com/phalcon/cphalcon/issues/11961 
-# gets fixed we can revert to only PHP7 using zephir.
-
 # Various CI Providers including Codeship, CircleCI have issues when compiling Zephir 
 # and require higher PHP limits even though the container has adaquete memory.
 echo "memory_limit=-1" > ${PHP_CONF_DIR}/phalcon-ci-installer.ini
 
-# if [[ $PHP_VER == 7* ]]; then
+if [[ $PHP_VER == 7* ]]; then
 
     # Note that Codeship has potential to set only the local PHP environment since this
     # option is how the environment is setup. Documentation references using `phpenv local ...`
@@ -157,11 +154,8 @@ echo "memory_limit=-1" > ${PHP_CONF_DIR}/phalcon-ci-installer.ini
     
     # Compile
     cd ${PHALCON_DIR}
-    if [[ $PHP_VER == 7* ]]; then
-        ${CI_APP_DIR}/vendor/phalcon/zephir/bin/zephir compile --backend=ZendEngine3
-    else 
-        ${CI_APP_DIR}/vendor/phalcon/zephir/bin/zephir compile
-    fi
+
+    ${CI_APP_DIR}/vendor/phalcon/zephir/bin/zephir compile --backend=ZendEngine3
         
     # Install
     cd ${PHALCON_DIR}/ext
@@ -171,10 +165,10 @@ echo "memory_limit=-1" > ${PHP_CONF_DIR}/phalcon-ci-installer.ini
     ./configure --enable-phalcon
     make --silent -j4
     make --silent install
-# else
-#     cd ${PHALCON_DIR}/build
-#     ./install
-# fi
+else
+    cd ${PHALCON_DIR}/build
+    ./install
+fi
 
 # Ensure extension exists
 echo "extension=phalcon.so" > ${PHP_CONF_DIR}/phalcon.ini
