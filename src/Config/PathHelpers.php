@@ -84,9 +84,9 @@ trait PathHelpers
     public function getConsoleDirectory($path = '')
     {
         if (!$this->has(['application', 'consoleDir'])) {
-            return null;
+            return;
         }
-        
+
         return Str::append(
             $this->get(['application', 'consoleDir']),
             '/'

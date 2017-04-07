@@ -54,12 +54,12 @@ class NamespaceResolver
 
         $relativePath = array_diff(explode('/', $path), $appPathArray);
 
-        if (($root =$config->get(['namespaces', 'root'])) !== null) {
+        if (($root = $config->get(['namespaces', 'root'])) !== null) {
             array_unshift($relativePath, $root);
         } else {
             array_unshift($relativePath, array_pop($appPathArray));
         }
-        
+
         return implode('\\', array_map('ucfirst', $relativePath));
     }
 }
