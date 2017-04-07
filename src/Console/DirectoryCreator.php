@@ -69,6 +69,12 @@ class DirectoryCreator extends Creator
 
         $stub = str_replace('COMMAND', $replace, $stub);
 
+        $stub = str_replace(
+            'USE',
+            NamespaceResolver::resolve('console', 'Commands'),
+            $stub
+        );
+
         return $this->setNamespace($stub, NamespaceResolver::resolve('console'));
     }
 

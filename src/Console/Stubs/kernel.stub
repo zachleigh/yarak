@@ -1,7 +1,7 @@
 <?php
 NAMESPACE
 use Yarak\Console\ConsoleKernel;
-use App\Console\Commands\ExampleCommand;
+use USE\ExampleCommand;
 
 class Kernel extends ConsoleKernel
 {

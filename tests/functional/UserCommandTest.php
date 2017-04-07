@@ -28,7 +28,7 @@ class UserCommandTest extends \Codeception\Test\Unit
      */
     public function user_defined_commands_work()
     {
-        $output = Yarak::call('example', [
+        $output = Yarak::call('spell', [
             'word' => 'example',
             '--backwards' => true,
         ], DI::getDefault(), true)->fetch();
