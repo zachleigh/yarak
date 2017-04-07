@@ -16,6 +16,15 @@ trait PathHelpers
     abstract public function get($value);
 
     /**
+     * Return true if config array has given value.
+     *
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    abstract public function has($value);
+
+    /**
      * Return the database directory path.
      *
      * @return string
