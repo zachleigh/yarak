@@ -69,6 +69,7 @@ $di->setShared('yarak',function () {
     return new \Yarak\Kernel(
         [
             'application' => [
+                'appDir'      => $config->application->appDir,
                 'databaseDir' => 'path/to/database/directory/'
             ],
             'namespaces' => [
