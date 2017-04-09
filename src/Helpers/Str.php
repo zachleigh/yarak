@@ -49,4 +49,22 @@ class Str
 
         return $value;
     }
+
+    /**
+     * Append a string to value and place single instance of $with between.
+     *
+     * @param  string $value
+     * @param  string $append
+     * @param  string $with
+     *
+     * @return string
+     */
+    public static function appendWith($value, $append, $with)
+    {
+        if (!empty($append)) {
+            return rtrim($value, $with) . $with . ltrim($append, $with);
+        }
+        
+        return $value;
+    }
 }

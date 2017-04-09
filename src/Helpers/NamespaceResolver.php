@@ -20,34 +20,31 @@ class NamespaceResolver
 
         if ($config->has(['namespaces', $dir])) {
             $namespace = $config->get(['namespaces', $dir]);
+
+            return Str::appendWith($namespace, ucfirst($additional), '\\');
         } elseif ($config->has(['application', $dir.'Dir'])) {
-            $namespace = self::resolveFromRegisteredDir($dir);
+            return self::resolveFromRegisteredDir($dir, $additional);
         } else {
-            $namespace = self::resolveFromRelativePath($dir);
+            return self::resolveFromRelativePath($dir, $additional);
         }
-
-        if ($namespace !== null && $additional) {
-            return Str::append($namespace, '\\').ucfirst($additional);
-        }
-
-        return $namespace;
     }
 
     /**
      * Resolve a namespace from a registered directory.
      *
      * @param string $dir
+     * @param string $additional
      *
      * @return string
      */
-    public static function resolveFromRegisteredDir($dir)
+    public static function resolveFromRegisteredDir($dir, $additional)
     {
         $config = Config::getInstance();
 
         $method = 'get'.ucfirst($dir).'Directory';
 
         if (method_exists($config, $method)) {
-            return self::resolveFromAbsolutePath($config->$method());
+            return self::resolveFromAbsolutePath($config->$method(), $additional);
         }
 
         return null;
@@ -57,30 +54,34 @@ class NamespaceResolver
      * Reslove a namespace from a path relative to app root directory.
      *
      * @param string $path
+     * @param string $additional
      *
      * @return string
      */
-    public static function resolveFromRelativePath($path)
+    public static function resolveFromRelativePath($path, $additional)
     {
         $pathArray = array_filter(explode(DIRECTORY_SEPARATOR, $path));
 
         array_unshift($pathArray, self::getRootNamespace());
 
-        return implode('\\', array_map('ucfirst', $pathArray));
+        $namespace = implode('\\', array_map('ucfirst', $pathArray));
+
+        return Str::appendWith($namespace, ucfirst($additional), '\\');
     }
 
     /**
      * Resolve a namespace from an absolute path.
      *
      * @param string $path
+     * @param string $additional
      *
      * @return string
      */
-    public static function resolveFromAbsolutePath($path)
+    public static function resolveFromAbsolutePath($path, $additional)
     {
-        $config = Config::getInstance();
-
-        $appPathArray = array_filter(explode('/', $config->getAppPath()));
+        $appPathArray = array_filter(
+            explode('/', Config::getInstance()->getAppPath())
+        );
 
         $relativePath = array_diff(
             array_filter(explode(DIRECTORY_SEPARATOR, $path)),
@@ -89,7 +90,9 @@ class NamespaceResolver
 
         array_unshift($relativePath, self::getRootNamespace());
 
-        return implode('\\', array_map('ucfirst', $relativePath));
+        $namespace = implode('\\', array_map('ucfirst', $relativePath));
+
+        return Str::appendWith($namespace, ucfirst($additional), '\\');
     }
 
     /**
