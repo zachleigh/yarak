@@ -46,8 +46,6 @@ class NamespaceResolver
         if (method_exists($config, $method)) {
             return self::resolveFromAbsolutePath($config->$method(), $additional);
         }
-
-        return null;
     }
 
     /**
