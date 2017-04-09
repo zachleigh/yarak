@@ -116,7 +116,7 @@ $di->set('yarak', function () {
 
     return new Kernel([
         'application' => [
-            'appDir'     => $config->application->appDir,
+            'appDir'      => $config->application->appDir,
             'databaseDir' => APP_PATH.'/database/',
             'consoleDir'  => APP_PATH.'/console/',
         ],
