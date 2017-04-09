@@ -25,6 +25,16 @@ trait PathHelpers
     abstract public function has($value);
 
     /**
+     * Return the app path.
+     *
+     * @return string
+     */
+    public function getAppPath()
+    {
+        return Str::append($this->get(['application', 'appDir']), '/');
+    }
+
+    /**
      * Return the database directory path.
      *
      * @return string

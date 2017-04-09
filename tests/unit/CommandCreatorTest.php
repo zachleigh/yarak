@@ -71,7 +71,7 @@ class CommandCreatorTest extends \Codeception\Test\Unit
     public function command_creator_inserts_guessed_namespace()
     {
         $this->tester->getConfig()->remove('namespaces');
-
+// dd($this->tester->getConfig());
         $path = $this->tester->getCommandCreator()->create('DoSomething');
 
         $this->assertContains(

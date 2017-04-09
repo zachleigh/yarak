@@ -22,13 +22,9 @@ class NamespaceResolverTest extends \Codeception\Test\Unit
      */
     public function namespace_resolver_uses_set_root_namespace()
     {
-        $config = Config::getInstance();
-
-        $config->set(['namespaces', 'root'], 'Test');
+        Config::getInstance()->set(['namespaces', 'root'], 'Test');
 
         $namespace = NamespaceResolver::resolve('console');
-
-        $config->set(['namespaces', 'root'], 'App');
 
         $this->assertEquals('Test\\Console', $namespace);
     }
@@ -38,14 +34,20 @@ class NamespaceResolverTest extends \Codeception\Test\Unit
      */
     public function namespace_resolver_uses_file_path_if_not_root_namespace()
     {
-        $config = Config::getInstance();
-
-        $config->remove(['namespaces', 'root']);
+        Config::getInstance()->remove(['namespaces', 'root']);
 
         $namespace = NamespaceResolver::resolve('console');
 
-        $config->set(['namespaces', 'root'], 'App');
-
         $this->assertEquals('App\\Console', $namespace);
+    }
+
+    /**
+     * @test
+     */
+    public function namespace_resolver_creates_namespace_from_path()
+    {
+        $namespace = NamespaceResolver::resolve('my/custom/path');
+
+        $this->assertEquals('MyApp\\My\\Custom\\Path', $namespace);
     }
 }

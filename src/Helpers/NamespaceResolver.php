@@ -7,21 +7,23 @@ use Yarak\Config\Config;
 class NamespaceResolver
 {
     /**
-     * Resolve namespace for the given root path, add additional values.
+     * Resolve namespace for the given dir path, add additional values.
      *
-     * @param string $root
+     * @param string $dir
      * @param string $additional
      *
      * @return string|null
      */
-    public static function resolve($root, $additional = '')
+    public static function resolve($dir, $additional = '')
     {
         $config = Config::getInstance();
 
-        if ($config->has(['namespaces', $root])) {
-            $namespace = $config->get(['namespaces', $root]);
+        if ($config->has(['namespaces', $dir])) {
+            $namespace = $config->get(['namespaces', $dir]);
+        } elseif ($config->has(['application', $dir.'Dir'])) {
+            $namespace = self::resolveFromRegisteredDir($dir);
         } else {
-            $namespace = self::guessNamespace($root);
+            $namespace = self::resolveFromRelativePath($dir);
         }
 
         if ($namespace !== null && $additional) {
@@ -32,34 +34,77 @@ class NamespaceResolver
     }
 
     /**
-     * Guess the namespace for the given dir path.
+     * Resolve a namespace from a registered directory.
      *
      * @param string $dir
      *
-     * @return string|null
+     * @return string
      */
-    public static function guessNamespace($dir)
+    public static function resolveFromRegisteredDir($dir)
     {
-        if (!defined('APP_PATH')) {
-            return;
-        }
-
         $config = Config::getInstance();
 
         $method = 'get'.ucfirst($dir).'Directory';
 
-        $path = Config::getInstance()->$method();
-
-        $appPathArray = explode('/', APP_PATH);
-
-        $relativePath = array_diff(explode('/', $path), $appPathArray);
-
-        if (($root = $config->get(['namespaces', 'root'])) !== null) {
-            array_unshift($relativePath, $root);
-        } else {
-            array_unshift($relativePath, array_pop($appPathArray));
+        if (method_exists($config, $method)) {
+            return self::resolveFromAbsolutePath($config->$method());
         }
 
+        return null;
+    }
+
+    /**
+     * Reslove a namespace from a path relative to app root directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function resolveFromRelativePath($path)
+    {
+        $pathArray = array_filter(explode(DIRECTORY_SEPARATOR, $path));
+
+        array_unshift($pathArray, self::getRootNamespace());
+
+        return implode('\\', array_map('ucfirst', $pathArray));
+    }
+
+    /**
+     * Resolve a namespace from an absolute path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function resolveFromAbsolutePath($path)
+    {
+        $config = Config::getInstance();
+
+        $appPathArray = array_filter(explode('/', $config->getAppPath()));
+
+        $relativePath = array_diff(
+            array_filter(explode(DIRECTORY_SEPARATOR, $path)),
+            $appPathArray
+        );
+
+        array_unshift($relativePath, self::getRootNamespace());
+
         return implode('\\', array_map('ucfirst', $relativePath));
+    }
+
+    /**
+     * Get the app root namespace.
+     *
+     * @return string
+     */
+    public static function getRootNamespace()
+    {
+        $config = Config::getInstance();
+
+        if ($config->has(['namespaces', 'root'])) {
+            return $config->get(['namespaces', 'root']);
+        }
+
+        return 'App';
     }
 }
