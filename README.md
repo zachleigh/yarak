@@ -743,6 +743,9 @@ php yarak migrate:rollback
 Use `migrate:rollback` with the optional `--steps` flag to rollback more than one batch.
 ```
 php yarak migrate:rollback --steps=2
+
+// with shortcut
+php yarak migrate:rollback -s=2
 ```
 This will rollback the last two batches of migrations.
 

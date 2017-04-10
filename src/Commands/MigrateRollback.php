@@ -12,7 +12,7 @@ class MigrateRollback extends YarakCommand
      * @var string
      */
     protected $signature = 'migrate:rollback
-                            {--steps=1 : Number of steps to rollback.}';
+                            {--s|steps=1 : Number of steps to rollback.}';
 
     /**
      * The command description.

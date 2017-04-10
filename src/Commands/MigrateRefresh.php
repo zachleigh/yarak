@@ -13,8 +13,8 @@ class MigrateRefresh extends YarakCommand
      * @var string
      */
     protected $signature = 'migrate:refresh
-                            {--seed : Seed the database after refreshing.}
-                            {--class=DatabaseSeeder : The name of the seeder class to run.}';
+                            {--s|seed : Seed the database after refreshing.}
+                            {--c|class=DatabaseSeeder : The name of the seeder class to run.}';
 
     /**
      * The command description.
