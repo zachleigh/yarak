@@ -25,12 +25,23 @@ trait PathHelpers
     abstract public function has($value);
 
     /**
+     * Validate that a setting exists.
+     *
+     * @param array $settings
+     *
+     * @throws InvalidConfig
+     */
+    abstract public function validate(array $settings);
+
+    /**
      * Return the app path.
      *
      * @return string
      */
     public function getAppPath()
     {
+        $this->validate(['application', 'appDir']);
+
         return Str::append($this->get(['application', 'appDir']), '/');
     }
 
@@ -41,6 +52,8 @@ trait PathHelpers
      */
     public function getDatabaseDirectory()
     {
+        $this->validate(['application', 'databaseDir']);
+
         return Str::append($this->get(['application', 'databaseDir']), '/');
     }
 
@@ -102,9 +115,7 @@ trait PathHelpers
      */
     public function getConsoleDirectory($path = '')
     {
-        if (!$this->has(['application', 'consoleDir'])) {
-            return;
-        }
+        $this->validate(['application', 'consoleDir']);
 
         return Str::append(
             $this->get(['application', 'consoleDir']),
@@ -121,9 +132,6 @@ trait PathHelpers
      */
     public function getCommandsDirectory($path = '')
     {
-        return Str::append(
-            $this->get(['application', 'consoleDir']),
-            '/'
-        ).'commands/'.$path;
+        return $this->getConsoleDirectory().'commands/'.$path;
     }
 }
