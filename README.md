@@ -821,7 +821,7 @@ php yarak console:generate
 This will create a console directory, a commands directory, an example command, and a Kernel.php file where you can register your custom commands. If the config value `namespaces => root` is set, Yarak will use file path information and the set root namespace to automatically generate namespaces. If you use a non-standard namespace, set `namespaces => console` as shown below.  
 
 ### Generating Custom Commands
-Before generating a custom command, register a console directory with the Yarak service. You may also register a console namespace if the automatically generated namespaces are incorrect.
+Before generating a custom command, register a console directory with the Yarak service. You may also register a console namespace if the automatically generated namespaces are incorrect. By default, custom commands with be in the defined console directory in a folder called `commands`. You can override this by registering a `commandsDir`.
 ```php
 $di->setShared('yarak', function () {
     $config = $this->getConfig();
@@ -829,11 +829,11 @@ $di->setShared('yarak', function () {
     return new Kernel([
         'application' => [
             //
-            'consoleDir' => APP_PATH.'/commands/'
+            'consoleDir' => APP_PATH.'/console/'
         ],
         'namespaces' => [
             //
-            'console' => 'App\Console\Commands'
+            'console' => 'App\Console'
         ],
         //
     ]);
