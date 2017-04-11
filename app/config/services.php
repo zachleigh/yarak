@@ -119,6 +119,7 @@ $di->set('yarak', function () {
             'appDir'      => $config->application->appDir,
             'databaseDir' => APP_PATH.'/database/',
             'consoleDir'  => APP_PATH.'/console/',
+            'commandsDir' => APP_PATH.'/console/commands',
         ],
         'namespaces' => [
             'root' => 'MyApp',

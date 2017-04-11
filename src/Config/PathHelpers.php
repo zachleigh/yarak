@@ -132,6 +132,13 @@ trait PathHelpers
      */
     public function getCommandsDirectory($path = '')
     {
+        if ($this->has(['application', 'commandsDir'])) {
+            return Str::append(
+                $this->get(['application', 'commandsDir']),
+                '/'
+            ).$path;
+        }
+
         return $this->getConsoleDirectory().'commands/'.$path;
     }
 }
