@@ -770,7 +770,7 @@ When using the `migrate:refresh` command, you may also use the `--seed` flag to 
 ## Calling Yarak In Code
 To call a Yarak command from your codebase, use the Yarak::call static method.
 ```php
-public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = [])
+public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = null)
 ```
 For example, to call `migrate:rollback --steps=2`:
 ```php
@@ -781,12 +781,9 @@ Yarak::call('migrate:rollback', [
 ]);
 ```
 
-Yarak will attempt to resolve its config from /app/config/service.php. If your services file is in a different location, you will need to pass an instance of $di manually.
+Yarak will use the default DI to get its settings. If the resolved default DI is not working, pass an instance of Phalcon\Di as the third argument to the call method:
 ```php
-use Phalcon\DI;
 use Yarak\Yarak;
-
-$di = DI::getDefault();
 
 Yarak::call('migrate:rollback', [
     '--steps'    => 2,

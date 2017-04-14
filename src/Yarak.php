@@ -2,6 +2,7 @@
 
 namespace Yarak;
 
+use Phalcon\DI;
 use Phalcon\DiInterface;
 use Phalcon\Di\FactoryDefault;
 use Yarak\Exceptions\FileNotFound;
@@ -25,7 +26,9 @@ class Yarak
         DiInterface $di = null,
         $debug = false
     ) {
-        $kernel = self::getKernel($di);
+        $di = is_null($di) ? DI::getDefault() : $di;
+
+        $kernel = $di->get('yarak');
 
         $input = new ArrayInput(['command' => $command] + $arguments);
 
@@ -36,50 +39,5 @@ class Yarak
         }
 
         $kernel->handle($input, new NullOutput());
-    }
-
-    /**
-     * Resolve Yarak kernel from di.
-     *
-     * @param FactoryDefault|null $di
-     *
-     * @return Kernel
-     */
-    protected static function getKernel($di)
-    {
-        if ($di === null) {
-            $di = self::getDI();
-        }
-
-        return $di->get('yarak');
-    }
-
-    /**
-     * Get a fresh DI instance.
-     *
-     * @throws FileNotFound
-     *
-     * @return FactoryDefault
-     */
-    protected static function getDI()
-    {
-        $di = new FactoryDefault();
-
-        $servicesPath = __DIR__.'/../../../../app/config/services.php';
-
-        if (!realpath($servicesPath)) {
-            $servicesPath = __DIR__.'/../app/config/services.php';
-        }
-
-        try {
-            include $servicesPath;
-        } catch (\Exception $e) {
-            throw FileNotFound::servicesFileNotFound(
-                'Try passing the Yarak config array as the third argument '.
-                'to Yarak::call.'
-            );
-        }
-
-        return $di;
     }
 }
