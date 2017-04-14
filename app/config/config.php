@@ -16,14 +16,8 @@ return new Config([
     ],
     'application' => [
         'appDir'         => APP_PATH.'/',
-        'controllersDir' => APP_PATH.'/controllers/',
         'modelsDir'      => APP_PATH.'/models/',
         'migrationsDir'  => APP_PATH.'/database/migrations/',
-        'viewsDir'       => APP_PATH.'/views/',
-        'pluginsDir'     => APP_PATH.'/plugins/',
-        'servicesDir'    => APP_PATH.'/services/',
-        'cacheDir'       => BASE_PATH.'/cache/',
-        'formsDir'       => APP_PATH.'/forms',
         'baseUri'        => '/',
     ],
 ]);
