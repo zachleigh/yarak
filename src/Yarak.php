@@ -5,7 +5,6 @@ namespace Yarak;
 use Phalcon\DI;
 use Phalcon\DiInterface;
 use Phalcon\Di\FactoryDefault;
-use Yarak\Exceptions\FileNotFound;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\BufferedOutput;
