@@ -37,7 +37,7 @@ class Config
      * @var array
      */
     const DEFAULTS = [
-        'migratorType' => 'fileDate',
+        'migratorType'        => 'fileDate',
         'migrationRepository' => 'database',
     ];
 
@@ -179,8 +179,6 @@ class Config
         if (array_key_exists($key, self::DEFAULTS)) {
             return self::DEFAULTS[$key];
         }
-
-        return;
     }
 
     /**
