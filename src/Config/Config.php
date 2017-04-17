@@ -51,18 +51,18 @@ class Config
     }
 
     /**
-     * Get config values from PhalconConfig.
+     * Get config values by key from PhalconConfig.
      *
-     * @param string $property
+     * @param string $key
      *
      * @return mixed
      */
-    public function __get($property)
+    public function __get($key)
     {
         try {
-            return $this->config->$property;
+            return $this->config->$key;
         } catch (\Exception $e) {
-            return $this->getDefault($property);
+            return $this->getDefault($key);
         }
     }
 
@@ -93,9 +93,7 @@ class Config
         $this->config = \Phalcon\Di::getDefault()->get('config');
 
         if (is_string($userConfig)) {
-            $keys = explode('.', $userConfig);
-
-            $this->config = $this->getNested($keys);
+            $this->config = $this->getNested(explode('.', $userConfig));
         } elseif (is_array($userConfig)) {
             $userConfig = new PhalconConfig($userConfig);
 
@@ -112,15 +110,15 @@ class Config
     }
 
     /**
-     * Get a value from the config array.
+     * Get a value by key from config.
      *
-     * @param string|array $value
+     * @param string|array $key
      *
      * @return mixed
      */
-    public function get($value)
+    public function get($key)
     {
-        return $this->$value;
+        return $this->$key;
     }
 
     /**
@@ -172,14 +170,14 @@ class Config
     /**
      * Get a setting's default value.
      *
-     * @param string $value
+     * @param string $key
      *
      * @return mixed|null
      */
-    public function getDefault($value)
+    public function getDefault($key)
     {
-        if (array_key_exists($value, self::DEFAULTS)) {
-            return self::DEFAULTS[$value];
+        if (array_key_exists($key, self::DEFAULTS)) {
+            return self::DEFAULTS[$key];
         }
 
         return;
@@ -197,8 +195,10 @@ class Config
 
         $keys = $this->makeArray($keys);
 
+        $count = count($keys);
+
         foreach ($keys as $index => $key) {
-            if (count($keys) === $index + 1) {
+            if ($count === $index + 1) {
                 return $temp[$key] = $value;
             } elseif ($temp[$key] === null) {
                 $temp[$key] = new PhalconConfig();
@@ -219,8 +219,10 @@ class Config
 
         $keys = $this->makeArray($keys);
 
+        $count = count($keys);
+
         foreach ($keys as $key) {
-            if ($key === $keys[count($keys) - 1]) {
+            if ($key === $keys[$count - 1]) {
                 unset($temp[$key]);
             } else {
                 $temp = &$temp[$key];
