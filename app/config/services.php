@@ -41,25 +41,5 @@ $di->setShared('modelsMetadata', function () {
  });
 
 $di->set('yarak', function () {
-    $config = $this->getConfig();
-
-    return new Kernel([
-        'application' => [
-            'appDir' => $config->application->appDir,
-            'databaseDir' => APP_PATH.'/database/',
-            'consoleDir' => APP_PATH.'/console/',
-            'commandsDir' => APP_PATH.'/console/commands',
-        ],
-        'namespaces' => [
-            'root' => 'MyApp',
-        ],
-        'database' => [
-            'adapter' => $config->database->adapter,
-            'host' => $config->database->host,
-            'username' => $config->database->username,
-            'password' => $config->database->password,
-            'dbname' => $config->database->dbname,
-            'charset' => $config->database->charset,
-        ],
-    ]);
+    return new Kernel();
 });

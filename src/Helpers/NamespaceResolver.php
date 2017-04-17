@@ -19,7 +19,7 @@ class NamespaceResolver
         $config = Config::getInstance();
 
         if ($config->has(['namespaces', $dir])) {
-            $namespace = $config->get(['namespaces', $dir]);
+            $namespace = $config->namespaces->$dir;
 
             return Str::appendWith($namespace, ucfirst($additional), '\\');
         } elseif ($config->has(['application', $dir.'Dir'])) {
@@ -103,7 +103,7 @@ class NamespaceResolver
         $config = Config::getInstance();
 
         if ($config->has(['namespaces', 'root'])) {
-            return $config->get(['namespaces', 'root']);
+            return $config->namespaces->root;
         }
 
         return 'App';

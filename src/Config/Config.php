@@ -4,6 +4,7 @@ namespace Yarak\Config;
 
 use Phalcon\DI;
 use Yarak\Exceptions\InvalidConfig;
+use Phalcon\Config as PhalconConfig;
 
 class Config
 {
@@ -17,11 +18,18 @@ class Config
     private static $instance;
 
     /**
-     * Yarak config array.
+     * Phalcon config instance.
+     *
+     * @var PhalconConfig
+     */
+    protected $config;
+
+    /**
+     * The original config array.
      *
      * @var array
      */
-    protected $configArray;
+    protected $original;
 
     /**
      * Default setting values.
@@ -29,7 +37,7 @@ class Config
      * @var array
      */
     const DEFAULTS = [
-        'migratorType'        => 'fileDate',
+        'migratorType' => 'fileDate',
         'migrationRepository' => 'database',
     ];
 
@@ -38,9 +46,24 @@ class Config
      *
      * @param array $configArray
      */
-    private function __construct(array $configArray)
+    private function __construct()
     {
-        $this->configArray = $configArray;
+    }
+
+    /**
+     * Get config values from PhalconConfig.
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        try {
+            return $this->config->$property;
+        } catch (\Exception $e) {
+            return $this->getDefault($property);
+        }
     }
 
     /**
@@ -50,29 +73,42 @@ class Config
      *
      * @return Config
      */
-    public static function getInstance(array $configArray = [])
+    public static function getInstance()
     {
         if (empty(self::$instance)) {
-            if (empty($configArray)) {
-                $configArray = self::getSetConfigArray();
-            }
-
-            self::$instance = new self($configArray);
+            self::$instance = new self();
         }
 
         return self::$instance;
     }
 
     /**
-     * Get the set config array.
+     * Set config using config data in di or passed data.
      *
-     * @return array
+     * @param array|string $userConfig If string, config path. If array, data.
+     * @param bool         $merge      If true, merge given config array into current.
      */
-    public static function getSetConfigArray()
+    public function setConfig($userConfig = null, $merge = true)
     {
-        return DI::getDefault()
-            ->getShared('yarak')
-            ->getConfigArray();
+        $this->config = \Phalcon\Di::getDefault()->get('config');
+
+        if (is_string($userConfig)) {
+            $keys = explode('.', $userConfig);
+
+            $this->config = $this->getNested($keys);
+        } elseif (is_array($userConfig)) {
+            $userConfig = new PhalconConfig($userConfig);
+
+            if ($merge === true) {
+                $this->merge($userConfig);
+            } else {
+                $this->config = $userConfig;
+            }
+        }
+
+        $this->original = $this->toArray();
+
+        return $this;
     }
 
     /**
@@ -84,14 +120,26 @@ class Config
      */
     public function get($value)
     {
-        $current = $this->configArray;
+        return $this->$value;
+    }
 
-        foreach ($this->makeArray($value) as $configItem) {
-            if (!isset($current[$configItem])) {
-                return $this->getDefault($configItem);
+    /**
+     * Get nested values.
+     *
+     * @param array $keyArray
+     *
+     * @return mixed
+     */
+    public function getNested(array $keyArray)
+    {
+        $current = $this->config;
+
+        foreach ($keyArray as $key) {
+            if ($current[$key] === null) {
+                return $this->getDefault($key);
             }
 
-            $current = $current[$configItem];
+            $current = $current->$key;
         }
 
         return $current;
@@ -106,7 +154,19 @@ class Config
      */
     public function has($value)
     {
-        return !($this->get($value) === null);
+        $current = $this->config;
+
+        foreach ($this->makeArray($value) as $configItem) {
+            if ($current[$configItem] === null) {
+                $current = $this->getDefault($configItem);
+
+                break;
+            }
+
+            $current = $current->$configItem;
+        }
+
+        return $current !== null;
     }
 
     /**
@@ -121,6 +181,8 @@ class Config
         if (array_key_exists($value, self::DEFAULTS)) {
             return self::DEFAULTS[$value];
         }
+
+        return;
     }
 
     /**
@@ -131,13 +193,19 @@ class Config
      */
     public function set($keys, $value)
     {
-        $temp = &$this->configArray;
+        $temp = &$this->config;
 
-        foreach ($this->makeArray($keys) as $key) {
+        $keys = $this->makeArray($keys);
+
+        foreach ($keys as $index => $key) {
+            if (count($keys) === $index + 1) {
+                return $temp[$key] = $value;
+            } elseif ($temp[$key] === null) {
+                $temp[$key] = new PhalconConfig();
+            }
+
             $temp = &$temp[$key];
         }
-
-        $temp = $value;
     }
 
     /**
@@ -147,9 +215,9 @@ class Config
      */
     public function remove($keys)
     {
-        $keys = $this->makeArray($keys);
+        $temp = &$this->config;
 
-        $temp = &$this->configArray;
+        $keys = $this->makeArray($keys);
 
         foreach ($keys as $key) {
             if ($key === $keys[count($keys) - 1]) {
@@ -165,7 +233,7 @@ class Config
      */
     public function refresh()
     {
-        $this->configArray = self::getSetConfigArray();
+        $this->config = $this->config->__set_state($this->original);
     }
 
     /**
@@ -175,7 +243,11 @@ class Config
      */
     public function toArray()
     {
-        return $this->configArray;
+        if (is_string($this->config)) {
+            return $this->config;
+        }
+
+        return $this->config->toArray();
     }
 
     /**
@@ -206,5 +278,25 @@ class Config
         if (!$this->has($settings)) {
             throw InvalidConfig::configValueNotFound(implode(' -> ', $settings));
         }
+    }
+
+    /**
+     * Merge the given config with the current one.
+     *
+     * @param PhalconConfig $config
+     */
+    public function merge(PhalconConfig $config)
+    {
+        $this->config = $this->config->merge($config);
+    }
+
+    /**
+     * Return the config key count.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->config->count();
     }
 }

@@ -45,7 +45,7 @@ class Database extends \Codeception\Module
             return $this->connection;
         }
 
-        $dbConfig = Config::getInstance()->get('database');
+        $dbConfig = Config::getInstance()->get('database')->toArray();
 
         $resolver = new ConnectionResolver();
 

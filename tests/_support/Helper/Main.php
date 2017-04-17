@@ -24,7 +24,7 @@ class Main extends \Codeception\Module
     {
         $this->di = new FactoryDefault();
 
-        $config = Config::getInstance()->refresh();
+        Config::getInstance()->setConfig()->refresh();
 
         $this->getModule('\Helper\Filesystem')->setFilesystem();
 

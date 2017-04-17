@@ -52,43 +52,144 @@
   - [Credits and Contributing](#credits-and-contributing)
 
 ## Install
-#### Requirements
+### Requirements
 This package assumes you have the following:
   - Phalcon >= 3.0
   - PHP >= 5.6.5
 
-#### Install via composer
+### Install via composer
 ```
 composer require zachleigh/yarak
 ```
-#### Register the service
+### Register the service
+```php
+use Yarak\Kernel;
+
+$di->setShared('yarak',function () {
+    return new Kernel();
+});
+```
+Yarak requires the following config values in this structure:
+```php
+'database' => [
+    'adapter'     => '',
+    'host'        => '',
+    'username'    => '',
+    'password'    => '',
+    'dbname'      => '',
+    'charset'     => '',
+],
+'application' => [
+    'appDir'         => APP_PATH.'/',
+    'commandsDir'    => APP_PATH.'/console/commands',
+    'consoleDir'     => APP_PATH.'/console/',
+    'databaseDir'    => APP_PATH.'/database/',
+    'migrationsDir'  => APP_PATH.'/database/migrations/',
+    'modelsDir'      => APP_PATH.'/models/',
+],
+'namespaces' => [
+    'root' => '',
+],
+```
+Yarak uses your application's config so if your config is already structured this way, simply add the necessary values. If your config strategy differs from this, you have several options. First, you can create a specific Yarak config key and set all values there:
+```php
+'yarak' => [
+    'database' => [
+        'adapter'     => '',
+        'host'        => '',
+        'username'    => '',
+        'password'    => '',
+        'dbname'      => '',
+        'charset'     => '',
+    ],
+    'application' => [
+        'appDir'         => APP_PATH.'/',
+        'commandsDir'    => APP_PATH.'/console/commands',
+        'consoleDir'     => APP_PATH.'/console/',
+        'databaseDir'    => APP_PATH.'/database/',
+        'migrationsDir'  => APP_PATH.'/database/migrations/',
+        'modelsDir'      => APP_PATH.'/models/',
+    ],
+    'namespaces' => [
+        'root' => '',
+    ],
+]
+```
+Then, when registering the service pass the config path:
 ```php
 $di->setShared('yarak',function () {
-    $config = $this->getConfig();
-
-    return new \Yarak\Kernel(
-        [
-            'application' => [
-                'appDir'      => $config->application->appDir,
-                'databaseDir' => 'path/to/database/directory/'
-            ],
-            'namespaces' => [
-                'root' => 'App'
-            ],
-            'database' => [
-                'adapter'  => $config->database->adapter,
-                'host'     => $config->database->host,
-                'username' => $config->database->username,
-                'password' => $config->database->password,
-                'dbname'   => $config->database->dbname,
-                'charset'  => $config->database->charset,
-            ],
-        ]);
-    }
-);
+    return new Kernel('yarak');
+});
+```
+If the config path is multiple levels deep, use dot notation:
+```php
+'services' => [
+    'yarak' => [
+        'database' => [
+            'adapter'     => '',
+            'host'        => '',
+            'username'    => '',
+            'password'    => '',
+            'dbname'      => '',
+            'charset'     => '',
+        ],
+        'application' => [
+            'appDir'         => APP_PATH.'/',
+            'commandsDir'    => APP_PATH.'/console/commands',
+            'consoleDir'     => APP_PATH.'/console/',
+            'databaseDir'    => APP_PATH.'/database/',
+            'migrationsDir'  => APP_PATH.'/database/migrations/',
+            'modelsDir'      => APP_PATH.'/models/',
+        ],
+        'namespaces' => [
+            'root' => '',
+        ],
+    ]
+]
+```
+```php
+$di->setShared('yarak',function () {
+    return new Kernel('services.yarak');
+});
+```
+If you wish to add config values when registering Yarak, pass them as an array and Yarak will merge them into your existing config:
+```php
+$di->setShared('yarak',function () {
+    return new Kernel([
+        'namespaces' => [
+            'root' => '',
+        ],
+    ]);
+});
+```
+Lastly, you can pass all config values when registering the service. Pass 'false' as the second parameter to the Kernel constructor to turn off config merging.
+```php
+$di->setShared('yarak',function () {
+    return new Kernel([
+        'database' => [
+            'adapter'     => '',
+            'host'        => '',
+            'username'    => '',
+            'password'    => '',
+            'dbname'      => '',
+            'charset'     => '',
+        ],
+        'application' => [
+            'appDir'         => APP_PATH.'/',
+            'commandsDir'    => APP_PATH.'/console/commands',
+            'consoleDir'     => APP_PATH.'/console/',
+            'databaseDir'    => APP_PATH.'/database/',
+            'migrationsDir'  => APP_PATH.'/database/migrations/',
+            'modelsDir'      => APP_PATH.'/models/',
+        ],
+        'namespaces' => [
+            'root' => '',
+        ],
+    ], false);
+});
 ```
 
-#### Create a yarak file
+### Create a yarak file
 In the project root, create a file called `yarak`. This file needs to do the following:
   - Autoload all project files and vendor directory files
   - Load the project services
@@ -152,7 +253,7 @@ Once the yarak file exists, make it executable:
 ```
 chomd +x yarak
 ```
-#### Add the database directory to the composer autoloader
+### Add the database directory to the composer autoloader
 Because migrations do not follow psr-4 naming conventions, load them with a classmap.
 ```
 "autoload": {
@@ -818,22 +919,16 @@ php yarak console:generate
 This will create a console directory, a commands directory, an example command, and a Kernel.php file where you can register your custom commands. If the config value `namespaces => root` is set, Yarak will use file path information and the set root namespace to automatically generate namespaces. If you use a non-standard namespace, set `namespaces => console` as shown below.  
 
 ### Generating Custom Commands
-Before generating a custom command, register a console directory with the Yarak service. You may also register a console namespace if the automatically generated namespaces are incorrect. By default, custom commands with be in the defined console directory in a folder called `commands`. You can override this by registering a `commandsDir`.
+Before generating a custom command, be sure to include `consoleDir` in your config. You may also register a console namespace if the automatically generated namespaces are incorrect. By default, custom commands with be in the defined console directory in a folder called `commands`. You can override this by registering a `commandsDir`.
 ```php
-$di->setShared('yarak', function () {
-    $config = $this->getConfig();
-
-    return new Kernel([
-        'application' => [
-            //
-            'consoleDir' => APP_PATH.'/console/'
-        ],
-        'namespaces' => [
-            //
-            'console' => 'App\Console'
-        ],
-        //
-    ]);
+'application' => [
+    //
+    'consoleDir' => APP_PATH.'/console/'
+],
+'namespaces' => [
+    //
+    'console' => 'App\Console'
+],
 });
 ```
 Do not forget to register your console namespaces with the Phalcon loader.

@@ -42,7 +42,7 @@ trait PathHelpers
     {
         $this->validate(['application', 'appDir']);
 
-        return Str::append($this->get(['application', 'appDir']), '/');
+        return Str::append($this->get('application')->get('appDir'), '/');
     }
 
     /**
@@ -54,7 +54,7 @@ trait PathHelpers
     {
         $this->validate(['application', 'databaseDir']);
 
-        return Str::append($this->get(['application', 'databaseDir']), '/');
+        return Str::append($this->get('application')->get('databaseDir'), '/');
     }
 
     /**
@@ -118,7 +118,7 @@ trait PathHelpers
         $this->validate(['application', 'consoleDir']);
 
         return Str::append(
-            $this->get(['application', 'consoleDir']),
+            $this->get('application')->get('consoleDir'),
             '/'
         ).$path;
     }
@@ -134,7 +134,7 @@ trait PathHelpers
     {
         if ($this->has(['application', 'commandsDir'])) {
             return Str::append(
-                $this->get(['application', 'commandsDir']),
+                $this->get('application')->get('commandsDir'),
                 '/'
             ).$path;
         }

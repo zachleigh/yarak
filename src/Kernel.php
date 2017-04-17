@@ -11,13 +11,6 @@ use Symfony\Component\Console\Input\InputInterface;
 class Kernel
 {
     /**
-     * Application config.
-     *
-     * @var array
-     */
-    private $configArray;
-
-    /**
      * Array of registered commands.
      *
      * @var array
@@ -27,11 +20,12 @@ class Kernel
     /**
      * Construct.
      *
-     * @param array $configArray
+     * @param array|string $userConfig
+     * @param bool         $merge
      */
-    public function __construct(array $configArray = [])
+    public function __construct($userConfig = null, $merge = true)
     {
-        $this->configArray = $configArray;
+        Config::getInstance()->setConfig($userConfig, $merge);
     }
 
     /**
@@ -117,15 +111,5 @@ class Kernel
         if ($application->has($command) === false) {
             throw InvalidInput::invalidCommand($command);
         }
-    }
-
-    /**
-     * Return the Yarak config array.
-     *
-     * @return array
-     */
-    public function getConfigArray()
-    {
-        return $this->configArray;
     }
 }

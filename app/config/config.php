@@ -16,8 +16,13 @@ return new Config([
     ],
     'application' => [
         'appDir'         => APP_PATH.'/',
-        'modelsDir'      => APP_PATH.'/models/',
+        'commandsDir'    => APP_PATH.'/console/commands',
+        'consoleDir'     => APP_PATH.'/console/',
+        'databaseDir'    => APP_PATH.'/database/',
         'migrationsDir'  => APP_PATH.'/database/migrations/',
-        'baseUri'        => '/',
+        'modelsDir'      => APP_PATH.'/models/',
+    ],
+    'namespaces' => [
+        'root' => 'MyApp',
     ],
 ]);

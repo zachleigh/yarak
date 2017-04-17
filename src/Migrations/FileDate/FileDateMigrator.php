@@ -315,7 +315,7 @@ class FileDateMigrator implements Migrator
      */
     public function setConnection()
     {
-        $dbConfig = $this->config->get('database');
+        $dbConfig = $this->config->get('database')->toArray();
 
         $this->connection = $this->resolver->getConnection($dbConfig);
 
