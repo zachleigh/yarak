@@ -59,11 +59,11 @@ class Config
      */
     public function __get($key)
     {
-        try {
+        if (isset($this->config[$key])) {
             return $this->config->$key;
-        } catch (\Exception $e) {
-            return $this->getDefault($key);
         }
+
+        return $this->getDefault($key);
     }
 
     /**
