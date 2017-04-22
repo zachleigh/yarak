@@ -866,38 +866,9 @@ Refreshing the database will rollback all migrations and then re-run them all in
 php yarak migrate:refresh
 ```
 
-When using the `migrate:refresh` command, you may also use the `--seed` flag to run all your [database seeders](#database-seeding) after the database has been refreshed. See [Using Database Seeders](#using-database-seeders) for more information.
+When using the `migrate:refresh` command, you may also use the `--seed` flag to run all your [database seeders](#database-seeding) after the database has been refreshed. See [Using Database Seeders](#using-database-seeders) for more information.     
 
-## Calling Yarak In Code
-To call a Yarak command from your codebase, use the Yarak::call static method.
-```php
-public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = null)
-```
-For example, to call `migrate:rollback --steps=2`:
-```php
-use Yarak\Yarak;
-
-Yarak::call('migrate:rollback', [
-    '--steps'    => 2,
-]);
-```
-
-Yarak will use the default DI to get its settings. If the resolved default DI is not working, pass an instance of Phalcon\Di as the third argument to the call method:
-```php
-use Yarak\Yarak;
-
-Yarak::call('migrate:rollback', [
-    '--steps'    => 2,
-], $di);
-```
-
-If you are running PHP 5.6 or lower, using the static call method may result in the following error message: 
-```
-Cannot bind an instance to a static closure
-```
-To avoid this error, pass the $di as the third variable to Yarak::call as shown above.   
-
-[Top](#contents)    
+[Top](#contents)   
 
 ## Custom Commands
 Yarak can also be extended and used as a general command line task runner.
@@ -1146,7 +1117,38 @@ Onces registered, the commands may be used like any other Yarak command:
 php yarak namespace:name arg --opt
 ```
 
-[Top](#contents)   
+[Top](#contents)  
+
+## Calling Yarak In Code
+To call a Yarak command from your codebase, use the Yarak::call static method.
+```php
+public static function call($command, array $arguments = [], \Phalcon\DiInterface $di = null)
+```
+For example, to call `migrate:rollback --steps=2`:
+```php
+use Yarak\Yarak;
+
+Yarak::call('migrate:rollback', [
+    '--steps'    => 2,
+]);
+```
+
+Yarak will use the default DI to get its settings. If the resolved default DI is not working, pass an instance of Phalcon\Di as the third argument to the call method:
+```php
+use Yarak\Yarak;
+
+Yarak::call('migrate:rollback', [
+    '--steps'    => 2,
+], $di);
+```
+
+If you are running PHP 5.6 or lower, using the static call method may result in the following error message: 
+```
+Cannot bind an instance to a static closure
+```
+To avoid this error, pass the $di as the third variable to Yarak::call as shown above.   
+
+[Top](#contents)     
 
 ## Credits and Contributing
 This project is largely inspired by the [Laravel project](https://github.com/laravel). Some portions of code in Yarak were taken directly from the Laravel project. Many thanks to @taylorotwell and the rest of the Laravel contributors.   

@@ -17,7 +17,7 @@ class ConfigTest extends \Codeception\Test\Unit
     /**
      * @test
      */
-    public function config_gits_values_through_property_call()
+    public function config_gets_values_through_property_call()
     {
         $this->assertEquals(
             'MyApp',
