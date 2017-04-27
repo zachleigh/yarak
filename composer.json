@@ -21,6 +21,9 @@
         "fzaninotto/faker": "^1.6",
         "codeception/codeception": "^2.2"
     },
+    "require-dev": {
+
+    },
     "autoload": {
         "files": [
             "src/Helpers/helpers.php"
