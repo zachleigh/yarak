@@ -631,9 +631,9 @@ php yarak db:seed SeederName
 ```
 The default seeder name is 'DatabaseSeeder'.
 
-You may also use the `--seed` flag with the `migrate --refresh` command:
+You may also use the `--seed` flag with the `migrate:refresh` command:
 ```
-php yarak migrate --refresh --seed --class=SeederName
+php yarak migrate:refresh --seed --class=SeederName
 ```
 :exclamation:**Refreshing the database will remove all data from your database.** This command will drop all tables, run all the migrations again, then fill the database using the given seeder class name. The default value for the seeder name is 'DatabaseSeeder'.    
 
