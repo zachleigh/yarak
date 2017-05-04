@@ -13,7 +13,7 @@ class MakeMigration extends YarakCommand
      */
     protected $signature = 'make:migration
                             {name : The name of your migration, words separated by underscores.}
-                            {--c|create : The name of the table to create.}';
+                            {--c|create= : The name of the table to create.}';
 
     /**
      * The command description.
