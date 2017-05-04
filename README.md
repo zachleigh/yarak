@@ -49,6 +49,7 @@
       - [Command Output](#command-output)
     - [Using Custom Commands](#using-custom-commands)
   - [Calling Yarak In Code](#calling-yarak-in-code)
+  - [Developing](#developing)
   - [Credits and Contributing](#credits-and-contributing)
 
 ## Install
@@ -1148,7 +1149,15 @@ Cannot bind an instance to a static closure
 ```
 To avoid this error, pass the $di as the third variable to Yarak::call as shown above.   
 
-[Top](#contents)     
+[Top](#contents)    
+
+## Developing
+To set up the project locally for development, clone the repo and run `composer install` from the project root directory. Create the necessary database and enter your database configuration details in both `codeception.yml` and `app/config/config.php`. Run the full test suite with `php vendor/codeception/codeception/codecept run` or use the following composer scripts:
+  - `composer test`: run the full test suite
+  - `composer testf`: run only the functional tests
+  - `composer testu`: run only the unit tests      
+    
+[Top](#contents)
 
 ## Credits and Contributing
 This project is largely inspired by the [Laravel project](https://github.com/laravel). Some portions of code in Yarak were taken directly from the Laravel project. Many thanks to @taylorotwell and the rest of the Laravel contributors.   

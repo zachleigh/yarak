@@ -36,5 +36,16 @@
         "psr-4": {
             "Yarak\\tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test" : [
+            "php vendor/codeception/codeception/codecept run "
+        ],
+        "testf": [
+            "composer test functional "
+        ],
+        "testu": [
+            "composer test unit "
+        ]
     }
 }
