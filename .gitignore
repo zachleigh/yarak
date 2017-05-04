@@ -1,6 +1,6 @@
 /vendor
 .env
-
+composer.lock
 tests/_output/*
 tests/_support/_generated
 tests/temp/*
