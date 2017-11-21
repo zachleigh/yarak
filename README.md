@@ -1065,6 +1065,46 @@ protected function handle()
 }
 ```
 
+#### Asking for confirmation
+The `confirm` method can be used to ask the user for a simple confirmation
+```php
+if ($this->confirm('Do you wish to continue? ')) {
+    //
+}
+```
+
+#### Ask a question
+In case an open question needs to be prompted the user, the `ask` method can be used.
+The second argument provides a default fallback
+```php
+$name = $this->ask('What is your name?', 'Nobody');
+```
+
+#### Ask for a password
+The user answer can be hidden by using the `askPassword` method
+```php
+$password = $this->askPassword('Please type the password');
+```
+
+#### Choosing from a list
+The `choose` method only allows an answer from a predefined list of choices
+```php
+$car = $this->choose('What is your favourite car?', ['Ferrari', 'Lamborghini', 'Maserati'], 1);
+```
+
+#### Auto-completion
+The `anticipate` method can provide the user some auto-completion help when starting to write.
+The user can still choose any answer, regardless of the auto-completion hints
+```php
+$food = $this->anticipate('What is your favourite food?', ['Pizza', 'Pasta', 'Lasagna'], 'Mozzarella');
+```
+
+#### Multi choice
+When the user should be allowed to choose more than a single answer, the `choice` method allows to select them from a list
+```php
+$colors = $this->choice('What are your favourite colors (defaults to blue and red)?', ['Blue', 'Red', 'Green'], '0,1');
+```
+
 #### Command Output
 Every command has an `output` variable stored on the object that has several methods to help write output to the console.   
 
