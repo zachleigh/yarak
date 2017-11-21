@@ -167,7 +167,8 @@ abstract class Command extends SymfonyCommand
     /**
      * Ask for a confirmation.
      *
-     * @param $text
+     * @param string $text
+     *
      * @return mixed
      */
     public function confirm($text)
@@ -181,8 +182,9 @@ abstract class Command extends SymfonyCommand
     /**
      * Ask a question.
      *
-     * @param $question
+     * @param string     $question
      * @param mixed|null $default
+     *
      * @return mixed
      */
     public function ask($question, $default = null)
@@ -194,9 +196,10 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
-     * Ask a password
+     * Ask a password.
      *
-     * @param $question
+     * @param string $question
+     *
      * @return mixed
      */
     public function askPassword($question)
@@ -213,8 +216,8 @@ abstract class Command extends SymfonyCommand
     /**
      * Ask a question where the answer is available from a list of predefined choices.
      *
-     * @param $question
-     * @param array $choices
+     * @param string     $question
+     * @param array      $choices
      * @param mixed|null $default
      *
      * @return mixed
@@ -231,8 +234,8 @@ abstract class Command extends SymfonyCommand
     /**
      * Ask a question where some auto-completion help is provided.
      *
-     * @param $question
-     * @param array $autoCompletion
+     * @param string     $question
+     * @param array      $autoCompletion
      * @param mixed|null $default
      *
      * @return mixed
@@ -249,8 +252,8 @@ abstract class Command extends SymfonyCommand
     /**
      * Ask a question where the answer is available from a list of predefined choices and more choices can be selected.
      *
-     * @param $question
-     * @param array $choices
+     * @param string     $question
+     * @param array      $choices
      * @param mixed|null $default
      *
      * @return mixed
