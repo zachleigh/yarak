@@ -33,7 +33,7 @@ class CreateUsersTable implements Migration
                     ]),
                     new Column('password', [
                         'type'    => Column::TYPE_CHAR,
-                        'size'    => 40,
+                        'size'    => 100,
                         'notNull' => true,
                     ]),
                     new Column('email', [
