@@ -2,6 +2,9 @@
 
 namespace Yarak\Console;
 
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Yarak\Console\Input\Input;
 use Yarak\Console\Output\SymfonyOutput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -159,5 +162,105 @@ abstract class Command extends SymfonyCommand
         if (method_exists($this, $method)) {
             $this->$method(...array_values($input->getAttributes()));
         }
+    }
+
+    /**
+     * Ask for a confirmation.
+     *
+     * @param $text
+     * @return mixed
+     */
+    public function confirm($text)
+    {
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion($text, false);
+
+        return $helper->ask($this->input, $this->getOutputInterface(), $question);
+    }
+
+    /**
+     * Ask a question.
+     *
+     * @param $question
+     * @param mixed|null $default
+     * @return mixed
+     */
+    public function ask($question, $default = null)
+    {
+        $helper = $this->getHelper('question');
+        $question = new Question($question, $default);
+
+        return $helper->ask($this->input, $this->getOutputInterface(), $question);
+    }
+
+    /**
+     * Ask a password
+     *
+     * @param $question
+     * @return mixed
+     */
+    public function askPassword($question)
+    {
+        $helper = $this->getHelper('question');
+
+        $question = new Question($question);
+        $question->setHidden(true);
+        $question->setHiddenFallback(false);
+
+        return $helper->ask($this->input, $this->getOutputInterface(), $question);
+    }
+
+    /**
+     * Ask a question where the answer is available from a list of predefined choices.
+     *
+     * @param $question
+     * @param array $choices
+     * @param mixed|null $default
+     *
+     * @return mixed
+     */
+    public function choose($question, array $choices, $default = null)
+    {
+        $helper = $this->getHelper('question');
+        $question = new ChoiceQuestion($question, $choices, $default);
+        $question->setErrorMessage('%s is not a valid answer.');
+
+        return $helper->ask($this->input, $this->getOutputInterface(), $question);
+    }
+
+    /**
+     * Ask a question where some auto-completion help is provided.
+     *
+     * @param $question
+     * @param array $autoCompletion
+     * @param mixed|null $default
+     *
+     * @return mixed
+     */
+    public function anticipate($question, array $autoCompletion, $default = null)
+    {
+        $helper = $this->getHelper('question');
+        $question = new Question($question, $default);
+        $question->setAutocompleterValues($autoCompletion);
+
+        return $helper->ask($this->input, $this->getOutputInterface(), $question);
+    }
+
+    /**
+     * Ask a question where the answer is available from a list of predefined choices and more choices can be selected.
+     *
+     * @param $question
+     * @param array $choices
+     * @param mixed|null $default
+     *
+     * @return mixed
+     */
+    public function choice($question, array $choices, $default = null)
+    {
+        $helper = $this->getHelper('question');
+        $question = new ChoiceQuestion($question, $choices, $default);
+        $question->setMultiselect(true);
+
+        return $helper->ask($this->input, $this->getOutputInterface(), $question);
     }
 }
