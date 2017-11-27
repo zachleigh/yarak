@@ -149,8 +149,8 @@ if [[ $PHP_VER == 7* ]]; then
     phpenv global ${PHP_VER}
         
     # Clean parsers
-    # cd ${CI_APP_DIR}/vendor/phalcon/zephir/parser
-    # phpize --clean
+    cd ${CI_APP_DIR}/vendor/phalcon/zephir/parser
+    phpize --clean
     
     # Compile
     cd ${PHALCON_DIR}
