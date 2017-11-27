@@ -187,7 +187,7 @@ class ConfigTest extends \Codeception\Test\Unit
         $config->setConfig('database.password');
 
         $this->assertEquals(
-            'password',
+            '',
             $config->toArray()
         );
     }
