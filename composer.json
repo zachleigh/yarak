@@ -12,6 +12,12 @@
     "keywords": ["phalcon", "devtools", "migrations", "factories", "seeders", "database", "yarak"],
     "homepage": "https://github.com/zachlegih/yarak",
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/zachleigh/dd"
+        }
+    ],
     "require": {
         "symfony/console": "^3.2",
         "vlucas/phpdotenv": "^2.4",
@@ -22,7 +28,7 @@
     "require-dev": {
         "phpunit/phpunit": "^5.0",
         "codeception/codeception": "^2.2",
-        "phalcon/dd": "^1.1"
+        "phalcon/dd": "dev-master#75e2c9969bec8650ad37e3f592d6298166a66da0 "
     },
     "autoload": {
         "files": [
