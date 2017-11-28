@@ -13,7 +13,7 @@ env:
 before_install:
     - mysql -e "create database IF NOT EXISTS yarak;" -uroot
     - echo "USE mysql;\nUPDATE user SET password=PASSWORD('') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-    - composer install --prefer-source --no-interaction
+    - composer install --prefer-source --no-interaction --no-dev
     - chmod +x install-phalcon.sh
     - ./install-phalcon.sh 3.0.x
 
