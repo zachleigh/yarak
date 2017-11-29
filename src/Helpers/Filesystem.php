@@ -9,21 +9,29 @@ trait Filesystem
 {
     /**
      * Create all directories listed in directories array.
+     * Return the number of created directories
      *
      * @param array  $directories
      * @param Output $output
+     * @return  int
      */
     protected function makeDirectoryStructure(array $directories, Output $output = null)
     {
+        $createdDirs = 0;
+
         foreach ($directories as $key => $directory) {
             if (!file_exists($directory)) {
-                mkdir($directory);
+                if (mkdir($directory)) {
+                    $createdDirs++;
+                }
 
                 if ($output) {
                     $output->writeInfo("Created {$key} directory.");
                 }
             }
         }
+
+        return $createdDirs;
     }
 
     /**

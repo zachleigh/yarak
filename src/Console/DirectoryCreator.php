@@ -17,10 +17,10 @@ class DirectoryCreator extends Creator
     {
         $this->config->validate(['application', 'consoleDir']);
 
-        $createdDirs = (bool) count($this->makeDirectoryStructure([
+        $createdDirs = (bool) $this->makeDirectoryStructure([
             'console'  => $this->config->getConsoleDirectory(),
             'commands' => $this->config->getCommandsDirectory(),
-        ], $this->output));
+        ], $this->output);
 
         $createdKernel = $this->createKernel($createExample);
 
