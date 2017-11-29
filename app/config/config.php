@@ -10,7 +10,7 @@ return new Config([
         'adapter'     => 'Mysql',
         'host'        => '127.0.0.1',
         'username'    => 'root',
-        'password'    => 'Eh2prsEh',
+        'password'    => '',
         'dbname'      => 'yarak',
         'charset'     => 'utf8',
     ],
