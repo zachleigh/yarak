@@ -8,11 +8,11 @@ services:
     - mysql
 
 env:
-    - DB_HOST=127.0.0.1 DB_DATABASE=yarak DB_USERNAME=root DB_PASSWORD=password
+    - DB_HOST=127.0.0.1 DB_DATABASE=yarak DB_USERNAME=root DB_PASSWORD=
 
 before_install:
     - mysql -e "create database IF NOT EXISTS yarak;" -uroot
-    - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+    - echo "USE mysql;\nUPDATE user SET password=PASSWORD('') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
     - chmod +x install-phalcon.sh
     - ./install-phalcon.sh 3.0.x
     - composer install --prefer-source --no-interaction
