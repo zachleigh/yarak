@@ -13,8 +13,9 @@ env:
 before_install:
     - mysql -e "create database IF NOT EXISTS yarak;" -uroot
     - echo "USE mysql;\nUPDATE user SET password=PASSWORD('password') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-    - chmod +x install-phalcon.sh
-    - ./install-phalcon.sh 3.0.x
+    - git clone git://github.com/phalcon/cphalcon.git $TRAVIS_BUILD_DIR/vendor/cphalcon
+    - cd $TRAVIS_BUILD_DIR/vendor/cphalcon/build && ./install && cd $TRAVIS_BUILD_DIR
+    - echo 'extension=phalcon.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - composer install --prefer-source --no-interaction
 
 install:
