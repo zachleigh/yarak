@@ -28,7 +28,3 @@ install:
 
 script:
     - php codecept.phar run --no-interaction
-
-cache:
-    directories:
-        - vendor
