@@ -9,11 +9,12 @@ trait Filesystem
 {
     /**
      * Create all directories listed in directories array.
-     * Return the number of created directories
+     * Return the number of created directories.
      *
      * @param array  $directories
      * @param Output $output
-     * @return  int
+     *
+     * @return int
      */
     protected function makeDirectoryStructure(array $directories, Output $output = null)
     {
