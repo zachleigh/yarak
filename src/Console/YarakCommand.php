@@ -4,7 +4,7 @@ namespace Yarak\Console;
 
 use Yarak\Config\Config;
 use Yarak\DB\ConnectionResolver;
-use Yarak\Console\Output\SymfonyOutput;
+use Artisanize\Output\SymfonyOutput;
 
 class YarakCommand extends Command
 {

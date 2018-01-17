@@ -3,7 +3,7 @@
 namespace Yarak\Helpers;
 
 use Yarak\Config\Config;
-use Yarak\Console\Output\Output;
+use Artisanize\Output\Output;
 
 abstract class Creator
 {

@@ -2,7 +2,7 @@
 
 namespace Yarak\Helpers;
 
-use Yarak\Console\Output\Output;
+use Artisanize\Output\Output;
 use Yarak\Exceptions\WriteError;
 
 trait Filesystem

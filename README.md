@@ -14,6 +14,7 @@
   - Create custom commands in minutes to streamline and personalize your workflow.
 
 ## Contents
+  - [Release Notes](#release-notes)
   - [Install](#install)
   - [Database](#database)
     - [Generating Database Directories And Files](#generating-database-directories-and-files)
@@ -51,6 +52,14 @@
   - [Calling Yarak In Code](#calling-yarak-in-code)
   - [Developing](#developing)
   - [Credits and Contributing](#credits-and-contributing)
+
+## Release Notes
+##### Moving from 1.1.* to 1.2.*
+The core command wrapper has been extracted to a separate package
+([zachleigh/artisanize](https://github.com/zachleigh/artisanize)). Where possible,
+Yarak classes have been maintained for the time being in order to minimize update
+issues. However, some interface type declarations may need to be updated after
+isntalling the new version.
 
 ## Install
 ### Requirements

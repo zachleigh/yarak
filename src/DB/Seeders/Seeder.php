@@ -2,7 +2,7 @@
 
 namespace Yarak\DB\Seeders;
 
-use Yarak\Console\Output\Output;
+use Artisanize\Output\Output;
 
 abstract class Seeder
 {
